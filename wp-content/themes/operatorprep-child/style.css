@@ -603,3 +603,92 @@ body.home .ast-separate-container .ast-article-single {
 body.home .site-content #primary {
   padding: 0 !important;
 }
+
+/* ═══════════════════════════════════════
+   NUCLEAR ASTRA OVERRIDES — HOMEPAGE
+   ═══════════════════════════════════════ */
+
+/* Kill the Home title — every possible selector */
+body.home .entry-title,
+body.home .page-title,
+body.home h1.entry-title,
+body.home .ast-archive-title,
+body.home .page-header,
+body.home .entry-header,
+body.home .ast-hero-section .entry-title,
+.page-id-35 .entry-title,
+.page-id-35 .entry-header,
+.page-id-35 .page-title {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Remove ALL Astra padding/margins from homepage content */
+body.home #content,
+body.home #primary,
+body.home .site-content,
+body.home .ast-container,
+body.home .entry-content,
+body.home article,
+body.home .ast-separate-container .ast-article-single,
+body.home .post-0,
+.page-id-35 #content,
+.page-id-35 #primary,
+.page-id-35 .entry-content,
+.page-id-35 article {
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* Force hero grid layout */
+.op-hero-wrap {
+  display: grid !important;
+  grid-template-columns: 1fr 380px !important;
+  gap: 60px !important;
+  padding: 80px 40px !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+}
+
+.op-hero-left {
+  display: block !important;
+  flex: unset !important;
+  width: auto !important;
+  min-width: 0 !important;
+}
+
+/* Force 4-col features */
+.op-4col {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 20px !important;
+}
+
+/* Force 3-col certs */
+.op-3col {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 24px !important;
+}
+
+@media (max-width: 960px) {
+  .op-hero-wrap {
+    grid-template-columns: 1fr !important;
+    padding: 48px 20px !important;
+  }
+  .op-hero-right { display: none !important; }
+  .op-4col { grid-template-columns: 1fr 1fr !important; }
+  .op-3col { grid-template-columns: 1fr !important; }
+}
+
+@media (max-width: 600px) {
+  .op-4col { grid-template-columns: 1fr !important; }
+}
