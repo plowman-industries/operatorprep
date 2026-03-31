@@ -579,3 +579,27 @@ td {
     border-bottom: 1px solid var(--op-border-sub) !important;
   }
 }
+
+/* ── HOMEPAGE LAYOUT OVERRIDES ── */
+/* Force disable Astra's banner/title on front page */
+body.home .entry-header,
+body.home .ast-archive-description,
+body.page-id-35 .entry-header {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Remove Astra padding around page content on homepage */
+body.home #content .ast-container,
+body.home .entry-content,
+body.home .ast-separate-container .ast-article-single {
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: 100% !important;
+}
+
+body.home .site-content #primary {
+  padding: 0 !important;
+}
