@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       confirmed:
-        description: "Type DEPLOY to confirm production push"
+        description: "Type DEPLOY to confirm"
         required: true
       sprint:
-        description: "What changed (e.g. Sprint 3 - homepage redesign)"
+        description: "What changed"
         required: true
 
 jobs:
@@ -16,36 +16,33 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Confirm deployment
+      - name: Confirm
         run: |
           if [ "${{ github.event.inputs.confirmed }}" != "DEPLOY" ]; then
-            echo "You must type DEPLOY to confirm. Aborting."
+            echo "Must type DEPLOY to confirm. Aborting."
             exit 1
           fi
-          echo "Confirmed. Deploying: ${{ github.event.inputs.sprint }}"
 
-      - name: Copy theme files to production
+      - name: Copy theme files to production via SCP
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: gcam1130.siteground.biz
+          host: ssh.operatorprep.com
           username: ${{ secrets.PROD_SSH_USER }}
-          password: ${{ secrets.PROD_SSH_PASS }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 18765
-          source: "wp-content/themes/operatorprep-child/*"
-          target: "/home/${{ secrets.PROD_SSH_USER }}/www/operatorprep.com/public_html/wp-content/themes/operatorprep-child/"
+          source: "wp-content/themes/operatorprep-child/"
+          target: "/home/${{ secrets.PROD_SSH_USER }}/www/operatorprep.com/public_html/wp-content/themes/"
           strip_components: 3
 
-      - name: Flush cache and log
+      - name: Flush cache
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: gcam1130.siteground.biz
+          host: ssh.operatorprep.com
           username: ${{ secrets.PROD_SSH_USER }}
-          password: ${{ secrets.PROD_SSH_PASS }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 18765
           script: |
             cd /home/${{ secrets.PROD_SSH_USER }}/www/operatorprep.com/public_html
             wp cache flush --allow-root 2>/dev/null || true
-            echo "PRODUCTION DEPLOY COMPLETE"
+            echo "PRODUCTION DEPLOY COMPLETE — $(date)"
             echo "Sprint: ${{ github.event.inputs.sprint }}"
-            echo "Time: $(date)"
-            echo "Actor: ${{ github.actor }}"

@@ -11,37 +11,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deploy child theme to staging
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: gcam1130.siteground.biz
-          username: ${{ secrets.STAGING_SSH_USER }}
-          password: ${{ secrets.STAGING_SSH_PASS }}
-          port: 18765
-          script: |
-            THEME_DIR="/home/${{ secrets.STAGING_SSH_USER }}/www/staging2.operatorprep.com/public_html/wp-content/themes/operatorprep-child"
-            mkdir -p "$THEME_DIR"
-            echo "Theme directory ready: $THEME_DIR"
-
-      - name: Copy theme files via SCP
+      - name: Copy theme files to staging via SCP
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: gcam1130.siteground.biz
+          host: ssh.operatorprep.com
           username: ${{ secrets.STAGING_SSH_USER }}
-          password: ${{ secrets.STAGING_SSH_PASS }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 18765
-          source: "wp-content/themes/operatorprep-child/*"
-          target: "/home/${{ secrets.STAGING_SSH_USER }}/www/staging2.operatorprep.com/public_html/wp-content/themes/operatorprep-child/"
+          source: "wp-content/themes/operatorprep-child/"
+          target: "/home/${{ secrets.STAGING_SSH_USER }}/www/staging2.operatorprep.com/public_html/wp-content/themes/"
           strip_components: 3
 
       - name: Flush cache
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: gcam1130.siteground.biz
+          host: ssh.operatorprep.com
           username: ${{ secrets.STAGING_SSH_USER }}
-          password: ${{ secrets.STAGING_SSH_PASS }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 18765
           script: |
             cd /home/${{ secrets.STAGING_SSH_USER }}/www/staging2.operatorprep.com/public_html
             wp cache flush --allow-root 2>/dev/null || true
-            echo "Deploy complete — $(date)"
+            echo "Staging deploy complete — $(date)"
