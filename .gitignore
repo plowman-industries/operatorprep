@@ -1,0 +1,30 @@
+# WordPress core - never track
+/wp-admin/
+/wp-includes/
+/wp-*.php
+/xmlrpc.php
+/index.php
+/license.txt
+/readme.html
+
+# Uploads
+/wp-content/uploads/
+
+# All plugins except ours
+/wp-content/plugins/*
+!/wp-content/plugins/operatorprep-custom/
+
+# All themes except ours
+/wp-content/themes/*
+!/wp-content/themes/operatorprep-child/
+
+# Secrets
+wp-config.php
+.env
+.env.*
+
+# Logs/cache
+*.log
+/wp-content/cache/
+.DS_Store
+Thumbs.db

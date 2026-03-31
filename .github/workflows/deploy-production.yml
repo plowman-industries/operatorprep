@@ -1,0 +1,36 @@
+name: Deploy to Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmed:
+        description: "Type DEPLOY to confirm"
+        required: true
+      sprint:
+        description: "Sprint description"
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Safety check
+        run: |
+          if [ "${{ github.event.inputs.confirmed }}" != "DEPLOY" ]; then
+            echo "Must type DEPLOY to confirm"
+            exit 1
+          fi
+
+      - name: Deploy to production via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: gcam1130.siteground.biz
+          username: ${{ secrets.PROD_SSH_USER }}
+          password: ${{ secrets.PROD_SSH_PASS }}
+          port: 18765
+          script: |
+            PROD_THEME="/home/${{ secrets.PROD_SSH_USER }}/www/operatorprep.com/public_html/wp-content/themes/operatorprep-child"
+            echo "Deploying to production: $PROD_THEME"
+            echo "Sprint: ${{ github.event.inputs.sprint }}"
