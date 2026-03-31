@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deploy installer to staging
+      - name: Copy installer PHP to staging
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ssh.operatorprep.com
@@ -20,7 +20,7 @@ jobs:
           target: "/home/${{ secrets.STAGING_SSH_USER }}/www/staging2.operatorprep.com/public_html/"
           strip_components: 3
 
-      - name: Run installer via WP-CLI
+      - name: Run installer
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ssh.operatorprep.com
@@ -31,4 +31,4 @@ jobs:
             cd /home/${{ secrets.STAGING_SSH_USER }}/www/staging2.operatorprep.com/public_html
             wp eval-file install.php --allow-root
             wp cache flush --allow-root 2>/dev/null || true
-            echo "Done"
+            echo "Complete"
