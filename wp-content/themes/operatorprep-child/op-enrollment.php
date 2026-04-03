@@ -73,27 +73,16 @@ function op_enroll_user_from_subscription( $subscription ) {
  * @param WC_Subscription $subscription
  */
 function op_unenroll_user_from_subscription( $subscription ) {
-    global $wpdb;
-
-    $user_id = $subscription->get_user_id();
-    if ( ! $user_id ) {
+    if ( ! function_exists( 'tutor_utils' ) ) {
         return;
     }
-
+    $user_id = $subscription->get_user_id();
+    if ( ! $user_id ) { return; }
     $map = op_get_product_course_map();
-
     foreach ( $subscription->get_items() as $item ) {
         $product_id = $item->get_product_id();
         if ( isset( $map[ $product_id ] ) ) {
-            $course_id = $map[ $product_id ];
-            $wpdb->delete(
-                $wpdb->prefix . 'tutor_enrolled',
-                array(
-                    'user_id'   => $user_id,
-                    'course_id' => $course_id,
-                ),
-                array( '%d', '%d' )
-            );
+            tutor_utils()->cancel_course_enrol( $map[ $product_id ], $user_id );
         }
     }
 }
@@ -104,21 +93,6 @@ function op_unenroll_user_from_subscription( $subscription ) {
  * Enroll when a subscription becomes active (new purchase or reactivation).
  */
 add_action( 'woocommerce_subscription_status_active', 'op_enroll_user_from_subscription' );
-
-/**
- * Enroll on payment complete (covers initial order and renewals).
- * The $order_id passed here is a WC_Order; we need to find its subscription.
- */
-add_action( 'woocommerce_payment_complete', 'op_handle_payment_complete_enrollment' );
-function op_handle_payment_complete_enrollment( $order_id ) {
-    if ( ! function_exists( 'wcs_get_subscriptions_for_order' ) ) {
-        return;
-    }
-    $subscriptions = wcs_get_subscriptions_for_order( $order_id, array( 'order_type' => 'any' ) );
-    foreach ( $subscriptions as $subscription ) {
-        op_enroll_user_from_subscription( $subscription );
-    }
-}
 
 // ── Unenrollment triggers ──────────────────────────────────────────────────
 
