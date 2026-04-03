@@ -646,10 +646,15 @@ body.home .post-0,
   width: 100% !important;
 }
 
-/* Force hero grid layout */
+/* ============================================================
+   HOMEPAGE LAYOUT OVERRIDES
+   Aligns with homepage-v2.html inline styles (flex-based)
+   ============================================================ */
+
+/* Hero: flex row layout matching homepage-v2.html */
 .op-hero-wrap {
-  display: grid !important;
-  grid-template-columns: 1fr 380px !important;
+  display: flex !important;
+  flex-direction: row !important;
   gap: 60px !important;
   padding: 80px 40px !important;
   max-width: 1200px !important;
@@ -659,10 +664,13 @@ body.home .post-0,
 }
 
 .op-hero-left {
-  display: block !important;
-  flex: unset !important;
-  width: auto !important;
+  flex: 1 1 0% !important;
   min-width: 0 !important;
+}
+
+.op-hero-right {
+  flex: 0 0 380px !important;
+  width: 380px !important;
 }
 
 /* Force 4-col features */
@@ -681,11 +689,11 @@ body.home .post-0,
 
 @media (max-width: 960px) {
   .op-hero-wrap {
-    grid-template-columns: 1fr !important;
-    padding: 48px 20px !important;
+    flex-direction: column !important;
+    padding: 48px 24px !important;
   }
   .op-hero-right { display: none !important; }
-  .op-4col { grid-template-columns: 1fr 1fr !important; }
+  .op-4col { grid-template-columns: repeat(2, 1fr) !important; }
   .op-3col { grid-template-columns: 1fr !important; }
 }
 
