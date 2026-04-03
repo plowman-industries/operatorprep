@@ -651,7 +651,7 @@ body.home .post-0,
    Aligns with homepage-v2.html inline styles (flex-based)
    ============================================================ */
 
-/* Hero: flex row layout matching homepage-v2.html */
+/* Hero: flex row layout — confirmed matching homepage-v2.html (staging fix 2026-04-03) */
 .op-hero-wrap {
   display: flex !important;
   flex-direction: row !important;
