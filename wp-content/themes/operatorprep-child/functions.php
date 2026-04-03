@@ -34,3 +34,22 @@ function operatorprep_preconnect_fonts() {
     echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
     echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
 }
+
+// Disable Astra banner/page-title area on the homepage (page ID 35)
+// This prevents "Home" H1 from appearing above the hero section
+add_filter( 'astra_banner_area', function( $show ) {
+    if ( is_front_page() ) return false;
+    return $show;
+} );
+
+// Also remove the page title via Astra meta on front page
+add_filter( 'astra_page_title_enabled', function( $enabled ) {
+    if ( is_front_page() ) return false;
+    return $enabled;
+} );
+
+// Disable entry header on homepage so Astra doesn't inject the H1
+add_filter( 'astra_render_header_section', function( $show, $section ) {
+    if ( is_front_page() && $section === 'ast-hfb-header' ) return false;
+    return $show;
+}, 10, 2 );
