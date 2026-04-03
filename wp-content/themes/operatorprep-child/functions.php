@@ -7,6 +7,9 @@
 // WooCommerce Subscriptions → Tutor LMS auto-enrollment
 require_once get_stylesheet_directory() . '/op-enrollment.php';
 
+// Content protection — disable copy/right-click on course pages
+require_once get_stylesheet_directory() . '/op-content-protection.php';
+
 // Enqueue parent theme, Google Fonts, and child theme styles
 add_action( 'wp_enqueue_scripts', 'operatorprep_child_enqueue_styles' );
 function operatorprep_child_enqueue_styles() {
