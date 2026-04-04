@@ -34,7 +34,7 @@ jobs:
           target: "/home/${{ secrets.STAGING_SSH_USER }}/www/staging2.operatorprep.com/public_html/wp-content/themes/operatorprep-child/"
           strip_components: 2
 
-      - name: Flush cache
+      - name: Flush all caches
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: gcam1130.siteground.biz
@@ -44,4 +44,6 @@ jobs:
           script: |
             cd /home/${{ secrets.STAGING_SSH_USER }}/www/staging2.operatorprep.com/public_html
             wp cache flush --allow-root 2>/dev/null || true
-            echo "Deploy complete — $(date)"
+            wp sg purge --allow-root 2>/dev/null || true
+            wp transient delete --all --allow-root 2>/dev/null || true
+            echo "All caches flushed — $(date)"
