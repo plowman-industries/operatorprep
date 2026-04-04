@@ -35,32 +35,30 @@ function operatorprep_preconnect_fonts() {
     echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
 }
 
-// Replace button text and force white color via output buffer
-add_action( 'template_redirect', 'operatorprep_start_ob' );
-function operatorprep_start_ob() {
-    if ( is_front_page() ) {
-        ob_start( 'operatorprep_replace_output' );
-    }
-}
-
-function operatorprep_replace_output( $html ) {
-    // Replace button text (handles whitespace around arrow)
-    $html = preg_replace(
-        '/(\\x{2192}\s*)Start Studying Free/u',
-        '${1}Start Studying - \$19.99',
-        $html
-    );
-    return $html;
-}
-
 // Force white text on primary CTA buttons
 add_action( 'wp_head', 'operatorprep_button_white_text', 99 );
 function operatorprep_button_white_text() {
-    echo '<style>
-        .op-btn-primary,
-        .op-btn-primary:hover,
-        .op-btn-primary:visited {
-            color: #ffffff !important;
-        }
-    </style>' . "\n";
+    if ( is_front_page() ) {
+        echo '<style>
+            .op-btn-primary,
+            .op-btn-primary:hover,
+            .op-btn-primary:visited {
+                color: #ffffff !important;
+            }
+        </style>' . "\n";
+    }
+}
+
+// Replace "Start Studying Free" button text on front page via JS
+add_action( 'wp_footer', 'operatorprep_replace_button_text_js', 99 );
+function operatorprep_replace_button_text_js() {
+    if ( is_front_page() ) {
+        echo '<script>
+        document.querySelectorAll(".op-btn-primary").forEach(function(btn) {
+            if (btn.textContent.indexOf("Start Studying Free") !== -1) {
+                btn.textContent = "\u2192 Start Studying - \u002419.99";
+            }
+        });
+        </script>' . "\n";
+    }
 }
