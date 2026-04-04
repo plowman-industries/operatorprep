@@ -34,3 +34,28 @@ function operatorprep_preconnect_fonts() {
     echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
     echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
 }
+
+// Replace "Start Studying Free" button text on front page
+add_filter( 'the_content', 'operatorprep_replace_button_text' );
+function operatorprep_replace_button_text( $content ) {
+    if ( is_front_page() ) {
+        $content = str_replace(
+            '→ Start Studying Free',
+            '→ Start Studying - $19.99',
+            $content
+        );
+    }
+    return $content;
+}
+
+// Force white text on primary CTA buttons
+add_action( 'wp_head', 'operatorprep_button_white_text', 99 );
+function operatorprep_button_white_text() {
+    echo '<style>
+        .op-btn-primary,
+        .op-btn-primary:hover,
+        .op-btn-primary:visited {
+            color: #ffffff !important;
+        }
+    </style>' . "\n";
+}
