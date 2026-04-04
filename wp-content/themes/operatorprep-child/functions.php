@@ -19,7 +19,7 @@ function operatorprep_child_enqueue_styles() {
         array(),
         null
     );
-    // Child theme — loads after parent and fonts
+    // Child theme (depends on parent + fonts)
     wp_enqueue_style(
         'operatorprep-child-style',
         get_stylesheet_directory_uri() . '/style.css',
@@ -35,17 +35,22 @@ function operatorprep_preconnect_fonts() {
     echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
 }
 
-// Replace "Start Studying Free" button text on front page
-add_filter( 'the_content', 'operatorprep_replace_button_text' );
-function operatorprep_replace_button_text( $content ) {
+// Replace button text and force white color via output buffer
+add_action( 'template_redirect', 'operatorprep_start_ob' );
+function operatorprep_start_ob() {
     if ( is_front_page() ) {
-        $content = str_replace(
-            '→ Start Studying Free',
-            '→ Start Studying - $19.99',
-            $content
-        );
+        ob_start( 'operatorprep_replace_output' );
     }
-    return $content;
+}
+
+function operatorprep_replace_output( $html ) {
+    // Replace button text (handles whitespace around arrow)
+    $html = preg_replace(
+        '/(\\x{2192}\s*)Start Studying Free/u',
+        '${1}Start Studying - \$19.99',
+        $html
+    );
+    return $html;
 }
 
 // Force white text on primary CTA buttons
