@@ -2,6 +2,7 @@
 /**
  * OperatorPrep Child Theme — functions.php
  * Plowman Industries LLC
+ * v4 — JS button text via wp_head
  */
 
 // Enqueue parent theme, Google Fonts, and child theme styles
@@ -35,30 +36,26 @@ function operatorprep_preconnect_fonts() {
     echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
 }
 
-// Force white text on primary CTA buttons
-add_action( 'wp_head', 'operatorprep_button_white_text', 99 );
-function operatorprep_button_white_text() {
-    if ( is_front_page() ) {
-        echo '<style>
-            .op-btn-primary,
-            .op-btn-primary:hover,
-            .op-btn-primary:visited {
-                color: #ffffff !important;
-            }
-        </style>' . "\n";
-    }
-}
-
-// Replace "Start Studying Free" button text on front page via JS
-add_action( 'wp_footer', 'operatorprep_replace_button_text_js', 99 );
-function operatorprep_replace_button_text_js() {
-    if ( is_front_page() ) {
-        echo '<script>
+// Front page customizations: white CTA text + button text replacement
+add_action( 'wp_head', 'operatorprep_front_page_customizations', 99 );
+function operatorprep_front_page_customizations() {
+    if ( ! is_front_page() ) return;
+    echo '<!-- OP child theme v4 -->' . "\n";
+    echo '<style>
+        .op-btn-primary,
+        .op-btn-primary:hover,
+        .op-btn-primary:visited {
+            color: #ffffff !important;
+        }
+    </style>' . "\n";
+    echo '<script>
+    document.addEventListener("DOMContentLoaded", function() {
         document.querySelectorAll(".op-btn-primary").forEach(function(btn) {
-            if (btn.textContent.indexOf("Start Studying Free") !== -1) {
+            var t = btn.textContent;
+            if (t.indexOf("Start Studying Free") !== -1) {
                 btn.textContent = "\u2192 Start Studying - \u002419.99";
             }
         });
-        </script>' . "\n";
-    }
+    });
+    </script>' . "\n";
 }
