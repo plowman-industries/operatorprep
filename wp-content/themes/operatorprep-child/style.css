@@ -192,7 +192,7 @@ h1.entry-title {
 #content,
 .entry-content,
 main#main {
-  background: transparent;
+  background: var(--op-navy) !important;
   position: relative;
   z-index: 1;
 }
