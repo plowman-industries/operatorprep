@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OperatorPrep — Page Consistency Cheat Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,800&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0b1220; --steel: #3a4a5c; --fog: #e4e8ed; --mist: #f4f6f8;
+    --signal: #0f5ea8; --signal-wash: #e8f1fa;
+    --alert: #a8321a; --growth: #2d6a4f; --current: #c85a1f;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --body: 'Inter Tight', -apple-system, system-ui, sans-serif;
+    --display: 'Fraunces', Georgia, serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: var(--body); color: var(--ink);
+    line-height: 1.55; background: var(--mist);
+    padding: 40px 20px;
+  }
+  .page {
+    max-width: 860px; margin: 0 auto;
+    background: #fff; border-radius: 10px;
+    padding: 48px; box-shadow: 0 4px 24px rgba(11,18,32,0.08);
+  }
+  h1 {
+    font-family: var(--display); font-weight: 800; font-size: 2.25rem;
+    letter-spacing: -0.02em; margin: 0 0 8px 0;
+    font-variation-settings: "opsz" 144;
+  }
+  h2 {
+    font-family: var(--display); font-weight: 800; font-size: 1.4rem;
+    letter-spacing: -0.01em; margin: 32px 0 12px 0;
+  }
+  .eyebrow {
+    font-family: var(--mono); font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.08em; color: var(--steel); text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .eyebrow::before { content: "// "; color: var(--signal); font-weight: 700; }
+  .lede { color: var(--steel); font-size: 1rem; margin: 0 0 24px 0; }
+  code {
+    font-family: var(--mono); font-size: 0.85em;
+    background: var(--mist); padding: 2px 6px; border-radius: 3px;
+  }
+  .anatomy {
+    border: 2px solid var(--ink); border-radius: 8px;
+    padding: 20px 24px; margin: 16px 0 24px;
+    background: var(--ink); color: #fff;
+  }
+  .anatomy h3 {
+    font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em;
+    text-transform: uppercase; margin: 0 0 12px 0; color: #4a9fe6;
+  }
+  .anatomy ol { margin: 0; padding-left: 24px; font-family: var(--mono); font-size: 0.9rem; line-height: 1.9; }
+  .anatomy ol li strong { color: #fff; }
+  .anatomy ol li { color: rgba(255,255,255,0.8); }
+  .contract {
+    border: 2px solid var(--alert); border-radius: 8px;
+    padding: 20px 24px; margin: 16px 0; background: #fef5f3;
+  }
+  .contract h3 {
+    font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--alert); margin: 0 0 10px 0;
+  }
+  .contract ul { margin: 0; padding-left: 20px; font-size: 0.92rem; line-height: 1.7; }
+  .contract li { margin-bottom: 6px; }
+  .prompt {
+    background: var(--ink); color: #fff; border-radius: 8px;
+    padding: 20px 24px; margin: 16px 0; font-family: var(--mono);
+    font-size: 0.82rem; line-height: 1.65; white-space: pre-wrap;
+  }
+  .prompt .highlight { color: #4a9fe6; font-weight: 700; }
+  .swatch {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 0.8rem; color: var(--steel);
+    margin-right: 20px; margin-bottom: 8px;
+  }
+  .swatch::before {
+    content: ""; display: inline-block; width: 12px; height: 12px;
+    border-radius: 50%; background: var(--bg);
+  }
+  .swatch-row { margin: 16px 0 24px; padding: 14px 18px; background: var(--signal-wash); border-radius: 6px; border-left: 3px solid var(--signal); }
+  hr { border: none; border-top: 1px solid var(--fog); margin: 32px 0; }
+  .locked-copy {
+    background: var(--mist); padding: 12px 16px; border-radius: 6px;
+    border-left: 3px solid var(--ink);
+    font-family: var(--mono); font-size: 0.85rem;
+    margin: 12px 0;
+  }
+  .locked-copy strong { color: var(--signal); }
+  .footer {
+    font-family: var(--mono); font-size: 0.7rem; color: var(--steel);
+    text-align: center; margin-top: 40px; padding-top: 24px;
+    border-top: 1px solid var(--fog);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <span class="eyebrow">Companion to design system v1.2</span>
+  <h1>Page Consistency Cheat Sheet</h1>
+  <p class="lede">The one-pager. Paste this into any AI session where you're editing a practice test, flashcard, math drill, or study guide landing page. Prevents the "every update changes the structure" problem.</p>
+
+  <hr>
+
+  <h2>The Problem We're Solving</h2>
+  <p>Every grade-specific landing page (60 total: practice tests, flashcards, math drills, and study guides for T1-T5, D1-D5, WW1-WW5) must have identical structure. When pages get rebuilt, the mastery legend disappears, the hero card changes, or the divider copy gets rewritten. This sheet locks that down.</p>
+
+  <hr>
+
+  <h2>Practice Test Landing Page — Required Anatomy</h2>
+  <div class="anatomy">
+    <h3>// In this exact order</h3>
+    <ol>
+      <li><strong>Page header</strong> — "[Grade] Practice Tests" + "Select a category to start a random 25-question quiz"</li>
+      <li><strong>Mastery legend</strong> — 4 dots: Mastered, Review, Needs Work, Not Attempted</li>
+      <li><strong>Full practice hero card</strong> — 25 random from all N categories</li>
+      <li><strong>Divider label</strong> — "OR FOCUS ON A SPECIFIC TOPIC"</li>
+      <li><strong>Topic grid</strong> — 4 cols x 2 rows, 8 topic cards with mastery stripes</li>
+    </ol>
+  </div>
+
+  <h2>Flashcards Landing — Same Anatomy, Different Copy</h2>
+  <div class="anatomy">
+    <h3>// Identical structure to practice tests</h3>
+    <ol>
+      <li><strong>Page header</strong> — "[Grade] Flashcards"</li>
+      <li><strong>Mastery legend</strong> — same 4 dots</li>
+      <li><strong>"Review due" hero card</strong> — "N cards due for review today"</li>
+      <li><strong>Divider label</strong> — "OR STUDY BY TOPIC"</li>
+      <li><strong>Topic grid</strong> — same 8 topics, same layout</li>
+    </ol>
+  </div>
+
+  <h2>Math Drills Landing — Same Anatomy, Different Copy</h2>
+  <div class="anatomy">
+    <h3>// Identical structure</h3>
+    <ol>
+      <li><strong>Page header</strong> — "[Grade] Math Drills"</li>
+      <li><strong>Mastery legend</strong> — same 4 dots</li>
+      <li><strong>Mixed drill hero card</strong> — "10 random problems, all formula areas"</li>
+      <li><strong>Divider label</strong> — "OR DRILL BY FORMULA"</li>
+      <li><strong>Formula grid</strong> — 4 cols, dosing / flow / detention / etc.</li>
+    </ol>
+  </div>
+
+  <h2>Study Guide Landing — The One Exception</h2>
+  <div class="anatomy">
+    <h3>// No mastery legend — uses sequential progress instead</h3>
+    <ol>
+      <li><strong>Page header</strong> — "[Grade] Study Guide"</li>
+      <li><strong>Progress bar</strong> — "Chapter X of Y · ~N hrs remaining"</li>
+      <li><strong>Resume reading hero</strong> — jumps to last-read chapter</li>
+      <li><strong>Divider label</strong> — "OR BROWSE CHAPTERS"</li>
+      <li><strong>Chapter list</strong> — sequential, checkmarks for completed</li>
+    </ol>
+  </div>
+
+  <hr>
+
+  <h2>Mastery Legend — Exact Specification</h2>
+  <div class="swatch-row">
+    <span class="swatch" style="--bg: #2d6a4f;">95%+ Mastered</span>
+    <span class="swatch" style="--bg: #d4a017;">85-94% Review</span>
+    <span class="swatch" style="--bg: #c85a1f;">Below 85% Needs Work</span>
+    <span class="swatch" style="--bg: #6b7a8c;">Not Attempted</span>
+  </div>
+  <p>The thresholds (95%, 85%) and the dot colors are locked. The copy is locked. Don't change "Below 85% Needs Work" to "Below 85%" or "Needs Improvement" or anything else.</p>
+
+  <h2>Locked Copy — Don't Paraphrase</h2>
+  <div class="locked-copy"><strong>Subtitle:</strong> "Select a category to start a random 25-question quiz"</div>
+  <div class="locked-copy"><strong>Divider (practice):</strong> "OR FOCUS ON A SPECIFIC TOPIC"</div>
+  <div class="locked-copy"><strong>Divider (flashcards):</strong> "OR STUDY BY TOPIC"</div>
+  <div class="locked-copy"><strong>Divider (math):</strong> "OR DRILL BY FORMULA"</div>
+  <div class="locked-copy"><strong>Divider (study guide):</strong> "OR BROWSE CHAPTERS"</div>
+  <div class="locked-copy"><strong>Legend labels:</strong> "95%+ Mastered" · "85-94% Review" · "Below 85% Needs Work" · "Not Attempted"</div>
+
+  <hr>
+
+  <h2>The AI Preamble — Copy &amp; Paste</h2>
+  <p>Before asking any AI to edit a practice-test, flashcard, math-drill, or study-guide page, paste the design system v1.2 + brand guidelines, and lead with this:</p>
+
+  <div class="prompt"><span class="highlight">Here is the OperatorPrep design system v1.2 and brand guidelines v1.0.</span>
+
+RULES — non-negotiable, violations will be rejected:
+1. Do not modify design tokens (colors, spacing, fonts).
+2. Do not add icons outside the sprite sheet. Do not use emojis. Do not use Font Awesome.
+3. Do not restructure page templates. The mastery legend, hero card, divider, and topic grid on practice-test/flashcard/math-drill pages are REQUIRED and must appear in the order defined in Section 04 of the design system.
+4. Do not invent new component variants. Reuse what exists.
+5. Do not paraphrase locked copy: "OR FOCUS ON A SPECIFIC TOPIC", "Select a category to start a random 25-question quiz", "95%+ Mastered", "85-94% Review", "Below 85% Needs Work", "Not Attempted".
+
+Change ONLY the following: <span class="highlight">[describe the specific change]</span>
+
+Leave everything else identical to what is in the design system.</div>
+
+  <hr>
+
+  <h2>When Something Really Needs to Change</h2>
+  <div class="contract">
+    <h3>The process — no shortcuts</h3>
+    <ul>
+      <li>Bump the design system version first (v1.2 → v1.3).</li>
+      <li>Add the change to the changelog block at the top of the CSS.</li>
+      <li>Update the affected template's anatomy section.</li>
+      <li>Keep the previous version as a backup file.</li>
+      <li>Then apply the change to pages.</li>
+    </ul>
+  </div>
+
+  <div class="footer">// operatorprep page consistency cheat sheet · companion to design system v1.2</div>
+</div>
+</body>
+</html>

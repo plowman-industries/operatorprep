@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OperatorPrep — Site Consistency Audit · April 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0b1220; --ink-2: #1a2332; --steel: #3a4a5c; --steel-2: #6b7a8c;
+    --fog: #e4e8ed; --mist: #f4f6f8; --paper: #fff;
+    --signal: #0f5ea8; --signal-wash: #e8f1fa;
+    --current: #c85a1f; --current-wash: #fbeee5;
+    --growth: #2d6a4f; --growth-wash: #e3efe8;
+    --alert: #a8321a;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --body: 'Inter Tight', -apple-system, system-ui, sans-serif;
+    --display: 'Fraunces', Georgia, serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: var(--body); color: var(--ink);
+    line-height: 1.55; background: var(--mist);
+    padding: 32px 20px;
+  }
+  .page {
+    max-width: 1000px; margin: 0 auto;
+    background: #fff; border-radius: 10px;
+    padding: 56px; box-shadow: 0 4px 24px rgba(11,18,32,0.08);
+  }
+  h1 {
+    font-family: var(--display); font-weight: 800; font-size: 2.5rem;
+    letter-spacing: -0.02em; margin: 0 0 12px 0;
+    font-variation-settings: "opsz" 144;
+  }
+  h2 {
+    font-family: var(--display); font-weight: 800; font-size: 1.6rem;
+    letter-spacing: -0.01em; margin: 48px 0 12px 0;
+    padding-bottom: 12px; border-bottom: 2px solid var(--fog);
+  }
+  h3 { font-family: var(--display); font-weight: 700; font-size: 1.2rem; margin: 24px 0 10px 0; }
+  .eyebrow {
+    font-family: var(--mono); font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.08em; color: var(--steel); text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .eyebrow::before { content: "// "; color: var(--signal); font-weight: 700; }
+  .lede { color: var(--steel); font-size: 1.05rem; margin: 0 0 24px 0; }
+  code {
+    font-family: var(--mono); font-size: 0.85em;
+    background: var(--mist); padding: 2px 6px; border-radius: 3px;
+    color: var(--ink);
+  }
+
+  /* Summary table */
+  .summary-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 0.9rem; margin: 20px 0;
+  }
+  .summary-table th, .summary-table td {
+    text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--fog);
+  }
+  .summary-table th {
+    background: var(--ink); color: #fff;
+    font-family: var(--mono); font-size: 0.75rem;
+    letter-spacing: 0.05em; text-transform: uppercase; font-weight: 500;
+  }
+  .summary-table tr:hover td { background: var(--mist); }
+
+  /* Issue cards */
+  .issue {
+    border: 1px solid var(--fog); border-radius: 8px;
+    margin: 20px 0; overflow: hidden;
+    position: relative;
+    background: #fff;
+  }
+  .issue::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    background: var(--severity-color, var(--steel-2));
+  }
+  .issue--p0 { --severity-color: var(--alert); }
+  .issue--p1 { --severity-color: var(--current); }
+  .issue--p2 { --severity-color: #d4a017; }
+  .issue--p3 { --severity-color: var(--steel-2); }
+  .issue__header {
+    padding: 16px 24px 16px 28px;
+    background: var(--mist);
+    border-bottom: 1px solid var(--fog);
+    display: flex; align-items: center; gap: 16px;
+    flex-wrap: wrap;
+  }
+  .issue__id {
+    font-family: var(--mono); font-size: 0.75rem; font-weight: 700;
+    color: var(--steel); letter-spacing: 0.05em;
+  }
+  .issue__title {
+    font-family: var(--body); font-weight: 700; font-size: 1.05rem;
+    margin: 0; flex: 1; min-width: 0;
+  }
+  .issue__severity {
+    font-family: var(--mono); font-size: 0.7rem; font-weight: 700;
+    padding: 4px 10px; border-radius: 4px; letter-spacing: 0.08em;
+    color: #fff;
+    background: var(--severity-color);
+  }
+  .issue__body { padding: 20px 24px 20px 28px; }
+  .issue__body h4 {
+    font-family: var(--mono); font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--steel);
+    margin: 16px 0 6px;
+  }
+  .issue__body h4:first-child { margin-top: 0; }
+  .issue__body p { margin: 0 0 10px; font-size: 0.92rem; line-height: 1.6; }
+  .issue__body ul { margin: 0 0 12px; padding-left: 20px; font-size: 0.92rem; line-height: 1.6; }
+  .issue__body li { margin-bottom: 4px; }
+  .fix-steps {
+    background: var(--signal-wash); border-radius: 4px;
+    padding: 14px 18px; border-left: 3px solid var(--signal);
+    font-size: 0.9rem;
+  }
+  .fix-steps ol { margin: 0; padding-left: 20px; }
+  .fix-steps ol li { margin-bottom: 4px; }
+  .fix-steps code { background: rgba(255,255,255,0.6); }
+
+  .legend {
+    display: flex; gap: 20px; flex-wrap: wrap;
+    padding: 14px 18px; background: var(--mist); border-radius: 6px;
+    margin: 16px 0 24px; font-family: var(--mono); font-size: 0.8rem;
+  }
+  .legend-item { display: inline-flex; align-items: center; gap: 8px; }
+  .legend-dot {
+    width: 12px; height: 12px; border-radius: 2px; display: inline-block;
+  }
+  .footer-note {
+    margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--fog);
+    font-family: var(--mono); font-size: 0.75rem; color: var(--steel);
+    text-align: center;
+  }
+
+  .stat-row {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+    margin: 24px 0;
+  }
+  @media (max-width: 720px) { .stat-row { grid-template-columns: repeat(2, 1fr); } }
+  .stat-box {
+    background: var(--mist); border-radius: 6px; padding: 16px 18px;
+    border-left: 4px solid var(--stat-color, var(--steel));
+  }
+  .stat-box--p0 { --stat-color: var(--alert); }
+  .stat-box--p1 { --stat-color: var(--current); }
+  .stat-box--p2 { --stat-color: #d4a017; }
+  .stat-box--p3 { --stat-color: var(--steel-2); }
+  .stat-num {
+    font-family: var(--display); font-weight: 800; font-size: 2rem;
+    line-height: 1; letter-spacing: -0.02em;
+    font-variation-settings: "opsz" 144;
+    color: var(--stat-color, var(--ink));
+  }
+  .stat-label {
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--steel); margin-top: 6px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <span class="eyebrow">Audit · April 19, 2026</span>
+  <h1>Site Consistency Audit</h1>
+  <p class="lede">A ground-truth comparison between the live operatorprep.com and the OperatorPrep Design System v1.3. Every inconsistency, every broken link, every structural drift — catalogued and prioritized for repair.</p>
+
+  <div class="stat-row">
+    <div class="stat-box stat-box--p0">
+      <div class="stat-num">3</div>
+      <div class="stat-label">P0 · Blocking</div>
+    </div>
+    <div class="stat-box stat-box--p1">
+      <div class="stat-num">4</div>
+      <div class="stat-label">P1 · Major</div>
+    </div>
+    <div class="stat-box stat-box--p2">
+      <div class="stat-num">3</div>
+      <div class="stat-label">P2 · Minor</div>
+    </div>
+    <div class="stat-box stat-box--p3">
+      <div class="stat-num">2</div>
+      <div class="stat-label">P3 · Polish</div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span class="legend-item"><span class="legend-dot" style="background: var(--alert);"></span> P0 — Breaks brand, breaks UX, or breaks links</span>
+    <span class="legend-item"><span class="legend-dot" style="background: var(--current);"></span> P1 — Violates design system in user-visible way</span>
+    <span class="legend-item"><span class="legend-dot" style="background: #d4a017;"></span> P2 — Inconsistency users may not notice</span>
+    <span class="legend-item"><span class="legend-dot" style="background: var(--steel-2);"></span> P3 — Cleanup / optimization</span>
+  </div>
+
+  <h2>Summary Table</h2>
+  <table class="summary-table">
+    <thead>
+      <tr>
+        <th style="width: 60px;">ID</th>
+        <th>Issue</th>
+        <th style="width: 100px;">Area</th>
+        <th style="width: 80px;">Severity</th>
+        <th style="width: 100px;">Effort</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><code>A-01</code></td><td>Duplicate footer rendering (Astra default + custom)</td><td>Footer</td><td>P0</td><td>5 min (WP admin)</td></tr>
+      <tr><td><code>A-02</code></td><td>Homepage still uses emojis instead of custom SVG icons</td><td>Homepage</td><td>P0</td><td>30 min</td></tr>
+      <tr><td><code>A-03</code></td><td>Broken footer links: <code>/certification/t1</code> URLs 404</td><td>Footer</td><td>P0</td><td>5 min</td></tr>
+      <tr><td><code>A-04</code></td><td>Header uses PNG logo instead of clean SVG brand mark</td><td>Header</td><td>P1</td><td>20 min</td></tr>
+      <tr><td><code>A-05</code></td><td>"Certifications" and "Pricing" nav links go to same URL</td><td>Nav</td><td>P1</td><td>10 min</td></tr>
+      <tr><td><code>A-06</code></td><td>Duplicate page: <code>/t4-flashcards/</code> and <code>/t4-flashcards-2/</code></td><td>Content</td><td>P1</td><td>10 min</td></tr>
+      <tr><td><code>A-07</code></td><td>Practice-test pages use dark body instead of light (v1.3 fix)</td><td>Template</td><td>P1</td><td>30 min</td></tr>
+      <tr><td><code>A-08</code></td><td>Sitemap exposes all 90+ URLs as a flat list in footer source</td><td>SEO</td><td>P2</td><td>15 min</td></tr>
+      <tr><td><code>A-09</code></td><td>Inconsistent page-exists coverage: e.g., T5 has no Math Drills page</td><td>Content</td><td>P2</td><td>audit</td></tr>
+      <tr><td><code>A-10</code></td><td>Default WordPress "Powered by Astra" copyright line visible</td><td>Footer</td><td>P2</td><td>part of A-01</td></tr>
+      <tr><td><code>A-11</code></td><td>Hero uses H1 placeholder (empty &lt;h1&gt;) before real H1</td><td>Homepage</td><td>P3</td><td>5 min</td></tr>
+      <tr><td><code>A-12</code></td><td>"Shopping Cart" text appears in page body (WooCommerce widget leak)</td><td>Global</td><td>P3</td><td>10 min</td></tr>
+    </tbody>
+  </table>
+
+  <h2>P0 · Blocking Issues</h2>
+  <p class="lede">Fix these first. They break the experience, the brand, or the site.</p>
+
+  <div class="issue issue--p0">
+    <div class="issue__header">
+      <span class="issue__id">A-01</span>
+      <h3 class="issue__title">Footer renders twice — Astra default stacked on custom footer</h3>
+      <span class="issue__severity">P0</span>
+    </div>
+    <div class="issue__body">
+      <h4>Observed</h4>
+      <p>The live site renders two footers stacked on top of each other. First the default Astra theme footer ("Copyright © 2026 Operator Prep | Powered by Astra WordPress Theme"), then the custom OperatorPrep footer with the four-column layout.</p>
+      <h4>Why it matters</h4>
+      <p>It makes the site look unfinished. It damages brand credibility. And the "Powered by Astra" line is literally free advertising for a theme vendor on your page.</p>
+      <h4>Fix</h4>
+      <div class="fix-steps">
+        <ol>
+          <li>Log into WordPress admin.</li>
+          <li>Go to <code>Appearance → Customize → Footer Builder</code>.</li>
+          <li>In the Footer Bottom row, click the "Copyright" module and remove it.</li>
+          <li>If using Astra Pro: <code>Appearance → Customize → Footer → Footer Layout</code> → set to "Disabled".</li>
+          <li>Fallback (if the above doesn't work): add <code>.ast-small-footer { display: none !important; }</code> under <code>Appearance → Customize → Additional CSS</code>.</li>
+          <li>Publish and verify only one footer renders on the home page and an interior page.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="issue issue--p0">
+    <div class="issue__header">
+      <span class="issue__id">A-02</span>
+      <h3 class="issue__title">Homepage still uses emojis instead of custom SVG icons</h3>
+      <span class="issue__severity">P0</span>
+    </div>
+    <div class="issue__body">
+      <h4>Observed</h4>
+      <p>The live home page at operatorprep.com still renders emojis: 🎖️ 💧 ⚡ 📍 📝 🃏 🔢 📖 🔧 ⚙️. The design system has required custom SVG icons since v1.1 (February).</p>
+      <h4>Why it matters</h4>
+      <p>Emojis render differently across OS/browser — Apple's 💧 is a 3D blue drop, Google's is a flat teal drop, Windows' is something else entirely. The brand loses control of its visual language every time someone visits from a different platform. Also: the brand guidelines explicitly say "no emojis" and show a DON'T example for exactly this drop emoji.</p>
+      <h4>Fix</h4>
+      <div class="fix-steps">
+        <ol>
+          <li>Identify all homepage blocks using emojis. There are two sections: Credentials (🎖️💧⚡📍), What's Included (📝🃏🔢📖), and Certifications Covered (💧🔧⚙️).</li>
+          <li>Replace each emoji with the corresponding SVG from the design-system sprite. Mapping: 🎖️→<code>i-certified</code>, 💧→<code>i-droplet</code>, ⚡→<code>i-power</code>, 📍→<code>i-location</code>, 📝→<code>i-test</code>, 🃏→<code>i-flashcard</code>, 🔢→<code>i-math</code>, 📖→<code>i-guide</code>, 🔧→<code>i-pipe</code>, ⚙️→<code>i-basin</code>.</li>
+          <li>Paste the SVG sprite from the design system into the WP theme's <code>header.php</code> or a global HTML block so <code>&lt;use href="#i-xxx"&gt;</code> works sitewide.</li>
+          <li>Update the homepage Custom HTML blocks to use <code>&lt;svg&gt;&lt;use href="#i-droplet"/&gt;&lt;/svg&gt;</code> patterns instead of emoji characters.</li>
+          <li>Audit every <code>/t*/</code>, <code>/d*/</code>, <code>/ww*/</code> grade landing page for the same issue.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="issue issue--p0">
+    <div class="issue__header">
+      <span class="issue__id">A-03</span>
+      <h3 class="issue__title">Footer links to <code>/certification/t1</code> — those URLs don't exist</h3>
+      <span class="issue__severity">P0</span>
+    </div>
+    <div class="issue__body">
+      <h4>Observed</h4>
+      <p>The footer's "Certifications" column links use the URL pattern <code>/certification/t1</code>, <code>/certification/d1</code>, <code>/certification/ww1</code>. The live site uses <code>/t1/</code>, <code>/d1/</code>, <code>/ww1/</code>. The <code>/certification/*</code> URLs 404.</p>
+      <h4>Why it matters</h4>
+      <p>Every visitor who clicks a footer link lands on a 404. This is the primary navigation to the revenue-generating pages, and it's broken.</p>
+      <h4>Fix</h4>
+      <div class="fix-steps">
+        <ol>
+          <li>Edit the footer HTML block in WordPress (likely in <code>Appearance → Widgets</code> or a footer HTML module).</li>
+          <li>Change <code>href="https://operatorprep.com/certification/t1"</code> → <code>href="https://operatorprep.com/t1/"</code>.</li>
+          <li>Apply the same change for D1 and WW1. Or change these to link to the track overview pages if those exist.</li>
+          <li>Run a sitewide link checker (e.g. Broken Link Checker plugin) to find any other instances of the wrong pattern.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h2>P1 · Major Issues</h2>
+  <p class="lede">Fix these in the same sprint. They violate the design system in ways users see.</p>
+
+  <div class="issue issue--p1">
+    <div class="issue__header">
+      <span class="issue__id">A-04</span>
+      <h3 class="issue__title">Header uses old PNG logo banner instead of clean SVG brand mark</h3>
+      <span class="issue__severity">P1</span>
+    </div>
+    <div class="issue__body">
+      <h4>Observed</h4>
+      <p>Header renders <code>operatorprep-logo-banner.png</code> from <code>/wp-content/uploads/2026/03/</code>. This is a raster PNG with a baked-in dark background. Scales poorly on retina, can't be recolored.</p>
+      <h4>Why it matters</h4>
+      <p>PNG logos are blurry on high-DPI screens. They can't adapt to dark/light contexts. Logo refresh work has already produced clean SVG versions that scale infinitely and use <code>currentColor</code>.</p>
+      <h4>Fix</h4>
+      <div class="fix-steps">
+        <ol>
+          <li>Upload the SVG logo assets to <code>/wp-content/uploads/</code>.</li>
+          <li>Replace the header logo in <code>Appearance → Customize → Site Identity</code> with the SVG.</li>
+          <li>If Astra doesn't allow SVG upload by default, add the Safe SVG plugin first.</li>
+          <li>Test across light pages, dark pages, and retina/mobile displays.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="issue issue--p1">
+    <div class="issue__header">
+      <span class="issue__id">A-05</span>
+      <h3 class="issue__title">"Certifications" and "Pricing" nav links both go to <code>/pricing/</code></h3>
+      <span class="issue__severity">P1</span>
+    </div>
+    <div class="issue__body">
+      <h4>Observed</h4>
+      <p>The primary nav has six items: Home, Certifications, Pricing, About, FAQ, My Account. "Certifications" and "Pricing" both link to <code>operatorprep.com/pricing/</code>. That's two nav slots doing the same job.</p>
+      <h4>Why it matters</h4>
+      <p>Wastes prime real estate in the nav. Confuses users ("what's the difference?"). Likely signals to search engines that the site structure isn't well thought out.</p>
+      <h4>Fix — choose one:</h4>
+      <div class="fix-steps">
+        <ol>
+          <li><strong>Option A:</strong> Build a dedicated <code>/certifications/</code> overview page listing all 15 certs grouped by track. Have "Certifications" point there; "Pricing" continues to point to <code>/pricing/</code>.</li>
+          <li><strong>Option B:</strong> Drop "Certifications" from the nav entirely — use the freed slot for "My Dashboard".</li>
+          <li><strong>Recommended:</strong> Option A. Certifications page becomes the natural entry point for organic search traffic, pricing page is the conversion step.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="issue issue--p1">
+    <div class="issue__header">
+      <span class="issue__id">A-06</span>
+      <h3 class="issue__title">Duplicate T4 Flashcards page: <code>/t4-flashcards/</code> and <code>/t4-flashcards-2/</code></h3>
+      <span class="issue__severity">P1</span>
+    </div>
+    <div class="issue__body">
+      <h4>Observed</h4>
+      <p>Sitemap contains both <code>/t4-flashcards/</code> and <code>/t4-flashcards-2/</code>. WordPress auto-appends <code>-2</code> when a page with the same slug already exists — usually means a duplicate was created by accident and never deleted.</p>
+      <h4>Why it matters</h4>
+      <p>SEO duplicate content. Split traffic/analytics. Risk that the subscription gating is configured on one but not the other.</p>
+      <h4>Fix</h4>
+      <div class="fix-steps">
+        <ol>
+          <li>In WP admin: <code>Pages → All Pages</code>, filter by "t4 flashcards".</li>
+          <li>Determine which page has current content / is linked from other pages / has the right subscription gating. Keep that one.</li>
+          <li>Delete the other. Or set up a 301 redirect from the deleted slug to the kept slug using the Redirection plugin.</li>
+          <li>Audit the other T-grades, D-grades, WW-grades for similar duplicates.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="issue issue--p1">
+    <div class="issue__header">
+      <span class="issue__id">A-07</span>
+      <h3 class="issue__title">Practice-test pages use dark body — hierarchy inverted</h3>
+      <span class="issue__severity">P1</span>
+    </div>
+    <div class="issue__body">
+      <h4>Observed</h4>
+      <p>On the T2 Practice Tests page, the body uses a dark navy background. The primary CTA (Practice Test card) fades into the dark background while secondary topic cards dominate visually. The mastery legend is nearly invisible.</p>
+      <h4>Why it matters</h4>
+      <p>Inverted visual hierarchy. Users looking for the "start a quiz" primary action see the topic cards first. This is the exact issue that prompted design system v1.3.</p>
+      <h4>Fix</h4>
+      <div class="fix-steps">
+        <ol>
+          <li>Rebuild the practice-test template HTML using the v1.3 component classes.</li>
+          <li>Set the page body background to <code>--color-mist</code> (light), NOT dark ink.</li>
+          <li>The Practice Test hero card handles the dark ink treatment — not the whole page.</li>
+          <li>Apply the same template to all 15 practice-test pages, all 15 flashcard pages, all 15 math-drill pages.</li>
+          <li>See design system v1.3, Section 04 Page Templates, for the locked anatomy.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h2>P2 · Minor Issues</h2>
+
+  <div class="issue issue--p2">
+    <div class="issue__header">
+      <span class="issue__id">A-08</span>
+      <h3 class="issue__title">Sitemap exposes all 90+ URLs as a flat list in the footer source</h3>
+      <span class="issue__severity">P2</span>
+    </div>
+    <div class="issue__body">
+      <h4>Observed</h4>
+      <p>Crawling the home page reveals an auto-generated list of every single URL on the site in the rendered HTML, not behind a toggle.</p>
+      <h4>Why it matters</h4>
+      <p>HTML clutter that doesn't help users and may hurt SEO by flattening link equity across too many pages.</p>
+      <h4>Fix</h4>
+      <div class="fix-steps">
+        <ol>
+          <li>Identify which WP widget or plugin is generating this list. Likely "All Pages" widget or a sitemap widget in a footer area.</li>
+          <li>Remove the widget. Rely on the proper footer columns for human navigation.</li>
+          <li>Keep XML sitemap at <code>/sitemap.xml</code> for search engines.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="issue issue--p2">
+    <div class="issue__header">
+      <span class="issue__id">A-09</span>
+      <h3 class="issue__title">Inconsistent page coverage across grades</h3>
+      <span class="issue__severity">P2</span>
+    </div>
+    <div class="issue__body">
+      <h4>Observed</h4>
+      <p>The 4-study-tool grid isn't evenly present across all 15 grades:</p>
+      <ul>
+        <li><strong>T5:</strong> has Flashcards, Practice Tests, Quick Reference, Study Guide — but NO Math Drills page.</li>
+        <li><strong>WW5:</strong> has Flashcards, Practice Tests, Quick Reference, Study Guide — but NO Math Drills page.</li>
+        <li><strong>D5:</strong> has all four.</li>
+        <li><strong>T3 and T4:</strong> have Shift Scenario Simulator; others don't.</li>
+      </ul>
+      <h4>Why it matters</h4>
+      <p>Users on T5 who click "Math Drills" will hit a 404 or an empty state.</p>
+      <h4>Fix</h4>
+      <div class="fix-steps">
+        <ol>
+          <li>Build a coverage matrix: 15 grades × 4 tools = 60 pages. Mark which exist and which don't.</li>
+          <li>For gaps, either: (a) build the missing pages, or (b) hide the tool link on the dashboard for grades where it doesn't exist.</li>
+          <li>Document the supported tool matrix in the design system so new grades always get full coverage.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="issue issue--p2">
+    <div class="issue__header">
+      <span class="issue__id">A-10</span>
+      <h3 class="issue__title">"Powered by Astra WordPress Theme" in footer copyright line</h3>
+      <span class="issue__severity">P2</span>
+    </div>
+    <div class="issue__body">
+      <h4>Observed</h4>
+      <p>The duplicate Astra footer includes a "Powered by Astra WordPress Theme" hyperlink. Free ad space given to the theme vendor.</p>
+      <h4>Why it matters</h4>
+      <p>Looks unprofessional for a paid product. Signals to users that the site is a template, not a purpose-built tool.</p>
+      <h4>Fix</h4>
+      <p>Resolved as part of A-01. Once the duplicate Astra footer is disabled, this disappears with it.</p>
+    </div>
+  </div>
+
+  <h2>P3 · Polish</h2>
+
+  <div class="issue issue--p3">
+    <div class="issue__header">
+      <span class="issue__id">A-11</span>
+      <h3 class="issue__title">Empty <code>&lt;h1&gt;</code> tag at top of homepage before real H1</h3>
+      <span class="issue__severity">P3</span>
+    </div>
+    <div class="issue__body">
+      <h4>Observed</h4>
+      <p>The homepage HTML contains an empty H1 (rendered as blank) before the intended H1 "Pass Your Certification. Know Your Plant." This is probably Astra's default page-title block not being hidden.</p>
+      <h4>Why it matters</h4>
+      <p>Semantic HTML violation. Screen readers announce an empty heading. SEO bots may interpret the real H1 as H2 or miss it.</p>
+      <h4>Fix</h4>
+      <div class="fix-steps">
+        <ol>
+          <li>In WP Customizer: <code>Appearance → Customize → Layout → Containers → Page Title</code>. Disable the default page title for the home page.</li>
+          <li>Alternative CSS fix: <code>body.home .entry-title { display: none; }</code> in Additional CSS.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="issue issue--p3">
+    <div class="issue__header">
+      <span class="issue__id">A-12</span>
+      <h3 class="issue__title">"Shopping Cart" text appears in page body randomly</h3>
+      <span class="issue__severity">P3</span>
+    </div>
+    <div class="issue__body">
+      <h4>Observed</h4>
+      <p>Crawled home page has the literal text "Shopping Cart" rendered in the page body, floating above the footer. Likely a WooCommerce widget leaking into a sidebar area.</p>
+      <h4>Why it matters</h4>
+      <p>Looks like a rendering error.</p>
+      <h4>Fix</h4>
+      <div class="fix-steps">
+        <ol>
+          <li><code>Appearance → Widgets</code>. Find the "Shopping Cart" widget in any active widget area.</li>
+          <li>Remove it. The cart is accessible via <code>/cart/</code> or a nav cart icon if you add one.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <h2>Recommended Repair Order</h2>
+  <p class="lede">A 2–3 hour session can close most of this.</p>
+  <ol style="font-size: 0.95rem; line-height: 1.8;">
+    <li><strong>A-01 + A-10</strong> (5 min) — Kill the duplicate Astra footer in WP Customizer.</li>
+    <li><strong>A-03</strong> (5 min) — Fix the broken <code>/certification/*</code> footer links.</li>
+    <li><strong>A-05</strong> (10 min) — Decide Certifications nav approach (recommend Option A: build an overview page).</li>
+    <li><strong>A-06</strong> (10 min) — Resolve the <code>/t4-flashcards-2/</code> duplicate, audit for other duplicates.</li>
+    <li><strong>A-11</strong> (5 min) — Hide Astra default page title on home.</li>
+    <li><strong>A-12</strong> (10 min) — Remove the stray Shopping Cart widget.</li>
+    <li><strong>A-04</strong> (20 min) — Swap the header PNG logo for the SVG.</li>
+    <li><strong>A-08</strong> (15 min) — Remove the flat sitemap from the footer area.</li>
+    <li><strong>A-02</strong> (30 min) — Replace homepage emojis with SVG icons (biggest UX win).</li>
+    <li><strong>A-07</strong> (30+ min per template) — Rebuild practice-test template with v1.3 hierarchy.</li>
+    <li><strong>A-09</strong> — Coverage matrix audit; decide build-vs-hide for missing pages.</li>
+  </ol>
+
+  <div class="footer-note">
+    // operatorprep site consistency audit · v1 · april 19, 2026<br>
+    references: design system v1.3 · brand guidelines v1.1
+  </div>
+</div>
+</body>
+</html>
