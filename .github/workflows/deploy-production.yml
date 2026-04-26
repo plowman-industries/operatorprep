@@ -32,9 +32,9 @@ jobs:
           port: 18765
           source: "wp-content/themes/operatorprep-child/"
           target: "/home/${{ secrets.PROD_SSH_USER }}/www/operatorprep.com/public_html/wp-content/themes/"
-          strip_components: 3
+          strip_components: 2
 
-      - name: Flush cache
+      - name: Run installer and flush all caches
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ssh.operatorprep.com
@@ -43,6 +43,9 @@ jobs:
           port: 18765
           script: |
             cd /home/${{ secrets.PROD_SSH_USER }}/www/operatorprep.com/public_html
+            wp eval-file wp-content/themes/operatorprep-child/install.php --allow-root 2>&1 || true
             wp cache flush --allow-root 2>/dev/null || true
-            echo "PRODUCTION DEPLOY COMPLETE — $(date)"
+            wp sg purge --allow-root 2>/dev/null || true
+            wp transient delete --all --allow-root 2>/dev/null || true
+            echo "DEPLOY COMPLETE — $(date)"
             echo "Sprint: ${{ github.event.inputs.sprint }}"
