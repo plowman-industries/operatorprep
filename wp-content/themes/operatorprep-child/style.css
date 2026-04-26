@@ -190,12 +190,12 @@ h1.entry-title {
    ============================================================ */
 .site-content,
 #content,
-.entry-content,
 main#main {
-  background: transparent;
+  background: var(--op-navy) !important;
   position: relative;
   z-index: 1;
 }
+.entry-content { background: transparent; }
 
 /* Cards / boxes */
 .wp-block-group,
@@ -719,4 +719,88 @@ body.home .post-0,
 #page .site-content,
 body.home #page .site-content {
   padding-top: var(--header-height, 80px) !important;
+}
+
+/* ============================================================
+   HOMEPAGE v2.1
+   ============================================================ */
+.op-page{font-family:var(--f-body);color:var(--c-ink);}
+/* Hero */
+.op-hero{background:var(--c-ink);color:#fff;padding:var(--sp-10) 0;}
+.op-hero__inner{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-8);max-width:1100px;margin:0 auto;padding:0 var(--sp-6);align-items:center;}
+.op-hero__eyebrow{font-family:var(--f-mono);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--c-signal);margin-bottom:var(--sp-4);}
+.op-hero__heading{font-family:var(--f-display);font-size:clamp(2.5rem,6vw,4rem);font-weight:800;letter-spacing:-0.02em;margin:0 0 var(--sp-5) 0;line-height:1.05;color:#fff;}
+.op-hero__subhead{font-size:1.1rem;color:rgba(255,255,255,0.8);max-width:560px;line-height:1.6;margin-bottom:var(--sp-7);}
+.op-hero__ctas{display:flex;flex-wrap:wrap;gap:var(--sp-4);}
+.op-btn-primary{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:var(--c-signal);color:#fff;font-family:var(--f-body);font-weight:700;font-size:1rem;border-radius:var(--r-md);text-decoration:none;transition:background 0.2s;}
+.op-btn-primary:hover{background:var(--c-signal-dark);color:#fff;}
+.op-btn-ghost{display:inline-flex;align-items:center;padding:14px 28px;border:1.5px solid rgba(255,255,255,0.4);color:rgba(255,255,255,0.85);font-family:var(--f-body);font-weight:600;border-radius:var(--r-md);text-decoration:none;transition:border-color 0.2s,color 0.2s;}
+.op-btn-ghost:hover{border-color:#fff;color:#fff;}
+/* Hero right card */
+.op-cert-tracks-card{background:var(--c-ink-2);border:1px solid rgba(255,255,255,0.1);border-radius:var(--r-lg);padding:var(--sp-6);}
+.op-cert-tracks-card__title{font-family:var(--f-mono);font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--c-steel-2);margin-bottom:var(--sp-5);}
+.op-track-row{display:flex;justify-content:space-between;align-items:baseline;padding:var(--sp-3) 0;border-bottom:1px solid rgba(255,255,255,0.07);}
+.op-track-row:last-of-type{border-bottom:none;}
+.op-track-name{font-family:var(--f-body);font-size:0.9rem;color:#fff;font-weight:600;}
+.op-track-grades{font-family:var(--f-mono);font-size:0.75rem;color:var(--c-steel-2);}
+.op-track-price{font-family:var(--f-mono);font-size:0.78rem;color:var(--c-signal);white-space:nowrap;}
+.op-cert-tracks-card__cta{display:block;margin-top:var(--sp-5);text-align:center;padding:10px;background:var(--c-signal);color:#fff;font-family:var(--f-mono);font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;border-radius:var(--r-md);text-decoration:none;transition:background 0.2s;}
+.op-cert-tracks-card__cta:hover{background:var(--c-signal-dark);color:#fff;}
+/* Stats bar */
+.op-stats{background:var(--c-paper);padding:var(--sp-7) 0;border-bottom:1px solid var(--c-fog);}
+.op-stats__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-5);max-width:1100px;margin:0 auto;padding:0 var(--sp-6);}
+.op-stats__item{text-align:center;}
+.op-stats__num{font-family:var(--f-display);font-size:2.5rem;font-weight:800;color:var(--c-ink);letter-spacing:-0.02em;line-height:1;}
+.op-stats__label{font-family:var(--f-mono);font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--c-steel);margin-top:6px;}
+/* Credentials band */
+.op-band{background:var(--c-signal-wash);border-top:1px solid rgba(15,94,168,0.12);border-bottom:1px solid rgba(15,94,168,0.12);padding:var(--sp-6) 0;}
+.op-band__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-6);max-width:1100px;margin:0 auto;padding:0 var(--sp-6);}
+.op-cred-icon{color:var(--c-signal);margin-bottom:var(--sp-2);}
+.op-cred-icon svg{width:20px;height:20px;}
+.op-cred-label{font-family:var(--f-mono);font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--c-steel);margin-bottom:var(--sp-2);}
+.op-cred-text{font-size:0.875rem;color:var(--c-ink);line-height:1.5;}
+/* What's included */
+.op-features{background:var(--c-paper);padding:var(--sp-10) 0;}
+.op-features__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-5);max-width:1100px;margin:var(--sp-7) auto 0;padding:0 var(--sp-6);}
+.op-feature-card{background:var(--c-paper);border:1px solid var(--c-fog);border-radius:var(--r-md);padding:var(--sp-6);}
+.op-feature-card__icon{color:var(--c-signal);margin-bottom:var(--sp-4);}
+.op-feature-card__icon svg{width:28px;height:28px;}
+.op-feature-label{font-family:var(--f-mono);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--c-steel);margin-bottom:var(--sp-3);}
+.op-feature-desc{font-size:0.9rem;color:var(--c-ink-2);line-height:1.6;margin-bottom:var(--sp-4);}
+.op-feature-link{font-size:0.875rem;color:var(--c-signal);text-decoration:none;font-weight:600;}
+.op-feature-link:hover{color:var(--c-signal-dark);}
+/* 15 Certifications */
+.op-certs{background:var(--c-mist);padding:var(--sp-10) 0;}
+.op-cert-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-5);max-width:1100px;margin:var(--sp-7) auto 0;padding:0 var(--sp-6);}
+.op-cert-card{background:var(--c-paper);border:1px solid var(--c-fog);border-radius:var(--r-lg);padding:var(--sp-6);}
+.op-cert-card__icon{color:var(--c-signal);margin-bottom:var(--sp-4);}
+.op-cert-card__icon svg{width:28px;height:28px;}
+.op-cert-card h3{font-family:var(--f-display);font-size:1.4rem;font-weight:800;margin:0 0 var(--sp-3) 0;color:var(--c-ink);}
+.op-cert-card p{font-size:0.9rem;color:var(--c-steel);line-height:1.5;margin-bottom:var(--sp-5);}
+.op-cert-card__tier{margin-bottom:var(--sp-4);}
+.op-cert-card__tier-label{font-family:var(--f-mono);font-size:0.68rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--c-steel-2);margin-bottom:var(--sp-2);}
+.op-badge{display:inline-flex;align-items:center;background:var(--c-signal);color:#fff;font-family:var(--f-mono);font-size:0.72rem;padding:4px 10px;border-radius:var(--r-sm);margin:3px;text-decoration:none;}
+.op-badge:hover{background:var(--c-signal-dark);color:#fff;}
+.op-badge--ca{background:var(--c-current);}
+.op-badge--ca:hover{background:var(--c-current);filter:brightness(0.88);color:#fff;}
+/* CTA section */
+.op-cta{background:var(--c-ink);padding:var(--sp-10) 0;text-align:center;color:#fff;}
+.op-cta__eyebrow{font-family:var(--f-mono);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--c-signal);margin-bottom:var(--sp-5);}
+.op-cta h2{font-family:var(--f-display);font-size:clamp(2rem,5vw,3.5rem);font-weight:800;color:#fff;margin:0 0 var(--sp-3) 0;line-height:1.1;}
+.op-cta h2 span{color:var(--c-signal);}
+.op-cta p{color:rgba(255,255,255,0.75);font-size:1rem;max-width:500px;margin:0 auto var(--sp-7);line-height:1.6;}
+/* Shared section layout */
+.op-section__inner{max-width:1100px;margin:0 auto;padding:0 var(--sp-6);}
+.op-eyebrow{font-family:var(--f-mono);font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--c-signal);margin-bottom:var(--sp-4);display:block;}
+.op-section-heading{font-family:var(--f-display);font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-0.02em;margin:0 0 var(--sp-4) 0;color:var(--c-ink);line-height:1.1;}
+.op-section-heading span{color:var(--c-signal);}
+.op-section-subhead{font-size:1rem;color:var(--c-steel);max-width:600px;line-height:1.6;}
+/* Responsive */
+@media (max-width:900px){
+.op-hero__inner{grid-template-columns:1fr;}
+.op-stats__grid,.op-band__grid,.op-features__grid{grid-template-columns:repeat(2,1fr);}
+.op-cert-grid{grid-template-columns:1fr;}
+}
+@media (max-width:560px){
+.op-stats__grid,.op-band__grid,.op-features__grid{grid-template-columns:1fr;}
 }
