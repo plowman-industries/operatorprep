@@ -5,38 +5,47 @@
  Author:       Plowman Industries LLC
  Author URI:   https://operatorprep.com
  Template:     astra
- Version:      1.0.0
+ Version:      2.1.0
  License:      GNU General Public License v2 or later
  License URI:  http://www.gnu.org/licenses/gpl-2.0.html
  Text Domain:  operatorprep-child
 */
 
 /* ============================================================
-   DESIGN SYSTEM — CSS VARIABLES
+   DESIGN SYSTEM v2.1 — CSS VARIABLES
    ============================================================ */
 :root {
-  --op-navy:        #141f2e;
-  --op-navy-mid:    #1a2b3e;
-  --op-navy-light:  #1f3350;
-  --op-navy-card:   #1c2d42;
-  --op-accent:      #4a9eff;
-  --op-accent-bright: #5eb3ff;
-  --op-gold:        #c8a84b;
-  --op-gold-light:  #dfc070;
-  --op-white:       #f0f4f8;
-  --op-white-dim:   #a8bccf;
-  --op-white-muted: #5a7a94;
-  --op-border:      rgba(74, 158, 255, 0.15);
-  --op-border-sub:  rgba(255, 255, 255, 0.07);
-  --op-font-display: 'Barlow Condensed', sans-serif;
-  --op-font-body:    'Barlow', sans-serif;
-  --op-font-mono:    'DM Mono', monospace;
+  /* Colors */
+  --c-ink:          #0b1220;
+  --c-ink-2:        #1a2332;
+  --c-steel:        #3a4a5c;
+  --c-steel-2:      #6b7a8c;
+  --c-paper:        #ffffff;
+  --c-mist:         #f4f6f8;
+  --c-fog:          #e4e8ed;
+  --c-signal:       #0f5ea8;
+  --c-signal-dark:  #0a4a87;
+  --c-signal-wash:  #e8f1fa;
+  --c-current:      #c85a1f;
+  --c-current-wash: #fbeee5;
+  --c-growth:       #2d6a4f;
+  --c-alert:        #a8321a;
+  /* Typography */
+  --f-display: 'Fraunces', Georgia, serif;
+  --f-body:    'Inter Tight', system-ui, sans-serif;
+  --f-mono:    'JetBrains Mono', monospace;
+  /* Spacing (4px base) */
+  --sp-1: 4px;   --sp-2: 8px;   --sp-3: 12px;  --sp-4: 16px;
+  --sp-5: 20px;  --sp-6: 24px;  --sp-7: 32px;  --sp-8: 48px;
+  --sp-9: 64px;  --sp-10: 96px;
+  /* Border radius */
+  --r-sm: 4px;   --r-md: 8px;   --r-lg: 12px;  --r-xl: 20px;
 }
 
 /* ============================================================
-   GOOGLE FONTS IMPORT
+   GOOGLE FONTS
    ============================================================ */
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
 /* ============================================================
    HIDE PAGE TITLE ON FRONT PAGE / HOME
@@ -52,7 +61,6 @@ body.home .page-title-bar {
   display: none !important;
 }
 
-/* Also hide the entire entry-header on homepage if it only has the title */
 body.home .entry-header {
   display: none !important;
 }
@@ -61,19 +69,9 @@ body.home .entry-header {
    GLOBAL RESET & BASE
    ============================================================ */
 body {
-  background-color: var(--op-navy) !important;
-  color: var(--op-white) !important;
-  font-family: var(--op-font-body) !important;
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.4;
+  background-color: var(--c-mist) !important;
+  color: var(--c-ink) !important;
+  font-family: var(--f-body) !important;
 }
 
 *, *::before, *::after {
@@ -81,24 +79,24 @@ body::before {
 }
 
 a {
-  color: var(--op-accent);
+  color: var(--c-signal);
   transition: color 0.2s;
 }
 
 a:hover {
-  color: var(--op-accent-bright);
+  color: var(--c-signal-dark);
 }
 
 p {
-  color: var(--op-white-dim);
+  color: var(--c-steel);
   line-height: 1.7;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--op-font-display) !important;
-  color: var(--op-white) !important;
+  font-family: var(--f-display) !important;
+  color: var(--c-ink) !important;
   font-weight: 800 !important;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
 /* ============================================================
@@ -108,17 +106,17 @@ h1, h2, h3, h4, h5, h6 {
 #masthead,
 .ast-desktop-header,
 header.site-header {
-  background-color: var(--op-navy-mid) !important;
-  border-bottom: 1px solid var(--op-border-sub) !important;
+  background-color: var(--c-ink) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.08) !important;
   position: sticky !important;
   top: 0 !important;
-  z-index: 100 !important;
+  z-index: 9999 !important;
   backdrop-filter: blur(12px) !important;
   box-shadow: none !important;
 }
 
 .ast-primary-header-bar {
-  background: var(--op-navy-mid) !important;
+  background: var(--c-ink) !important;
 }
 
 /* Logo height */
@@ -133,8 +131,8 @@ header.site-header {
 .ast-nav-menu > li > a,
 .main-navigation a,
 #site-navigation a {
-  color: var(--op-white-dim) !important;
-  font-family: var(--op-font-body) !important;
+  color: rgba(255,255,255,0.75) !important;
+  font-family: var(--f-body) !important;
   font-weight: 500 !important;
   font-size: 14px !important;
   letter-spacing: 0.02em !important;
@@ -143,46 +141,20 @@ header.site-header {
 
 .ast-nav-menu > li > a:hover,
 .main-navigation a:hover {
-  color: var(--op-white) !important;
+  color: #ffffff !important;
   background: rgba(255,255,255,0.06) !important;
   border-radius: 6px !important;
 }
 
-/* CTA button in nav - targets "Log in" or "Start Studying" */
+/* CTA button in nav */
 .ast-header-custom-widget .menu-item:last-child a,
-.ast-nav-menu > li.menu-item-has-children:last-child > a,
 .nav-cta-btn,
 .ast-nav-menu > li.highlight > a {
-  background: var(--op-accent) !important;
-  color: var(--op-navy) !important;
+  background: var(--c-signal) !important;
+  color: #ffffff !important;
   font-weight: 600 !important;
   border-radius: 6px !important;
   padding: 8px 20px !important;
-}
-
-/* ============================================================
-   HERO / BANNER SECTION
-   ============================================================ */
-.ast-hero-section,
-.elementor-section.hero,
-.wp-block-cover,
-section.hero,
-.entry-header,
-.page-header {
-  background: var(--op-navy) !important;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Hero heading */
-.entry-title,
-.page-title,
-h1.entry-title {
-  font-family: var(--op-font-display) !important;
-  font-size: clamp(48px, 6vw, 80px) !important;
-  font-weight: 800 !important;
-  line-height: 1.0 !important;
-  color: var(--op-white) !important;
 }
 
 /* ============================================================
@@ -190,24 +162,25 @@ h1.entry-title {
    ============================================================ */
 .site-content,
 #content,
-.entry-content,
 main#main {
-  background: var(--op-navy) !important;
+  background: transparent !important;
   position: relative;
   z-index: 1;
 }
 
+.entry-content {
+  background: transparent;
+}
+
 /* Cards / boxes */
 .wp-block-group,
-.woocommerce ul.products li.product,
-.tutor-course-loop-wrap,
 .ast-card,
 .postbox,
 .card {
-  background: var(--op-navy-card) !important;
-  border: 1px solid var(--op-border-sub) !important;
-  border-radius: 14px !important;
-  color: var(--op-white) !important;
+  background: var(--c-paper) !important;
+  border: 1px solid var(--c-fog) !important;
+  border-radius: var(--r-lg) !important;
+  color: var(--c-ink) !important;
 }
 
 /* ============================================================
@@ -221,18 +194,17 @@ input[type="submit"],
 .woocommerce button.button,
 .woocommerce #respond input#submit,
 .woocommerce .single_add_to_cart_button {
-  background: var(--op-accent) !important;
-  color: var(--op-navy) !important;
-  font-family: var(--op-font-display) !important;
+  background: var(--c-signal) !important;
+  color: #ffffff !important;
+  font-family: var(--f-body) !important;
   font-weight: 700 !important;
   font-size: 16px !important;
-  letter-spacing: 0.06em !important;
-  text-transform: uppercase !important;
+  letter-spacing: 0.02em !important;
   border: none !important;
-  border-radius: 8px !important;
+  border-radius: var(--r-md) !important;
   padding: 12px 28px !important;
   transition: background 0.2s, transform 0.15s, box-shadow 0.2s !important;
-  box-shadow: 0 4px 16px rgba(74,158,255,0.25) !important;
+  box-shadow: 0 4px 16px rgba(15,94,168,0.25) !important;
   cursor: pointer !important;
 }
 
@@ -241,18 +213,17 @@ input[type="submit"],
 .woocommerce a.button:hover,
 .woocommerce button.button:hover,
 .woocommerce .single_add_to_cart_button:hover {
-  background: var(--op-accent-bright) !important;
-  color: var(--op-navy) !important;
+  background: var(--c-signal-dark) !important;
+  color: #ffffff !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 8px 24px rgba(74,158,255,0.35) !important;
+  box-shadow: 0 8px 24px rgba(15,94,168,0.35) !important;
 }
 
-/* Secondary/outline buttons */
 .button.alt,
 .woocommerce a.button.alt {
   background: transparent !important;
-  border: 1px solid var(--op-border-sub) !important;
-  color: var(--op-white-dim) !important;
+  border: 1px solid var(--c-fog) !important;
+  color: var(--c-steel) !important;
 }
 
 /* ============================================================
@@ -260,14 +231,13 @@ input[type="submit"],
    ============================================================ */
 .woocommerce-page,
 .woocommerce {
-  background: var(--op-navy) !important;
+  background: var(--c-mist) !important;
 }
 
-/* Product cards */
 .woocommerce ul.products li.product {
-  background: var(--op-navy-card) !important;
-  border: 1px solid var(--op-border-sub) !important;
-  border-radius: 14px !important;
+  background: var(--c-paper) !important;
+  border: 1px solid var(--c-fog) !important;
+  border-radius: var(--r-lg) !important;
   padding: 24px !important;
   transition: border-color 0.25s, transform 0.2s !important;
   position: relative;
@@ -279,7 +249,7 @@ input[type="submit"],
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 3px;
-  background: var(--op-accent);
+  background: var(--c-signal);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
@@ -290,97 +260,92 @@ input[type="submit"],
 }
 
 .woocommerce ul.products li.product:hover {
-  border-color: rgba(74,158,255,0.3) !important;
+  border-color: rgba(15,94,168,0.3) !important;
   transform: translateY(-4px) !important;
 }
 
 .woocommerce ul.products li.product .woocommerce-loop-product__title {
-  font-family: var(--op-font-display) !important;
+  font-family: var(--f-display) !important;
   font-weight: 800 !important;
-  color: var(--op-white) !important;
+  color: var(--c-ink) !important;
   font-size: 20px !important;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
 }
 
 .woocommerce ul.products li.product .price {
-  color: var(--op-accent) !important;
-  font-family: var(--op-font-display) !important;
+  color: var(--c-signal) !important;
+  font-family: var(--f-display) !important;
   font-weight: 700 !important;
   font-size: 22px !important;
 }
 
-/* Single product */
 .woocommerce div.product .product_title {
-  font-family: var(--op-font-display) !important;
+  font-family: var(--f-display) !important;
   font-size: clamp(32px, 4vw, 52px) !important;
   font-weight: 800 !important;
-  color: var(--op-white) !important;
+  color: var(--c-ink) !important;
 }
 
 .woocommerce div.product .price {
-  color: var(--op-accent) !important;
-  font-family: var(--op-font-display) !important;
+  color: var(--c-signal) !important;
+  font-family: var(--f-display) !important;
   font-size: 36px !important;
   font-weight: 800 !important;
 }
 
 .woocommerce div.product .woocommerce-product-details__short-description {
-  color: var(--op-white-dim) !important;
+  color: var(--c-steel) !important;
 }
 
-/* Checkout & Cart */
 .woocommerce-cart table.cart,
 .woocommerce-checkout #order_review,
 .woocommerce-checkout .woocommerce-checkout-review-order-table {
-  background: var(--op-navy-card) !important;
-  border: 1px solid var(--op-border-sub) !important;
-  border-radius: 14px !important;
-  color: var(--op-white) !important;
+  background: var(--c-paper) !important;
+  border: 1px solid var(--c-fog) !important;
+  border-radius: var(--r-lg) !important;
+  color: var(--c-ink) !important;
 }
 
 .woocommerce-checkout .form-row label,
 .woocommerce-checkout .woocommerce-form label {
-  color: var(--op-white-dim) !important;
+  color: var(--c-steel) !important;
 }
 
 .woocommerce-checkout .form-row input,
 .woocommerce-checkout .form-row select,
 .woocommerce form .form-row input.input-text,
 .woocommerce form .form-row textarea {
-  background: var(--op-navy-light) !important;
-  border: 1px solid var(--op-border-sub) !important;
-  color: var(--op-white) !important;
-  border-radius: 8px !important;
+  background: var(--c-mist) !important;
+  border: 1px solid var(--c-fog) !important;
+  color: var(--c-ink) !important;
+  border-radius: var(--r-md) !important;
   padding: 10px 14px !important;
 }
 
 .woocommerce form .form-row input.input-text:focus {
-  border-color: var(--op-accent) !important;
+  border-color: var(--c-signal) !important;
   outline: none !important;
-  box-shadow: 0 0 0 3px rgba(74,158,255,0.15) !important;
+  box-shadow: 0 0 0 3px rgba(15,94,168,0.12) !important;
 }
 
-/* Tables */
 .woocommerce table.shop_table {
-  border: 1px solid var(--op-border-sub) !important;
-  border-radius: 10px !important;
+  border: 1px solid var(--c-fog) !important;
+  border-radius: var(--r-md) !important;
   overflow: hidden;
 }
 
 .woocommerce table.shop_table th {
-  background: var(--op-navy-light) !important;
-  color: var(--op-accent) !important;
-  font-family: var(--op-font-mono) !important;
+  background: var(--c-mist) !important;
+  color: var(--c-signal) !important;
+  font-family: var(--f-mono) !important;
   font-size: 11px !important;
   letter-spacing: 0.12em !important;
   text-transform: uppercase !important;
-  border-bottom: 1px solid var(--op-border-sub) !important;
+  border-bottom: 1px solid var(--c-fog) !important;
 }
 
 .woocommerce table.shop_table td {
-  color: var(--op-white-dim) !important;
-  border-bottom: 1px solid var(--op-border-sub) !important;
+  color: var(--c-steel) !important;
+  border-bottom: 1px solid var(--c-fog) !important;
 }
 
 /* ============================================================
@@ -389,28 +354,28 @@ input[type="submit"],
 .tutor-course-loop-wrap,
 .tutor-card,
 .tutor-course-details-page {
-  background: var(--op-navy-card) !important;
-  border: 1px solid var(--op-border-sub) !important;
-  border-radius: 14px !important;
+  background: var(--c-paper) !important;
+  border: 1px solid var(--c-fog) !important;
+  border-radius: var(--r-lg) !important;
 }
 
 .tutor-course-loop-wrap .tutor-course-name,
 .tutor-fs-5 {
-  font-family: var(--op-font-display) !important;
+  font-family: var(--f-display) !important;
   font-weight: 700 !important;
-  color: var(--op-white) !important;
+  color: var(--c-ink) !important;
 }
 
 .tutor-btn-primary {
-  background: var(--op-accent) !important;
-  color: var(--op-navy) !important;
-  font-family: var(--op-font-display) !important;
+  background: var(--c-signal) !important;
+  color: #ffffff !important;
+  font-family: var(--f-body) !important;
   font-weight: 700 !important;
-  border-radius: 8px !important;
+  border-radius: var(--r-md) !important;
 }
 
 .tutor-btn-primary:hover {
-  background: var(--op-accent-bright) !important;
+  background: var(--c-signal-dark) !important;
 }
 
 /* ============================================================
@@ -418,13 +383,13 @@ input[type="submit"],
    ============================================================ */
 .woocommerce-account .woocommerce,
 .woocommerce-page .woocommerce {
-  background: var(--op-navy) !important;
+  background: var(--c-mist) !important;
 }
 
 .woocommerce-MyAccount-navigation {
-  background: var(--op-navy-card) !important;
-  border: 1px solid var(--op-border-sub) !important;
-  border-radius: 14px !important;
+  background: var(--c-paper) !important;
+  border: 1px solid var(--c-fog) !important;
+  border-radius: var(--r-lg) !important;
   padding: 16px !important;
 }
 
@@ -434,34 +399,33 @@ input[type="submit"],
 }
 
 .woocommerce-MyAccount-navigation ul li a {
-  color: var(--op-white-dim) !important;
-  font-family: var(--op-font-body) !important;
+  color: var(--c-steel) !important;
+  font-family: var(--f-body) !important;
   font-weight: 500 !important;
   padding: 8px 12px !important;
   display: block !important;
-  border-radius: 7px !important;
+  border-radius: var(--r-sm) !important;
   transition: background 0.2s, color 0.2s !important;
 }
 
 .woocommerce-MyAccount-navigation ul li a:hover,
 .woocommerce-MyAccount-navigation ul li.is-active a {
-  background: rgba(74,158,255,0.1) !important;
-  color: var(--op-accent) !important;
+  background: var(--c-signal-wash) !important;
+  color: var(--c-signal) !important;
 }
 
-/* Form inputs global */
 input[type="text"],
 input[type="email"],
 input[type="password"],
 input[type="number"],
 textarea,
 select {
-  background: var(--op-navy-light) !important;
-  border: 1px solid var(--op-border-sub) !important;
-  color: var(--op-white) !important;
-  border-radius: 8px !important;
+  background: var(--c-paper) !important;
+  border: 1px solid var(--c-fog) !important;
+  color: var(--c-ink) !important;
+  border-radius: var(--r-md) !important;
   padding: 10px 14px !important;
-  font-family: var(--op-font-body) !important;
+  font-family: var(--f-body) !important;
   transition: border-color 0.2s, box-shadow 0.2s !important;
 }
 
@@ -469,14 +433,14 @@ input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus,
 textarea:focus {
-  border-color: var(--op-accent) !important;
+  border-color: var(--c-signal) !important;
   outline: none !important;
-  box-shadow: 0 0 0 3px rgba(74,158,255,0.15) !important;
+  box-shadow: 0 0 0 3px rgba(15,94,168,0.12) !important;
 }
 
 label {
-  color: var(--op-white-dim) !important;
-  font-family: var(--op-font-body) !important;
+  color: var(--c-steel) !important;
+  font-family: var(--f-body) !important;
   font-weight: 500 !important;
   font-size: 14px !important;
   margin-bottom: 6px !important;
@@ -489,36 +453,40 @@ label {
 .site-footer,
 #colophon,
 footer.site-footer {
-  background: var(--op-navy-mid) !important;
-  border-top: 1px solid var(--op-border-sub) !important;
-  color: var(--op-white-muted) !important;
+  background: var(--c-ink) !important;
+  border-top: 1px solid rgba(255,255,255,0.08) !important;
+  color: var(--c-steel-2) !important;
 }
 
 .site-footer a {
-  color: var(--op-white-dim) !important;
+  color: rgba(255,255,255,0.6) !important;
   transition: color 0.2s !important;
   text-decoration: none !important;
 }
 
 .site-footer a:hover {
-  color: var(--op-white) !important;
+  color: #ffffff !important;
 }
 
 .ast-footer-copyright {
-  color: var(--op-white-muted) !important;
+  color: var(--c-steel-2) !important;
   font-size: 13px !important;
 }
 
-/* Footer widget titles */
 .footer-widget-area .widget-title,
 .site-footer .widget-title {
-  font-family: var(--op-font-mono) !important;
+  font-family: var(--f-mono) !important;
   font-size: 10px !important;
   letter-spacing: 0.18em !important;
   text-transform: uppercase !important;
-  color: var(--op-white-muted) !important;
+  color: rgba(255,255,255,0.4) !important;
   font-weight: 500 !important;
   margin-bottom: 14px !important;
+}
+
+/* Hide Astra default footer — custom footer only (audit A-01) */
+.ast-small-footer {
+  display: none !important;
 }
 
 /* ============================================================
@@ -526,16 +494,16 @@ footer.site-footer {
    ============================================================ */
 .woocommerce-message,
 .woocommerce-info {
-  background: rgba(74,158,255,0.08) !important;
-  border-top: 3px solid var(--op-accent) !important;
-  color: var(--op-white) !important;
-  border-radius: 0 0 8px 8px !important;
+  background: var(--c-signal-wash) !important;
+  border-top: 3px solid var(--c-signal) !important;
+  color: var(--c-ink) !important;
+  border-radius: 0 0 var(--r-md) var(--r-md) !important;
 }
 
 .woocommerce-error {
-  background: rgba(255,80,80,0.08) !important;
-  border-top: 3px solid #ff5050 !important;
-  color: var(--op-white) !important;
+  background: rgba(168,50,26,0.08) !important;
+  border-top: 3px solid var(--c-alert) !important;
+  color: var(--c-ink) !important;
 }
 
 /* ============================================================
@@ -547,18 +515,18 @@ table {
 }
 
 th {
-  color: var(--op-accent) !important;
-  font-family: var(--op-font-mono) !important;
+  color: var(--c-signal) !important;
+  font-family: var(--f-mono) !important;
   font-size: 11px !important;
   letter-spacing: 0.1em !important;
   text-transform: uppercase !important;
-  border-bottom: 1px solid var(--op-border-sub) !important;
+  border-bottom: 1px solid var(--c-fog) !important;
   padding: 12px 16px !important;
 }
 
 td {
-  color: var(--op-white-dim) !important;
-  border-bottom: 1px solid var(--op-border-sub) !important;
+  color: var(--c-steel) !important;
+  border-bottom: 1px solid var(--c-fog) !important;
   padding: 12px 16px !important;
 }
 
@@ -567,55 +535,26 @@ td {
    ============================================================ */
 @media (max-width: 768px) {
   .ast-mobile-menu-trigger {
-    color: var(--op-white) !important;
+    color: #ffffff !important;
   }
-
   .ast-mobile-header-content {
-    background: var(--op-navy-mid) !important;
+    background: var(--c-ink) !important;
   }
-
   .ast-mobile-header-content .main-navigation a {
-    color: var(--op-white-dim) !important;
-    border-bottom: 1px solid var(--op-border-sub) !important;
+    color: rgba(255,255,255,0.75) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.08) !important;
   }
 }
 
-/* ── HOMEPAGE LAYOUT OVERRIDES ── */
-/* Force disable Astra's banner/title on front page */
-body.home .entry-header,
-body.home .ast-archive-description,
-body.page-id-35 .entry-header {
-  display: none !important;
-  height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* Remove Astra padding around page content on homepage */
-body.home #content .ast-container,
-body.home .entry-content,
-body.home .ast-separate-container .ast-article-single {
-  padding: 0 !important;
-  margin: 0 !important;
-  max-width: 100% !important;
-}
-
-body.home .site-content #primary {
-  padding: 0 !important;
-}
-
-/* ═══════════════════════════════════════
+/* ============================================================
    NUCLEAR ASTRA OVERRIDES — HOMEPAGE
-   ═══════════════════════════════════════ */
-
-/* Kill the Home title — every possible selector */
+   ============================================================ */
 body.home .entry-title,
 body.home .page-title,
 body.home h1.entry-title,
 body.home .ast-archive-title,
 body.home .page-header,
 body.home .entry-header,
-body.home .ast-hero-section .entry-title,
 .page-id-35 .entry-title,
 .page-id-35 .entry-header,
 .page-id-35 .page-title {
@@ -627,7 +566,6 @@ body.home .ast-hero-section .entry-title,
   padding: 0 !important;
 }
 
-/* Remove ALL Astra padding/margins from homepage content */
 body.home #content,
 body.home #primary,
 body.home .site-content,
@@ -646,59 +584,8 @@ body.home .post-0,
   width: 100% !important;
 }
 
-/* ============================================================
-   HOMEPAGE LAYOUT OVERRIDES
-   Aligns with homepage-v2.html inline styles (flex-based)
-   ============================================================ */
-
-/* Hero: flex row layout — confirmed matching homepage-v2.html (staging fix 2026-04-03) */
-.op-hero-wrap {
-  display: flex !important;
-  flex-direction: row !important;
-  gap: 60px !important;
-  padding: 80px 40px !important;
-  max-width: 1200px !important;
-  margin: 0 auto !important;
-  align-items: center !important;
-  box-sizing: border-box !important;
-}
-
-.op-hero-left {
-  flex: 1 1 0% !important;
-  min-width: 0 !important;
-}
-
-.op-hero-right {
-  flex: 0 0 380px !important;
-  width: 380px !important;
-}
-
-/* Force 4-col features */
-.op-4col {
-  display: grid !important;
-  grid-template-columns: repeat(4, 1fr) !important;
-  gap: 20px !important;
-}
-
-/* Force 3-col certs */
-.op-3col {
-  display: grid !important;
-  grid-template-columns: repeat(3, 1fr) !important;
-  gap: 24px !important;
-}
-
-@media (max-width: 960px) {
-  .op-hero-wrap {
-    flex-direction: column !important;
-    padding: 48px 24px !important;
-  }
-  .op-hero-right { display: none !important; }
-  .op-4col { grid-template-columns: repeat(2, 1fr) !important; }
-  .op-3col { grid-template-columns: 1fr !important; }
-}
-
-@media (max-width: 600px) {
-  .op-4col { grid-template-columns: 1fr !important; }
+body.home {
+  background-color: var(--c-ink) !important;
 }
 
 /* ============================================================
@@ -714,9 +601,120 @@ body.home .post-0,
   z-index: 9999 !important;
 }
 
-/* Push page content down so it doesn't hide behind the fixed header */
 .site-content,
 #page .site-content,
 body.home #page .site-content {
   padding-top: var(--header-height, 80px) !important;
+}
+
+/* ============================================================
+   HOMEPAGE v2.1 — ALL HOMEPAGE CSS (no inline styles in HTML)
+   ============================================================ */
+.op-page { font-family: var(--f-body); color: var(--c-ink); }
+
+/* Hero */
+.op-hero { background: var(--c-ink); color: #fff; padding: var(--sp-10) 0; }
+.op-hero__inner { max-width: 1200px; margin: 0 auto; padding: 0 var(--sp-6); display: flex; gap: 60px; align-items: center; }
+.op-hero__left { flex: 1 1 0%; min-width: 0; }
+.op-hero__right { flex: 0 0 380px; width: 380px; }
+.op-hero__eyebrow { font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-signal); margin-bottom: var(--sp-4); display: block; }
+.op-hero__heading { font-family: var(--f-display) !important; font-size: clamp(2.5rem,6vw,4rem); font-weight: 800 !important; letter-spacing: -0.02em; margin: 0 0 var(--sp-5) 0; line-height: 1.05; color: #fff !important; }
+.op-hero__blue { color: var(--c-signal); }
+.op-hero__subhead { font-size: 1.05rem; color: rgba(255,255,255,0.75); max-width: 540px; line-height: 1.65; margin-bottom: var(--sp-7); }
+.op-hero__btns { display: flex; gap: var(--sp-4); flex-wrap: wrap; margin-bottom: var(--sp-8); }
+.op-btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: var(--c-signal); color: #fff !important; font-family: var(--f-body); font-weight: 700; font-size: 1rem; border-radius: var(--r-md); text-decoration: none; transition: background 0.2s; }
+.op-btn-primary:hover { background: var(--c-signal-dark); color: #fff !important; }
+.op-btn-ghost { display: inline-flex; align-items: center; padding: 14px 28px; border: 1.5px solid rgba(255,255,255,0.35); color: rgba(255,255,255,0.8) !important; font-family: var(--f-body); font-weight: 600; border-radius: var(--r-md); text-decoration: none; transition: border-color 0.2s, color 0.2s; }
+.op-btn-ghost:hover { border-color: #fff; color: #fff !important; }
+
+/* Cert card (hero right) */
+.op-cert-card { background: var(--c-ink-2); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--r-lg); padding: var(--sp-6); }
+.op-cc-tag { font-family: var(--f-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-signal); margin-bottom: var(--sp-5); }
+.op-track { margin-bottom: var(--sp-4); padding-bottom: var(--sp-4); border-bottom: 1px solid rgba(255,255,255,0.07); }
+.op-track:last-of-type { border-bottom: none; }
+.op-track-n { font-family: var(--f-body); font-size: 0.82rem; font-weight: 600; color: rgba(255,255,255,0.85); margin-bottom: var(--sp-2); }
+.op-badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+.op-b { font-family: var(--f-mono); font-size: 0.68rem; padding: 3px 8px; border-radius: var(--r-sm); background: rgba(15,94,168,0.2); color: rgba(255,255,255,0.85); border: 1px solid rgba(15,94,168,0.3); text-decoration: none; }
+.op-b-ca { background: rgba(200,90,31,0.25) !important; color: #ffb89a !important; border-color: rgba(200,90,31,0.4) !important; }
+.op-price-row { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-5); padding-top: var(--sp-4); border-top: 1px solid rgba(255,255,255,0.07); }
+.op-price-from { font-family: var(--f-mono); font-size: 0.65rem; letter-spacing: 0.08em; color: rgba(255,255,255,0.45); text-transform: uppercase; }
+.op-price-amt { font-family: var(--f-display); font-size: 1.6rem; font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+.op-price-amt span { font-size: 0.9rem; font-weight: 400; color: rgba(255,255,255,0.5); }
+.op-price-cta { font-family: var(--f-mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; color: var(--c-signal); text-decoration: none; text-transform: uppercase; }
+.op-price-cta:hover { color: #fff; }
+
+/* Stats bar */
+.op-stats { background: var(--c-paper); padding: var(--sp-7) 0; border-bottom: 1px solid var(--c-fog); }
+.op-stats__inner { max-width: 1100px; margin: 0 auto; padding: 0 var(--sp-6); display: grid; grid-template-columns: repeat(4,1fr); gap: var(--sp-5); }
+.op-stat { text-align: center; }
+.op-stat-n { font-family: var(--f-display); font-size: 2.5rem; font-weight: 800; color: var(--c-ink); letter-spacing: -0.02em; line-height: 1; }
+.op-stat-n span { color: var(--c-signal); }
+.op-stat-l { font-family: var(--f-mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c-steel); margin-top: 6px; }
+
+/* Credentials band */
+.op-band { background: var(--c-signal-wash); border-top: 1px solid rgba(15,94,168,0.12); border-bottom: 1px solid rgba(15,94,168,0.12); padding: var(--sp-6) 0; }
+.op-band__inner { max-width: 1100px; margin: 0 auto; padding: 0 var(--sp-6); display: grid; grid-template-columns: repeat(4,1fr); gap: var(--sp-6); }
+.op-band-item { display: flex; gap: var(--sp-3); align-items: flex-start; }
+.op-band-icon { color: var(--c-signal); flex-shrink: 0; margin-top: 2px; }
+.op-band-icon svg { width: 20px; height: 20px; }
+.op-band-l { font-family: var(--f-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-steel); margin-bottom: 4px; }
+.op-band-v { font-size: 0.875rem; color: var(--c-ink); line-height: 1.5; }
+
+/* What's included */
+.op-features { background: var(--c-paper); padding: var(--sp-10) 0; }
+.op-features__inner { max-width: 1100px; margin: 0 auto; padding: 0 var(--sp-6); }
+.op-features__grid { display: grid; grid-template-columns: repeat(4,1fr); gap: var(--sp-5); margin-top: var(--sp-7); }
+.op-feat-card { background: var(--c-paper); border: 1px solid var(--c-fog); border-radius: var(--r-md); padding: var(--sp-6); }
+.op-feat-icon { color: var(--c-signal); margin-bottom: var(--sp-4); }
+.op-feat-icon svg { width: 28px; height: 28px; }
+.op-feat-label { font-family: var(--f-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-steel); margin-bottom: var(--sp-3); }
+.op-feat-desc { font-size: 0.9rem; color: var(--c-steel); line-height: 1.6; margin-bottom: var(--sp-4); }
+.op-feat-link { font-size: 0.875rem; color: var(--c-signal); text-decoration: none; font-weight: 600; }
+.op-feat-link:hover { color: var(--c-signal-dark); }
+
+/* 15 Certifications */
+.op-certs { background: var(--c-mist); padding: var(--sp-10) 0; }
+.op-certs__inner { max-width: 1100px; margin: 0 auto; padding: 0 var(--sp-6); }
+.op-cert-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--sp-5); margin-top: var(--sp-7); }
+.op-cert-block { background: var(--c-paper); border: 1px solid var(--c-fog); border-radius: var(--r-lg); padding: var(--sp-6); }
+.op-cert-ico { color: var(--c-signal); margin-bottom: var(--sp-4); display: block; }
+.op-cert-ico svg { width: 28px; height: 28px; }
+.op-cert-track-title { font-family: var(--f-display); font-size: 1.3rem; font-weight: 800; color: var(--c-ink) !important; margin-bottom: var(--sp-2); }
+.op-cert-track-desc { font-size: 0.875rem; color: var(--c-steel); line-height: 1.5; margin-bottom: var(--sp-5); }
+.op-grade-pills { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+.op-gp { font-family: var(--f-mono); font-size: 0.7rem; font-weight: 700; padding: 5px 12px; border-radius: var(--r-sm); background: var(--c-signal); color: #fff; text-decoration: none; transition: background 0.2s; }
+.op-gp:hover { background: var(--c-signal-dark); color: #fff; }
+.op-gp-ca { background: var(--c-current) !important; }
+.op-gp-ca:hover { background: #a8481a !important; }
+
+/* CTA section */
+.op-cta-section { background: var(--c-ink); padding: var(--sp-10) 0; text-align: center; color: #fff; }
+.op-cta__inner { max-width: 700px; margin: 0 auto; padding: 0 var(--sp-6); }
+.op-cta__eyebrow { font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-signal); margin-bottom: var(--sp-5); display: block; }
+.op-cta__heading { font-family: var(--f-display) !important; font-size: clamp(2rem,5vw,3.25rem); font-weight: 800 !important; color: #fff !important; margin: 0 0 var(--sp-3) 0; line-height: 1.1; }
+.op-cta__heading span { color: var(--c-signal); }
+.op-cta__sub { color: rgba(255,255,255,0.7); font-size: 1rem; max-width: 480px; margin: 0 auto var(--sp-7); line-height: 1.65; }
+
+/* Shared section layout helpers */
+.op-section__inner { max-width: 1100px; margin: 0 auto; padding: 0 var(--sp-6); }
+.op-eyebrow { font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-signal); margin-bottom: var(--sp-4); display: block; }
+.op-section-heading { font-family: var(--f-display) !important; font-size: clamp(1.8rem,4vw,2.75rem); font-weight: 800 !important; letter-spacing: -0.02em; margin: 0 0 var(--sp-4) 0; color: var(--c-ink) !important; line-height: 1.1; }
+.op-section-heading span { color: var(--c-signal); }
+.op-section-sub { font-size: 1rem; color: var(--c-steel); max-width: 600px; line-height: 1.65; }
+
+/* Responsive homepage */
+@media (max-width: 960px) {
+  .op-hero__inner { flex-direction: column; padding: var(--sp-8) var(--sp-6); gap: var(--sp-7); }
+  .op-hero__right { display: none; }
+  .op-stats__inner { grid-template-columns: repeat(2,1fr); }
+  .op-band__inner { grid-template-columns: repeat(2,1fr); }
+  .op-features__grid { grid-template-columns: repeat(2,1fr); }
+  .op-cert-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .op-stats__inner { grid-template-columns: 1fr; }
+  .op-band__inner { grid-template-columns: 1fr; }
+  .op-features__grid { grid-template-columns: 1fr; }
+  .op-hero__btns { flex-direction: column; }
+  .op-btn-primary, .op-btn-ghost { width: 100%; justify-content: center; }
 }
