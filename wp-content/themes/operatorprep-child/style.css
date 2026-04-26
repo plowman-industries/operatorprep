@@ -585,7 +585,7 @@ body.home .post-0,
 }
 
 body.home {
-  background-color: var(--c-paper) !important;
+  background-color: var(--c-ink) !important;
 }
 
 /* ============================================================
@@ -613,35 +613,35 @@ body.home #page .site-content {
 .op-page { font-family: var(--f-body); color: var(--c-ink); }
 
 /* Hero */
-.op-hero { background: var(--c-paper); color: var(--c-ink); padding: var(--sp-10) 0; border-bottom: 1px solid var(--c-fog); }
+.op-hero { background: var(--c-ink); color: #fff; padding: var(--sp-10) 0; }
 .op-hero__inner { max-width: 1200px; margin: 0 auto; padding: 0 var(--sp-6); display: flex; gap: 60px; align-items: center; }
 .op-hero__left { flex: 1 1 0%; min-width: 0; }
 .op-hero__right { flex: 0 0 380px; width: 380px; }
 .op-hero__eyebrow { font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-signal); margin-bottom: var(--sp-4); display: block; }
-.op-hero__heading { font-family: var(--f-display) !important; font-size: clamp(2.5rem,6vw,4rem); font-weight: 800 !important; letter-spacing: -0.02em; margin: 0 0 var(--sp-5) 0; line-height: 1.05; color: var(--c-ink) !important; }
+.op-hero__heading { font-family: var(--f-display) !important; font-size: clamp(2.5rem,6vw,4rem); font-weight: 800 !important; letter-spacing: -0.02em; margin: 0 0 var(--sp-5) 0; line-height: 1.05; color: #fff !important; }
 .op-hero__blue { color: var(--c-signal); }
-.op-hero__subhead { font-size: 1.05rem; color: var(--c-steel); max-width: 540px; line-height: 1.65; margin-bottom: var(--sp-7); }
+.op-hero__subhead { font-size: 1.05rem; color: rgba(255,255,255,0.75); max-width: 540px; line-height: 1.65; margin-bottom: var(--sp-7); }
 .op-hero__btns { display: flex; gap: var(--sp-4); flex-wrap: wrap; margin-bottom: var(--sp-8); }
 .op-btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: var(--c-signal); color: #fff !important; font-family: var(--f-body); font-weight: 700; font-size: 1rem; border-radius: var(--r-md); text-decoration: none; transition: background 0.2s; }
 .op-btn-primary:hover { background: var(--c-signal-dark); color: #fff !important; }
-.op-btn-ghost { display: inline-flex; align-items: center; padding: 14px 28px; border: 1.5px solid var(--c-fog); color: var(--c-steel) !important; font-family: var(--f-body); font-weight: 600; border-radius: var(--r-md); text-decoration: none; transition: border-color 0.2s, color 0.2s; }
-.op-btn-ghost:hover { border-color: var(--c-steel); color: var(--c-ink) !important; }
+.op-btn-ghost { display: inline-flex; align-items: center; padding: 14px 28px; border: 1.5px solid rgba(255,255,255,0.35); color: rgba(255,255,255,0.8) !important; font-family: var(--f-body); font-weight: 600; border-radius: var(--r-md); text-decoration: none; transition: border-color 0.2s, color 0.2s; }
+.op-btn-ghost:hover { border-color: #fff; color: #fff !important; }
 
 /* Cert card (hero right) */
-.op-cert-card { background: var(--c-mist); border: 1px solid var(--c-fog); border-radius: var(--r-lg); padding: var(--sp-6); }
+.op-cert-card { background: var(--c-ink-2); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--r-lg); padding: var(--sp-6); }
 .op-cc-tag { font-family: var(--f-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-signal); margin-bottom: var(--sp-5); }
-.op-track { margin-bottom: var(--sp-4); padding-bottom: var(--sp-4); border-bottom: 1px solid var(--c-fog); }
+.op-track { margin-bottom: var(--sp-4); padding-bottom: var(--sp-4); border-bottom: 1px solid rgba(255,255,255,0.07); }
 .op-track:last-of-type { border-bottom: none; }
-.op-track-n { font-family: var(--f-body); font-size: 0.82rem; font-weight: 600; color: var(--c-ink); margin-bottom: var(--sp-2); }
+.op-track-n { font-family: var(--f-body); font-size: 0.82rem; font-weight: 600; color: rgba(255,255,255,0.85); margin-bottom: var(--sp-2); }
 .op-badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
-.op-b { font-family: var(--f-mono); font-size: 0.68rem; padding: 3px 8px; border-radius: var(--r-sm); background: var(--c-signal-wash); color: var(--c-signal); border: 1px solid rgba(15,94,168,0.25); text-decoration: none; }
-.op-b-ca { background: #fbeee5 !important; color: var(--c-current) !important; border-color: rgba(200,90,31,0.3) !important; }
-.op-price-row { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-5); padding-top: var(--sp-4); border-top: 1px solid var(--c-fog); }
-.op-price-from { font-family: var(--f-mono); font-size: 0.65rem; letter-spacing: 0.08em; color: var(--c-steel); text-transform: uppercase; }
-.op-price-amt { font-family: var(--f-display); font-size: 1.6rem; font-weight: 800; color: var(--c-ink); letter-spacing: -0.02em; }
-.op-price-amt span { font-size: 0.9rem; font-weight: 400; color: var(--c-steel); }
+.op-b { font-family: var(--f-mono); font-size: 0.68rem; padding: 3px 8px; border-radius: var(--r-sm); background: rgba(15,94,168,0.2); color: rgba(255,255,255,0.85); border: 1px solid rgba(15,94,168,0.3); text-decoration: none; }
+.op-b-ca { background: rgba(200,90,31,0.25) !important; color: #ffb89a !important; border-color: rgba(200,90,31,0.4) !important; }
+.op-price-row { display: flex; justify-content: space-between; align-items: center; margin-top: var(--sp-5); padding-top: var(--sp-4); border-top: 1px solid rgba(255,255,255,0.07); }
+.op-price-from { font-family: var(--f-mono); font-size: 0.65rem; letter-spacing: 0.08em; color: rgba(255,255,255,0.45); text-transform: uppercase; }
+.op-price-amt { font-family: var(--f-display); font-size: 1.6rem; font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+.op-price-amt span { font-size: 0.9rem; font-weight: 400; color: rgba(255,255,255,0.5); }
 .op-price-cta { font-family: var(--f-mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; color: var(--c-signal); text-decoration: none; text-transform: uppercase; }
-.op-price-cta:hover { color: var(--c-signal-dark); }
+.op-price-cta:hover { color: #fff; }
 
 /* Stats bar */
 .op-stats { background: var(--c-paper); padding: var(--sp-7) 0; border-bottom: 1px solid var(--c-fog); }
