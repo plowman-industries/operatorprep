@@ -18,10 +18,10 @@ function operatorprep_child_enqueue_styles() {
         'astra-parent-style',
         get_template_directory_uri() . '/style.css'
     );
-    // Google Fonts — Barlow Condensed + Barlow + DM Mono
+    // Google Fonts — Fraunces + Inter Tight + JetBrains Mono (design system v2.1)
     wp_enqueue_style(
         'operatorprep-google-fonts',
-        'https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap',
+        'https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap',
         array(),
         null
     );
