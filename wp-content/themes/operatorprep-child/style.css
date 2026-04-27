@@ -613,7 +613,7 @@ body.home #page .site-content {
 .op-page { font-family: var(--f-body); color: var(--c-ink); }
 
 /* Hero */
-.op-hero { background: var(--c-paper); color: var(--c-ink); padding: var(--sp-8) 0; border-bottom: 1px solid var(--c-fog); }
+.op-hero { background: var(--c-paper); color: var(--c-ink); padding: var(--sp-6) 0 var(--sp-7) 0; border-bottom: 1px solid var(--c-fog); }
 .op-hero__inner { max-width: 1200px; margin: 0 auto; padding: 0 var(--sp-6); display: flex; gap: 60px; align-items: center; }
 .op-hero__left { flex: 1 1 0%; min-width: 0; }
 .op-hero__right { flex: 0 0 380px; width: 380px; }
@@ -661,7 +661,7 @@ body.home #page .site-content {
 .op-band-v { font-size: 0.875rem; color: var(--c-ink); line-height: 1.5; }
 
 /* What's included */
-.op-features { background: var(--c-paper); padding: var(--sp-8) 0; }
+.op-features { background: var(--c-paper); padding: var(--sp-7) 0; }
 .op-features__inner { max-width: 1100px; margin: 0 auto; padding: 0 var(--sp-6); }
 .op-features__grid { display: grid; grid-template-columns: repeat(4,1fr); gap: var(--sp-5); margin-top: var(--sp-7); }
 .op-feat-card { background: var(--c-paper); border: 1px solid var(--c-fog); border-radius: var(--r-md); padding: var(--sp-6); }
@@ -673,7 +673,7 @@ body.home #page .site-content {
 .op-feat-link:hover { color: var(--c-signal-dark); }
 
 /* 15 Certifications */
-.op-certs { background: var(--c-mist); padding: var(--sp-8) 0; }
+.op-certs { background: var(--c-mist); padding: var(--sp-7) 0; }
 .op-certs__inner { max-width: 1100px; margin: 0 auto; padding: 0 var(--sp-6); }
 .op-cert-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--sp-5); margin-top: var(--sp-7); }
 .op-cert-block { background: var(--c-paper); border: 1px solid var(--c-fog); border-radius: var(--r-lg); padding: var(--sp-6); }
@@ -688,7 +688,7 @@ body.home #page .site-content {
 .op-gp-ca:hover { background: #a8481a !important; }
 
 /* CTA section */
-.op-cta-section { background: var(--c-ink); padding: var(--sp-10) 0; text-align: center; color: #fff; }
+.op-cta-section { background: var(--c-ink); padding: var(--sp-8) 0; text-align: center; color: #fff; }
 .op-cta__inner { max-width: 700px; margin: 0 auto; padding: 0 var(--sp-6); }
 .op-cta__eyebrow { font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-signal); margin-bottom: var(--sp-5); display: block; }
 .op-cta__heading { font-family: var(--f-display) !important; font-size: clamp(2rem,5vw,3.25rem); font-weight: 800 !important; color: #fff !important; margin: 0 0 var(--sp-3) 0; line-height: 1.1; }
