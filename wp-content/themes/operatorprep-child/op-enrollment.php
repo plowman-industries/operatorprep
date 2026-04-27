@@ -110,3 +110,58 @@ add_action( 'woocommerce_subscription_status_expired', 'op_unenroll_user_from_su
  * Unenroll when a subscription is put on-hold (payment failed / manual hold).
  */
 add_action( 'woocommerce_subscription_status_on-hold', 'op_unenroll_user_from_subscription' );
+
+// ── Enrollment gate — block free self-enrollment ───────────────────────────
+
+/**
+ * Block free Tutor LMS enrollment on protected courses.
+ *
+ * Fires at priority 1 on the Tutor LMS "Enroll Now" AJAX action — before
+ * Tutor processes the request. If the user doesn't have an active
+ * WooCommerce subscription for this course's product, we block it and
+ * return a JSON error with a link to purchase.
+ *
+ * Admins bypass this check so manual enrollment from wp-admin still works.
+ */
+add_action( 'wp_ajax_tutor_enroll_now', 'op_gate_enrollment_by_subscription', 1 );
+function op_gate_enrollment_by_subscription() {
+    // Admins can always enroll manually
+    if ( current_user_can( 'manage_options' ) ) {
+        return;
+    }
+
+    $course_id = isset( $_POST['course_id'] ) ? absint( $_POST['course_id'] ) : 0;
+    if ( ! $course_id ) {
+        return;
+    }
+
+    // Build reverse map: course_id => product_id
+    $map               = op_get_product_course_map();
+    $course_to_product = array_flip( $map );
+
+    // If this course isn't in our map, let Tutor handle it normally
+    if ( ! isset( $course_to_product[ $course_id ] ) ) {
+        return;
+    }
+
+    $product_id = $course_to_product[ $course_id ];
+    $user_id    = get_current_user_id();
+
+    // Check for an active WooCommerce subscription covering this product
+    if ( function_exists( 'wcs_user_has_subscription' )
+        && wcs_user_has_subscription( $user_id, $product_id, 'active' ) ) {
+        return; // Subscription confirmed — let Tutor proceed
+    }
+
+    // No active subscription — block and point them to the product page
+    $product_url = get_permalink( $product_id );
+    if ( ! $product_url ) {
+        $product_url = wc_get_page_permalink( 'shop' );
+    }
+
+    wp_send_json_error( array(
+        'message' => 'An active subscription is required to access this course. '
+            . '<a href="' . esc_url( $product_url ) . '">Subscribe to unlock →</a>',
+    ) );
+    exit;
+}
