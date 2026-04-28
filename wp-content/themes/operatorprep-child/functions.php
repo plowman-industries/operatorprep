@@ -59,3 +59,59 @@ add_filter( 'astra_render_header_section', function( $show, $section ) {
     if ( is_front_page() && $section === 'ast-hfb-header' ) return false;
     return $show;
 }, 10, 2 );
+
+// ── My Account dashboard: server-side active subscriptions ────────────────
+
+/**
+ * AJAX endpoint: returns the list of cert keys the current user has an active
+ * WooCommerce subscription for. Used by the My Account dashboard JS.
+ */
+add_action( 'wp_ajax_op_active_subs', 'op_ajax_get_active_subs' );
+function op_ajax_get_active_subs() {
+    check_ajax_referer( 'op_active_subs', 'nonce' );
+
+    $user_id = get_current_user_id();
+    if ( ! $user_id ) {
+        wp_send_json_success( array() );
+        return;
+    }
+
+    // Product ID → cert key (matches op_get_product_course_map() order)
+    $cert_keys = array(
+        574 => 't1',  575 => 't2',  576 => 't3',  577 => 't4',  578 => 't5',
+        579 => 'd1',  580 => 'd2',  581 => 'd3',  582 => 'd4',  583 => 'd5',
+        584 => 'ww1', 585 => 'ww2', 586 => 'ww3', 587 => 'ww4', 588 => 'ww5',
+    );
+
+    $active_keys = array();
+
+    if ( function_exists( 'wcs_get_users_subscriptions' ) ) {
+        foreach ( wcs_get_users_subscriptions( $user_id ) as $sub ) {
+            if ( $sub->get_status() !== 'active' ) {
+                continue;
+            }
+            foreach ( $sub->get_items() as $item ) {
+                $pid = $item->get_product_id();
+                if ( isset( $cert_keys[ $pid ] ) && ! in_array( $cert_keys[ $pid ], $active_keys, true ) ) {
+                    $active_keys[] = $cert_keys[ $pid ];
+                }
+            }
+        }
+    }
+
+    wp_send_json_success( $active_keys );
+}
+
+/**
+ * Inject OP_AJAX config for the My Account dashboard before footer scripts load.
+ * Provides the AJAX URL + a fresh nonce so the dashboard JS can call op_active_subs.
+ */
+add_action( 'wp_footer', 'op_inject_dash_config', 1 );
+function op_inject_dash_config() {
+    if ( ! is_account_page() ) {
+        return;
+    }
+    $nonce    = wp_create_nonce( 'op_active_subs' );
+    $ajax_url = admin_url( 'admin-ajax.php' );
+    echo '<script>window.OP_AJAX={url:"' . esc_js( $ajax_url ) . '",nonce:"' . esc_js( $nonce ) . '"};</script>' . "\n";
+}

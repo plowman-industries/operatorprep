@@ -62,3 +62,38 @@ if ( $id ) {
 
 flush_rewrite_rules();
 wp_cache_flush();
+
+// ── My Account page installer ─────────────────────────────────────────────
+
+$acct_file = dirname( __FILE__ ) . '/my-account-content.html';
+
+if ( file_exists( $acct_file ) ) {
+	$acct_content = file_get_contents( $acct_file );
+
+	if ( ! empty( $acct_content ) ) {
+		// Find the My Account page (WooCommerce registers it as endpoint 'my-account')
+		$acct_id = (int) get_option( 'woocommerce_myaccount_page_id' );
+
+		if ( ! $acct_id ) {
+			// Fallback: search by slug
+			$acct_page = get_page_by_path( 'my-account' );
+			$acct_id   = $acct_page ? $acct_page->ID : 0;
+		}
+
+		if ( $acct_id ) {
+			$result = wp_update_post(
+				array(
+					'ID'           => $acct_id,
+					'post_content' => $acct_content,
+					'post_status'  => 'publish',
+				),
+				true
+			);
+			echo is_wp_error( $result )
+				? "\nACCT ERR:" . $result->get_error_message()
+				: "\nACCT UPDATED:" . $acct_id;
+		} else {
+			echo "\nACCT ERR: could not find My Account page ID";
+		}
+	}
+}
