@@ -614,7 +614,7 @@ body.home #page .site-content {
 
 /* Hero */
 .op-hero { background: var(--c-paper); color: var(--c-ink); padding: var(--sp-6) 0 var(--sp-7) 0; border-bottom: 1px solid var(--c-fog); }
-.op-hero__inner { max-width: 1200px; margin: 0 auto; padding: 0 var(--sp-6); display: flex; gap: 60px; align-items: center; }
+.op-hero__inner { max-width: 1200px; margin: 0 auto; padding: 0 var(--sp-6); display: flex; gap: 60px; align-items: flex-start; }
 .op-hero__left { flex: 1 1 0%; min-width: 0; }
 .op-hero__right { flex: 0 0 380px; width: 380px; }
 .op-hero__eyebrow { font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-signal); margin-bottom: var(--sp-4); display: block; }
