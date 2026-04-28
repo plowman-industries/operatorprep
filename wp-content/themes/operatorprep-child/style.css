@@ -386,6 +386,12 @@ input[type="submit"],
   background: var(--c-mist) !important;
 }
 
+/* ── My Account dashboard — fix white-on-white text from inline styles ── */
+/* The dashboard shortcode has dark-theme inline CSS; override for light bg */
+.opp-dash-title { color: var(--c-ink) !important; }
+.opp-dash-sub   { color: var(--c-steel) !important; }
+.op-cert-hero-inner p { color: var(--c-steel) !important; }
+
 .woocommerce-MyAccount-navigation {
   background: var(--c-paper) !important;
   border: 1px solid var(--c-fog) !important;
