@@ -103,16 +103,27 @@ function op_ajax_get_active_subs() {
 }
 
 /**
- * Inject OP_AJAX config for the My Account dashboard before footer scripts load.
- * Provides the AJAX URL + a fresh nonce so the dashboard JS can call op_active_subs.
+ * Inject OP_AJAX config + full dashboard JS via wp_footer on My Account pages.
+ * Doing this in wp_footer keeps the JS out of post_content so wpautop never touches it.
  */
 add_action( 'wp_footer', 'op_inject_dash_config', 1 );
 function op_inject_dash_config() {
     if ( ! is_account_page() ) {
         return;
     }
-    $nonce    = wp_create_nonce( 'op_active_subs' );
-    $ajax_url = admin_url( 'admin-ajax.php' );
+    $nonce     = wp_create_nonce( 'op_active_subs' );
+    $ajax_url  = admin_url( 'admin-ajax.php' );
     $logged_in = is_user_logged_in() ? 'true' : 'false';
     echo '<script>window.OP_AJAX={url:"' . esc_js( $ajax_url ) . '",nonce:"' . esc_js( $nonce ) . '",logged_in:' . $logged_in . '};</script>' . "\n";
 }
+
+/**
+ * Remove wpautop on the My Account page so the inline <script> in page content
+ * is not mangled with <p> tags that break the JavaScript.
+ */
+add_action( 'wp', function() {
+    if ( is_account_page() ) {
+        remove_filter( 'the_content', 'wpautop' );
+        remove_filter( 'the_content', 'wpautop_fix' );
+    }
+} );
