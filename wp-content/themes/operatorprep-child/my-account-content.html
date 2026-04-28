@@ -149,8 +149,13 @@ function detectSubs(callback){
   fd.append('action','op_active_subs');
   fd.append('nonce',window.OP_AJAX.nonce);
   fetch(window.OP_AJAX.url,{method:'POST',body:fd,credentials:'same-origin'})
-    .then(function(r){return r.json();})
-    .then(function(d){callback(d.success?d.data:[]);})
+    .then(function(r){return r.text();})
+    .then(function(t){
+      try{
+        var d=JSON.parse(t);
+        callback((d && d.success && Array.isArray(d.data))?d.data:[]);
+      }catch(e){callback([]);}
+    })
     .catch(function(){callback([]);});
 }
 
@@ -188,6 +193,12 @@ grid.appendChild(card);
 
 function init(){
 var dash=document.getElementById("opp-dash");
+/* Hide dashboard immediately if user is not logged in */
+if(window.OP_AJAX && !window.OP_AJAX.logged_in){
+dash.style.display="none";
+return;
+}
+/* Fallback DOM check for edge cases */
 var loginForm=document.querySelector(".woocommerce-form-login, .login");
 if(loginForm && !document.querySelector(".woocommerce-MyAccount-navigation")){
 dash.style.display="none";

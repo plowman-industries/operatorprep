@@ -113,5 +113,6 @@ function op_inject_dash_config() {
     }
     $nonce    = wp_create_nonce( 'op_active_subs' );
     $ajax_url = admin_url( 'admin-ajax.php' );
-    echo '<script>window.OP_AJAX={url:"' . esc_js( $ajax_url ) . '",nonce:"' . esc_js( $nonce ) . '"};</script>' . "\n";
+    $logged_in = is_user_logged_in() ? 'true' : 'false';
+    echo '<script>window.OP_AJAX={url:"' . esc_js( $ajax_url ) . '",nonce:"' . esc_js( $nonce ) . '",logged_in:' . $logged_in . '};</script>' . "\n";
 }
