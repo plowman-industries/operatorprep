@@ -724,3 +724,93 @@ body.home #page .site-content {
   .op-hero__btns { flex-direction: column; }
   .op-btn-primary, .op-btn-ghost { width: 100%; justify-content: center; }
 }
+
+/* ── Flashcard category cards → light design matching Practice Tests ───────
+   Applies to all four flashcard series:
+   T2           .opp-fc-cat-card
+   D1-D5        .opp-fc-cat-btn
+   WW1-WW5      .opp-ww-fc-cat-btn
+   T1/T3-T5     .opp-t-fc-cat-btn
+   ─────────────────────────────────────────────────────────────────────── */
+
+/* Container card */
+.opp-fc-cat-card,
+.opp-fc-cat-btn,
+.opp-ww-fc-cat-btn,
+.opp-t-fc-cat-btn {
+  background: #fff !important;
+  border: 1.5px solid #e4e8ed !important;
+  border-left: 4px solid #6b7a8c !important;
+  border-radius: 8px !important;
+  padding: 16px !important;
+  color: #0b1220 !important;
+  box-shadow: 0 1px 2px rgba(11,18,32,.06) !important;
+  transition: box-shadow .2s, transform .15s, border-color .15s !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 0 !important;
+  cursor: pointer !important;
+}
+.opp-fc-cat-card:hover,
+.opp-fc-cat-btn:hover,
+.opp-ww-fc-cat-btn:hover,
+.opp-t-fc-cat-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(11,18,32,.1) !important;
+  border-color: #0f5ea8 !important;
+  border-left-color: #0f5ea8 !important;
+}
+
+/* Hide the emoji icon */
+.opp-fc-cat-card .opp-fc-cat-icon,
+.opp-fc-cat-btn .opp-fc-cat-icon,
+.opp-ww-fc-cat-btn .opp-ww-fc-cat-icon,
+.opp-t-fc-cat-btn .opp-t-fc-cat-icon { display: none !important; }
+
+/* Inner wrapper div (T1/D/WW series wrap name+count in a div) */
+.opp-fc-cat-btn > div,
+.opp-ww-fc-cat-btn > div,
+.opp-t-fc-cat-btn > div {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+  width: 100% !important;
+}
+
+/* Category name */
+.opp-fc-cat-card .opp-fc-cat-name,
+.opp-fc-cat-btn .opp-fc-cat-name,
+.opp-ww-fc-cat-btn .opp-ww-fc-cat-name,
+.opp-t-fc-cat-btn .opp-t-fc-cat-name {
+  color: #0b1220 !important;
+  font-size: .88rem !important;
+  font-weight: 600 !important;
+  margin: 0 0 6px 0 !important;
+  line-height: 1.35 !important;
+}
+
+/* Category description (T2 only) */
+.opp-fc-cat-card .opp-fc-cat-desc {
+  color: #3a4a5c !important;
+  font-size: .75rem !important;
+  line-height: 1.5 !important;
+  margin-bottom: 8px !important;
+  flex: 1 !important;
+}
+
+/* Card count — monospace, separator line, bottom */
+.opp-fc-cat-card .opp-fc-cat-count,
+.opp-fc-cat-btn .opp-fc-cat-count,
+.opp-ww-fc-cat-btn .opp-ww-fc-cat-count,
+.opp-t-fc-cat-btn .opp-t-fc-cat-count {
+  color: #6b7a8c !important;
+  font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+  font-size: .72rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: .04em !important;
+  margin-top: auto !important;
+  padding-top: 8px !important;
+  border-top: 1px solid #e4e8ed !important;
+  width: 100% !important;
+}
