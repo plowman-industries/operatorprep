@@ -636,7 +636,7 @@ body.home #page .site-content {
 /* Cert card (hero right) */
 .op-cert-card { background: var(--c-mist); border: 1px solid var(--c-fog); border-radius: var(--r-lg); padding: var(--sp-6); }
 .op-cc-tag { font-family: var(--f-mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--c-signal); margin-bottom: var(--sp-3); }
-.op-track { margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--c-fog); }
+.op-track { margin-bottom: 10px; padding-bottom: 4px; border-bottom: 1px solid var(--c-fog); }
 .op-track:last-of-type { border-bottom: none; }
 .op-track-n { font-family: var(--f-body); font-size: 0.82rem; font-weight: 600; color: var(--c-ink); margin-bottom: var(--sp-2); }
 .op-badges { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
