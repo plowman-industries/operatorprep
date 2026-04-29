@@ -229,21 +229,8 @@ add_shortcode('opp_t4_flashcards', function() { return opp_api_flashcard_shortco
 add_shortcode('opp_t5_flashcards', function() { return opp_api_flashcard_shortcode('t5'); });
 PHP42;
 
-// ── Snippet 26: D1–D5 Flashcards (keep flashcard-data upload endpoint) ────
-global $wpdb;
-$row26 = $wpdb->get_var("SELECT code FROM ugk_snippets WHERE id=26");
-// Extract the REST route registration (opp/v1/flashcard-data) — keep it intact
-$rest_upload = '';
-if ($row26 && preg_match('/add_action\s*\(\s*[\'"]rest_api_init[\'"].*?register_rest_route\s*\(\s*[\'"]opp\/v1[\'"].*?\}\s*\)\s*\)\s*;/s', $row26, $m)) {
-    $rest_upload = $m[0];
-}
-
-$code26 = $shared_fn . "\n\n";
-if ($rest_upload) {
-    $code26 .= "// REST endpoint to upload flashcard data (kept for backward compatibility)\n";
-    $code26 .= $rest_upload . "\n\n";
-}
-$code26 .= <<<'PHP26'
+// ── Snippet 26: D1–D5 Flashcards ─────────────────────────────────────────
+$code26 = $shared_fn . "\n\n" . <<<'PHP26'
 add_shortcode('opp_d1_flashcards', function() { return opp_api_flashcard_shortcode('d1'); });
 add_shortcode('opp_d2_flashcards', function() { return opp_api_flashcard_shortcode('d2'); });
 add_shortcode('opp_d3_flashcards', function() { return opp_api_flashcard_shortcode('d3'); });
