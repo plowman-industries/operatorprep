@@ -191,6 +191,7 @@ function buildPrint(){
 fetch(API+'/categories',{headers:{'X-WP-Nonce':restNonce}})
   .then(function(r){return r.json();})
   .then(function(cats){
+    cats=cats.filter(function(c){return!/math/i.test(c.name);});
     allCats=cats;
     var grid=_('fc-cat-grid');grid.innerHTML='';
     cats.forEach(function(c){
