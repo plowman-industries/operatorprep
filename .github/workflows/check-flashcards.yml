@@ -7,7 +7,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Dump raw post_content for all flashcard pages
+      - name: Find shortcode registration and dump T1+T2 output
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ssh.operatorprep.com
@@ -16,15 +16,8 @@ jobs:
           port: 18765
           script: |
             cd /home/${{ secrets.PROD_SSH_USER }}/www/operatorprep.com/public_html
-            wp eval "
-            \$slugs=['t1-flashcards','t2-flashcards','t3-flashcards','t4-flashcards','t5-flashcards',
-                     'd1-flashcards','d2-flashcards','d3-flashcards','d4-flashcards','d5-flashcards',
-                     'ww1-flashcards','ww2-flashcards','ww3-flashcards','ww4-flashcards','ww5-flashcards'];
-            foreach(\$slugs as \$slug){
-              \$p=get_page_by_path(\$slug,OBJECT,'page');
-              if(!\$p){ echo \$slug.': NOT FOUND'.PHP_EOL; continue; }
-              echo '>>>'.\$slug.'(ID:'.\$p->ID.')<<<'.PHP_EOL;
-              echo \$p->post_content.PHP_EOL;
-              echo '---END---'.PHP_EOL;
-            }
-            " --allow-root 2>&1
+            echo "=== Finding shortcode registration ==="
+            grep -r "opp_t1_flashcards\|add_shortcode.*opp_" wp-content/plugins/ --include="*.php" -l 2>/dev/null | head -5
+            grep -r "opp_t1_flashcards\|add_shortcode.*opp_" wp-content/mu-plugins/ --include="*.php" -l 2>/dev/null | head -5
+            echo "=== Shortcode callback source ==="
+            grep -r "opp_t1_flashcards" wp-content/ --include="*.php" -n 2>/dev/null | head -20
