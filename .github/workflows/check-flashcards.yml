@@ -7,7 +7,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Find flashcard shortcode via DB and wp_list_filter
+      - name: Read ugk_snippets and opp shortcodes
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ssh.operatorprep.com
@@ -16,13 +16,13 @@ jobs:
           port: 18765
           script: |
             cd /home/${{ secrets.PROD_SSH_USER }}/www/operatorprep.com/public_html
+            echo "=== All snippets in ugk_snippets ==="
             wp eval "
             global \$wpdb;
-            echo 'DB prefix: '.\$wpdb->prefix.PHP_EOL;
-            \$tables=\$wpdb->get_col('SHOW TABLES LIKE \"%snippet%\"');
-            echo 'Snippet tables: '.implode(', ',\$tables).PHP_EOL;
-            \$all=\$wpdb->get_results('SHOW TABLES');
-            foreach(\$all as \$t){ \$vals=array_values((array)\$t); echo \$vals[0].PHP_EOL; }
+            \$rows=\$wpdb->get_results('SELECT id,name,active,LEFT(code,800) as code FROM ugk_snippets ORDER BY id');
+            foreach(\$rows as \$r){
+              echo 'SNIPPET ID:'.\$r->id.' active:'.\$r->active.' name:'.\$r->name.PHP_EOL;
+              echo \$r->code.PHP_EOL;
+              echo '===END==='.PHP_EOL;
+            }
             " --allow-root 2>&1
-            echo "=== WP registered shortcodes with opp ==="
-            wp eval "global \$shortcode_tags; foreach(array_keys(\$shortcode_tags) as \$k){ if(strpos(\$k,'opp')!==false) echo \$k.PHP_EOL; }" --allow-root 2>&1
