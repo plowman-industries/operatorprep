@@ -248,6 +248,7 @@ add_shortcode('opp_ww5_flashcards', function() { return opp_api_flashcard_shortc
 PHP25;
 
 // ── Write to DB ────────────────────────────────────────────────────────────
+global $wpdb;
 $updates = array(
     42 => $code42,
     26 => $code26,
