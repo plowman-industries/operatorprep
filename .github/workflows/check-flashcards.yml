@@ -1,0 +1,31 @@
+name: Check Flashcard Pages
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check all flashcard page content
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ssh.operatorprep.com
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 18765
+          script: |
+            cd /home/${{ secrets.PROD_SSH_USER }}/www/operatorprep.com/public_html
+            wp eval "
+            \$slugs = ['t1-flashcards','t2-flashcards','t3-flashcards','t4-flashcards','t5-flashcards',
+                       'd1-flashcards','d2-flashcards','d3-flashcards','d4-flashcards','d5-flashcards',
+                       'ww1-flashcards','ww2-flashcards','ww3-flashcards','ww4-flashcards','ww5-flashcards'];
+            foreach(\$slugs as \$slug){
+              \$p = get_page_by_path(\$slug, OBJECT, 'page');
+              if(!\$p){ echo \$slug . ': NOT FOUND' . PHP_EOL; continue; }
+              \$has_random = strpos(\$p->post_content, 'Random Study Mode') !== false || strpos(\$p->post_content, 'random') !== false;
+              \$has_print = strpos(\$p->post_content, 'Print Flash') !== false || strpos(\$p->post_content, 'print') !== false;
+              \$char_count = strlen(\$p->post_content);
+              echo \$slug . ' (ID:' . \$p->ID . ') random=' . (\$has_random?'YES':'NO') . ' print=' . (\$has_print?'YES':'NO') . ' len=' . \$char_count . PHP_EOL;
+            }
+            " --allow-root 2>&1
