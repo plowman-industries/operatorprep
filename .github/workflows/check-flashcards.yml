@@ -7,7 +7,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Read code snippets for flashcard shortcodes
+      - name: Find flashcard shortcode via DB and wp_list_filter
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ssh.operatorprep.com
@@ -18,14 +18,11 @@ jobs:
             cd /home/${{ secrets.PROD_SSH_USER }}/www/operatorprep.com/public_html
             wp eval "
             global \$wpdb;
-            \$snippets = \$wpdb->get_results('SELECT id, name, LEFT(code,500) as code_preview FROM wp_snippets WHERE name LIKE \"%flash%\" OR code LIKE \"%opp_%flashcard%\" LIMIT 20');
-            foreach(\$snippets as \$s){
-              echo 'ID:'.\$s->id.' NAME:'.\$s->name.PHP_EOL;
-              echo \$s->code_preview.PHP_EOL;
-              echo '---'.PHP_EOL;
-            }
-            if(empty(\$snippets)){ echo 'No flashcard snippets found. Listing all snippets:'.PHP_EOL;
-              \$all=\$wpdb->get_results('SELECT id,name FROM wp_snippets');
-              foreach(\$all as \$s){ echo 'ID:'.\$s->id.' '.\$s->name.PHP_EOL; }
-            }
+            echo 'DB prefix: '.\$wpdb->prefix.PHP_EOL;
+            \$tables=\$wpdb->get_col('SHOW TABLES LIKE \"%snippet%\"');
+            echo 'Snippet tables: '.implode(', ',\$tables).PHP_EOL;
+            \$all=\$wpdb->get_results('SHOW TABLES');
+            foreach(\$all as \$t){ \$vals=array_values((array)\$t); echo \$vals[0].PHP_EOL; }
             " --allow-root 2>&1
+            echo "=== WP registered shortcodes with opp ==="
+            wp eval "global \$shortcode_tags; foreach(array_keys(\$shortcode_tags) as \$k){ if(strpos(\$k,'opp')!==false) echo \$k.PHP_EOL; }" --allow-root 2>&1
