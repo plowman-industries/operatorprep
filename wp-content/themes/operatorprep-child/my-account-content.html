@@ -1,47 +1,46 @@
 <style>
 .entry-title,.page-title,.wp-block-post-title{display:none !important}
-.op-cert-hero{padding:40px 24px 32px}
-.op-cert-hero-inner h1{font-size:1.8rem;color:#fff;margin-bottom:8px}
-.op-cert-hero-inner p{color:rgba(255,255,255,0.8);margin:0}
 
-/* Study Materials Dashboard */
-.opp-dash{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;max-width:900px;margin:0 auto 30px;padding:0 20px}
-.opp-dash-title{font-size:1.4em;font-weight:700;color:#fff;margin-bottom:6px}
-.opp-dash-sub{color:#8899aa;font-size:.95em;margin-bottom:20px}
-.opp-dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:24px}
-.opp-dash-card{background:#1a2a3a;border:2px solid #2a4a6a;border-radius:14px;padding:20px;transition:all .2s}
-.opp-dash-card:hover{border-color:#4a8abf;transform:translateY(-2px);box-shadow:0 4px 15px rgba(0,0,0,.3)}
-.opp-dash-card-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.opp-dash-card-badge{background:linear-gradient(135deg,#2a5a8a,#1a3a5a);border:2px solid #3a7aba;border-radius:10px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1em;color:#fff}
-.opp-dash-card-badge.wt{background:linear-gradient(135deg,#2a5a8a,#1a3a5a);border-color:#3a7aba}
-.opp-dash-card-badge.wd{background:linear-gradient(135deg,#2a6a4a,#1a4a2a);border-color:#3a8a5a}
-.opp-dash-card-badge.ww{background:linear-gradient(135deg,#6a3a2a,#4a2a1a);border-color:#8a5a3a}
-.opp-dash-card-title{font-weight:700;font-size:1.05em;color:#fff}
-.opp-dash-card-sub{font-size:.8em;color:#6a9abf;margin-top:2px}
-.opp-dash-tools{display:flex;flex-direction:column;gap:8px}
-.opp-dash-tool{display:flex;align-items:center;gap:8px;background:#0d1f30;border:1px solid #1a3a5a;border-radius:8px;padding:10px 14px;color:#d0e0f0;text-decoration:none;font-size:.9em;transition:all .2s}
-.opp-dash-tool:hover{background:#1a3050;border-color:#3a7aba;color:#fff;text-decoration:none}
-.opp-dash-tool .tool-icon{font-size:1.1em;width:22px;text-align:center}
-.opp-dash-tool .tool-label{font-weight:500}
-.opp-dash-nosub{background:#1a2a3a;border:2px solid #2a4a6a;border-radius:14px;padding:28px;text-align:center}
-.opp-dash-nosub p{color:#8899aa;font-size:1em;margin-bottom:14px}
-.opp-dash-nosub a{display:inline-block;background:linear-gradient(135deg,#2a5a8a,#1a3a5a);border:2px solid #3a7aba;border-radius:10px;padding:12px 28px;color:#fff;text-decoration:none;font-weight:600;font-size:1em;transition:all .2s}
-.opp-dash-nosub a:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(42,90,138,.5);border-color:#5a9ada;text-decoration:none;color:#fff}
+/* Study Materials Dashboard — inside WooCommerce content area */
+.opp-dash{margin-top:24px;padding-top:20px;border-top:1px solid #e4e8ed}
+.opp-dash-title{font-size:1.1em;font-weight:700;color:#0b1220;margin-bottom:3px}
+.opp-dash-sub{color:#3a4a5c;font-size:.875em;margin-bottom:14px}
+.opp-dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:16px}
+
+/* Card — matches topic card style from practice tests */
+.opp-dash-card{background:#fff;border:1px solid #e4e8ed;border-left:3px solid #0f5ea8;border-radius:8px;padding:16px;transition:box-shadow .2s}
+.opp-dash-card:hover{box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.opp-dash-card.wd{border-left-color:#1a6a3a}
+.opp-dash-card.ww{border-left-color:#6a3a1a}
+.opp-dash-card-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+
+/* Badge — dark rounded square like the practice test icon */
+.opp-dash-card-badge{background:#0b1220;border-radius:8px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.8em;color:#fff;font-family:'JetBrains Mono',monospace;flex-shrink:0;letter-spacing:-.02em}
+.opp-dash-card-badge.wd{background:#1a4a2a}
+.opp-dash-card-badge.ww{background:#4a2a1a}
+.opp-dash-card-title{font-weight:700;font-size:.95em;color:#0b1220;line-height:1.3}
+.opp-dash-card-sub{font-size:.7em;color:#0f5ea8;margin-top:2px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em}
+
+/* Tool links — row with arrow, matches topic card link style */
+.opp-dash-tools{display:flex;flex-direction:column;gap:5px}
+.opp-dash-tool{display:flex;align-items:center;justify-content:space-between;background:#f4f6f8;border:1px solid #e4e8ed;border-radius:6px;padding:8px 12px;color:#0b1220;text-decoration:none;font-size:.85em;transition:background .15s,border-color .15s,color .15s}
+.opp-dash-tool:hover{background:#e8f1fa;border-color:#0f5ea8;color:#0f5ea8;text-decoration:none}
+.opp-dash-tool-label{font-weight:600}
+.opp-dash-tool-arrow{color:#0f5ea8;font-size:.9em;flex-shrink:0}
+
+/* No subscription state */
+.opp-dash-nosub{background:#fff;border:1px solid #e4e8ed;border-radius:8px;padding:24px;text-align:center}
+.opp-dash-nosub p{color:#3a4a5c;margin-bottom:12px}
+.opp-dash-nosub a{display:inline-block;background:#0f5ea8;border-radius:6px;padding:10px 24px;color:#fff !important;text-decoration:none;font-weight:600;font-size:.95em;transition:background .2s}
+.opp-dash-nosub a:hover{background:#0a4a87;color:#fff !important;text-decoration:none}
 .opp-dash-hide{display:none}
 </style>
 
-<div class="op-cert-hero" style="padding:40px 24px 32px;">
-<div class="op-cert-hero-inner">
-<h1 style="font-size:1.8rem;">My Account</h1>
-<p style="color:rgba(255,255,255,0.8);">Log in or create your account to access study materials.</p>
-</div>
-</div>
-
 [woocommerce_my_account]
 
-<div class="opp-dash" id="opp-dash">
+<div class="opp-dash opp-dash-hide" id="opp-dash">
 <div class="opp-dash-title">Your Study Materials</div>
-<div class="opp-dash-sub" id="opp-dash-sub">Loading your subscriptions&#8230;</div>
+<div class="opp-dash-sub" id="opp-dash-sub">Loading&#8230;</div>
 <div class="opp-dash-grid" id="opp-dash-grid"></div>
 <div class="opp-dash-nosub opp-dash-hide" id="opp-dash-nosub">
 <p>You don&#8217;t have any active subscriptions yet.</p>
@@ -53,98 +52,97 @@
 (function(){
 var CERT_MAP={
 "t1":{label:"T1",full:"Water Treatment Grade 1",type:"wt",tools:[
-{icon:"&#x1F4DD;",name:"Practice Tests",url:"/t1-practice-tests/"},
-{icon:"&#x1F4A1;",name:"Flashcards",url:"/t1-flashcards/"},
-{icon:"&#x1F4D0;",name:"Math Drills",url:"/t1-math-drills/"},
-{icon:"&#x1F4D6;",name:"Study Guide",url:"/t1-study-guide/"}
+{name:"Practice Tests",url:"/t1-practice-tests/"},
+{name:"Flashcards",url:"/t1-flashcards/"},
+{name:"Math Drills",url:"/t1-math-drills/"},
+{name:"Study Guide",url:"/t1-study-guide/"}
 ]},
 "t2":{label:"T2",full:"Water Treatment Grade 2",type:"wt",tools:[
-{icon:"&#x1F4DD;",name:"Practice Tests",url:"/t2-practice-tests/"},
-{icon:"&#x1F4A1;",name:"Flashcards",url:"/t2-flashcards/"},
-{icon:"&#x1F4D0;",name:"Math Drills",url:"/t2-math-drills/"},
-{icon:"&#x1F4D6;",name:"Study Guide",url:"/t2-study-guide/"}
+{name:"Practice Tests",url:"/t2-practice-tests/"},
+{name:"Flashcards",url:"/t2-flashcards/"},
+{name:"Math Drills",url:"/t2-math-drills/"},
+{name:"Study Guide",url:"/t2-study-guide/"}
 ]},
 "t3":{label:"T3",full:"Water Treatment Grade 3",type:"wt",tools:[
-{icon:"&#x1F4DD;",name:"Practice Tests",url:"/t3-practice-tests/"},
-{icon:"&#x1F4A1;",name:"Flashcards",url:"/t3-flashcards/"},
-{icon:"&#x1F4D0;",name:"Math Drills",url:"/t3-math-drills/"},
-{icon:"&#x1F4D6;",name:"Study Guide",url:"/t3-study-guide/"}
+{name:"Practice Tests",url:"/t3-practice-tests/"},
+{name:"Flashcards",url:"/t3-flashcards/"},
+{name:"Math Drills",url:"/t3-math-drills/"},
+{name:"Study Guide",url:"/t3-study-guide/"}
 ]},
 "t4":{label:"T4",full:"Water Treatment Grade 4",type:"wt",tools:[
-{icon:"&#x1F4DD;",name:"Practice Tests",url:"/t4-practice-tests/"},
-{icon:"&#x1F4A1;",name:"Flashcards",url:"/t4-flashcards/"},
-{icon:"&#x1F4D0;",name:"Math Drills",url:"/t4-math-drills/"},
-{icon:"&#x1F4D6;",name:"Study Guide",url:"/t4-study-guide/"}
+{name:"Practice Tests",url:"/t4-practice-tests/"},
+{name:"Flashcards",url:"/t4-flashcards/"},
+{name:"Math Drills",url:"/t4-math-drills/"},
+{name:"Study Guide",url:"/t4-study-guide/"}
 ]},
 "t5":{label:"T5",full:"Water Treatment Grade 5",type:"wt",tools:[
-{icon:"&#x1F4DD;",name:"Practice Tests",url:"/t5-practice-tests/"},
-{icon:"&#x1F4A1;",name:"Flashcards",url:"/t5-flashcards/"},
-{icon:"&#x1F4D0;",name:"Math Drills",url:"/t5-math-drills/"},
-{icon:"&#x1F4D6;",name:"Study Guide",url:"/t5-study-guide/"}
+{name:"Practice Tests",url:"/t5-practice-tests/"},
+{name:"Flashcards",url:"/t5-flashcards/"},
+{name:"Math Drills",url:"/t5-math-drills/"},
+{name:"Study Guide",url:"/t5-study-guide/"}
 ]},
 "d1":{label:"D1",full:"Water Distribution Grade 1",type:"wd",tools:[
-{icon:"&#x1F4DD;",name:"Practice Tests",url:"/d1-practice-tests/"},
-{icon:"&#x1F4A1;",name:"Flashcards",url:"/d1-flashcards/"},
-{icon:"&#x1F4D0;",name:"Math Drills",url:"/d1-math-drills/"},
-{icon:"&#x1F4D6;",name:"Study Guide",url:"/d1-study-guide/"}
+{name:"Practice Tests",url:"/d1-practice-tests/"},
+{name:"Flashcards",url:"/d1-flashcards/"},
+{name:"Math Drills",url:"/d1-math-drills/"},
+{name:"Study Guide",url:"/d1-study-guide/"}
 ]},
 "d2":{label:"D2",full:"Water Distribution Grade 2",type:"wd",tools:[
-{icon:"&#x1F4DD;",name:"Practice Tests",url:"/d2-practice-tests/"},
-{icon:"&#x1F4A1;",name:"Flashcards",url:"/d2-flashcards/"},
-{icon:"&#x1F4D0;",name:"Math Drills",url:"/d2-math-drills/"},
-{icon:"&#x1F4D6;",name:"Study Guide",url:"/d2-study-guide/"}
+{name:"Practice Tests",url:"/d2-practice-tests/"},
+{name:"Flashcards",url:"/d2-flashcards/"},
+{name:"Math Drills",url:"/d2-math-drills/"},
+{name:"Study Guide",url:"/d2-study-guide/"}
 ]},
 "d3":{label:"D3",full:"Water Distribution Grade 3",type:"wd",tools:[
-{icon:"&#x1F4DD;",name:"Practice Tests",url:"/d3-practice-tests/"},
-{icon:"&#x1F4A1;",name:"Flashcards",url:"/d3-flashcards/"},
-{icon:"&#x1F4D0;",name:"Math Drills",url:"/d3-math-drills/"},
-{icon:"&#x1F4D6;",name:"Study Guide",url:"/d3-study-guide/"}
+{name:"Practice Tests",url:"/d3-practice-tests/"},
+{name:"Flashcards",url:"/d3-flashcards/"},
+{name:"Math Drills",url:"/d3-math-drills/"},
+{name:"Study Guide",url:"/d3-study-guide/"}
 ]},
 "d4":{label:"D4",full:"Water Distribution Grade 4",type:"wd",tools:[
-{icon:"&#x1F4DD;",name:"Practice Tests",url:"/d4-practice-tests/"},
-{icon:"&#x1F4A1;",name:"Flashcards",url:"/d4-flashcards/"},
-{icon:"&#x1F4D0;",name:"Math Drills",url:"/d4-math-drills/"},
-{icon:"&#x1F4D6;",name:"Study Guide",url:"/d4-study-guide/"}
+{name:"Practice Tests",url:"/d4-practice-tests/"},
+{name:"Flashcards",url:"/d4-flashcards/"},
+{name:"Math Drills",url:"/d4-math-drills/"},
+{name:"Study Guide",url:"/d4-study-guide/"}
 ]},
 "d5":{label:"D5",full:"Water Distribution Grade 5",type:"wd",tools:[
-{icon:"&#x1F4DD;",name:"Practice Tests",url:"/d5-practice-tests/"},
-{icon:"&#x1F4A1;",name:"Flashcards",url:"/d5-flashcards/"},
-{icon:"&#x1F4D0;",name:"Math Drills",url:"/d5-math-drills/"},
-{icon:"&#x1F4D6;",name:"Study Guide",url:"/d5-study-guide/"}
+{name:"Practice Tests",url:"/d5-practice-tests/"},
+{name:"Flashcards",url:"/d5-flashcards/"},
+{name:"Math Drills",url:"/d5-math-drills/"},
+{name:"Study Guide",url:"/d5-study-guide/"}
 ]},
 "ww1":{label:"WW1",full:"Wastewater Treatment Grade 1",type:"ww",tools:[
-{icon:"&#x1F4DD;",name:"Practice Tests",url:"/ww1-practice-tests/"},
-{icon:"&#x1F4A1;",name:"Flashcards",url:"/ww1-flashcards/"},
-{icon:"&#x1F4D0;",name:"Math Drills",url:"/ww1-math-drills/"},
-{icon:"&#x1F4D6;",name:"Study Guide",url:"/ww1-study-guide/"}
+{name:"Practice Tests",url:"/ww1-practice-tests/"},
+{name:"Flashcards",url:"/ww1-flashcards/"},
+{name:"Math Drills",url:"/ww1-math-drills/"},
+{name:"Study Guide",url:"/ww1-study-guide/"}
 ]},
 "ww2":{label:"WW2",full:"Wastewater Treatment Grade 2",type:"ww",tools:[
-{icon:"&#x1F4DD;",name:"Practice Tests",url:"/ww2-practice-tests/"},
-{icon:"&#x1F4A1;",name:"Flashcards",url:"/ww2-flashcards/"},
-{icon:"&#x1F4D0;",name:"Math Drills",url:"/ww2-math-drills/"},
-{icon:"&#x1F4D6;",name:"Study Guide",url:"/ww2-study-guide/"}
+{name:"Practice Tests",url:"/ww2-practice-tests/"},
+{name:"Flashcards",url:"/ww2-flashcards/"},
+{name:"Math Drills",url:"/ww2-math-drills/"},
+{name:"Study Guide",url:"/ww2-study-guide/"}
 ]},
 "ww3":{label:"WW3",full:"Wastewater Treatment Grade 3",type:"ww",tools:[
-{icon:"&#x1F4DD;",name:"Practice Tests",url:"/ww3-practice-tests/"},
-{icon:"&#x1F4A1;",name:"Flashcards",url:"/ww3-flashcards/"},
-{icon:"&#x1F4D0;",name:"Math Drills",url:"/ww3-math-drills/"},
-{icon:"&#x1F4D6;",name:"Study Guide",url:"/ww3-study-guide/"}
+{name:"Practice Tests",url:"/ww3-practice-tests/"},
+{name:"Flashcards",url:"/ww3-flashcards/"},
+{name:"Math Drills",url:"/ww3-math-drills/"},
+{name:"Study Guide",url:"/ww3-study-guide/"}
 ]},
 "ww4":{label:"WW4",full:"Wastewater Treatment Grade 4",type:"ww",tools:[
-{icon:"&#x1F4DD;",name:"Practice Tests",url:"/ww4-practice-tests/"},
-{icon:"&#x1F4A1;",name:"Flashcards",url:"/ww4-flashcards/"},
-{icon:"&#x1F4D0;",name:"Math Drills",url:"/ww4-math-drills/"},
-{icon:"&#x1F4D6;",name:"Study Guide",url:"/ww4-study-guide/"}
+{name:"Practice Tests",url:"/ww4-practice-tests/"},
+{name:"Flashcards",url:"/ww4-flashcards/"},
+{name:"Math Drills",url:"/ww4-math-drills/"},
+{name:"Study Guide",url:"/ww4-study-guide/"}
 ]},
 "ww5":{label:"WW5",full:"Wastewater Treatment Grade 5",type:"ww",tools:[
-{icon:"&#x1F4DD;",name:"Practice Tests",url:"/ww5-practice-tests/"},
-{icon:"&#x1F4A1;",name:"Flashcards",url:"/ww5-flashcards/"},
-{icon:"&#x1F4D0;",name:"Math Drills",url:"/ww5-math-drills/"},
-{icon:"&#x1F4D6;",name:"Study Guide",url:"/ww5-study-guide/"}
+{name:"Practice Tests",url:"/ww5-practice-tests/"},
+{name:"Flashcards",url:"/ww5-flashcards/"},
+{name:"Math Drills",url:"/ww5-math-drills/"},
+{name:"Study Guide",url:"/ww5-study-guide/"}
 ]}
 };
 
-/* ── detectSubs: uses server-side AJAX for accurate, authoritative results ── */
 function detectSubs(callback){
   if(!window.OP_AJAX){callback([]);return;}
   var fd=new FormData();
@@ -162,53 +160,56 @@ function detectSubs(callback){
 }
 
 function renderDash(subs){
-var grid=document.getElementById("opp-dash-grid");
-var nosub=document.getElementById("opp-dash-nosub");
-var sub=document.getElementById("opp-dash-sub");
-if(subs.length===0){
-grid.style.display="none";
-nosub.classList.remove("opp-dash-hide");
-sub.textContent="Start studying for your certification exam today.";
-return;
-}
-sub.textContent=subs.length+" active "+(subs.length===1?"certification":"certifications");
-nosub.classList.add("opp-dash-hide");
-grid.innerHTML="";
-subs.forEach(function(key){
-var c=CERT_MAP[key];
-if(!c) return;
-var card=document.createElement("div");
-card.className="opp-dash-card";
-var html='<div class="opp-dash-card-head">';
-html+='<div class="opp-dash-card-badge '+c.type+'">'+c.label+'</div>';
-html+='<div><div class="opp-dash-card-title">'+c.full+'</div>';
-html+='<div class="opp-dash-card-sub">Active subscription</div></div></div>';
-html+='<div class="opp-dash-tools">';
-c.tools.forEach(function(t){
-html+='<a href="'+t.url+'" class="opp-dash-tool"><span class="tool-icon">'+t.icon+'</span><span class="tool-label">'+t.name+'</span></a>';
-});
-html+='</div>';
-card.innerHTML=html;
-grid.appendChild(card);
-});
+  var grid=document.getElementById("opp-dash-grid");
+  var nosub=document.getElementById("opp-dash-nosub");
+  var sub=document.getElementById("opp-dash-sub");
+  if(subs.length===0){
+    grid.style.display="none";
+    nosub.classList.remove("opp-dash-hide");
+    sub.textContent="Start studying for your certification exam today.";
+    return;
+  }
+  sub.textContent=subs.length+" active "+(subs.length===1?"certification":"certifications");
+  nosub.classList.add("opp-dash-hide");
+  grid.innerHTML="";
+  subs.forEach(function(key){
+    var c=CERT_MAP[key];
+    if(!c) return;
+    var card=document.createElement("div");
+    card.className="opp-dash-card "+c.type;
+    var html='<div class="opp-dash-card-head">';
+    html+='<div class="opp-dash-card-badge '+c.type+'">'+c.label+'</div>';
+    html+='<div><div class="opp-dash-card-title">'+c.full+'</div>';
+    html+='<div class="opp-dash-card-sub">Active</div></div></div>';
+    html+='<div class="opp-dash-tools">';
+    c.tools.forEach(function(t){
+      html+='<a href="'+t.url+'" class="opp-dash-tool"><span class="opp-dash-tool-label">'+t.name+'</span><span class="opp-dash-tool-arrow">&#8594;</span></a>';
+    });
+    html+='</div>';
+    card.innerHTML=html;
+    grid.appendChild(card);
+  });
 }
 
 function init(){
-var dash=document.getElementById("opp-dash");
-/* Hide dashboard immediately if user is not logged in */
-if(window.OP_AJAX && !window.OP_AJAX.logged_in){
-dash.style.display="none";
-return;
-}
-/* Fallback DOM check for edge cases */
-var loginForm=document.querySelector(".woocommerce-form-login, .login");
-if(loginForm && !document.querySelector(".woocommerce-MyAccount-navigation")){
-dash.style.display="none";
-return;
-}
-detectSubs(function(subs){
-renderDash(subs);
-});
+  var dash=document.getElementById("opp-dash");
+  /* Hide for guests */
+  if(window.OP_AJAX && !window.OP_AJAX.logged_in){
+    dash.style.display="none";
+    return;
+  }
+  var loginForm=document.querySelector(".woocommerce-form-login, .login");
+  if(loginForm && !document.querySelector(".woocommerce-MyAccount-navigation")){
+    dash.style.display="none";
+    return;
+  }
+  /* Move dash into WooCommerce content area so it sits next to the nav sidebar */
+  var wcContent=document.querySelector(".woocommerce-MyAccount-content");
+  if(wcContent){
+    wcContent.appendChild(dash);
+  }
+  dash.classList.remove("opp-dash-hide");
+  detectSubs(function(subs){ renderDash(subs); });
 }
 
 if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",init);}
