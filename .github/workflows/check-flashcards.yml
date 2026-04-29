@@ -7,7 +7,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Find flashcard shortcode registration
+      - name: Find flashcard shortcode source
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ssh.operatorprep.com
@@ -16,13 +16,11 @@ jobs:
           port: 18765
           script: |
             cd /home/${{ secrets.PROD_SSH_USER }}/www/operatorprep.com/public_html
-            echo "=== Searching broadly for opp_ shortcodes ==="
-            grep -r "opp_.*flashcard\|flashcard.*shortcode\|add_shortcode.*flash" wp-content/ --include="*.php" -l 2>/dev/null | head -10
-            echo "=== Check mu-plugins ==="
-            ls wp-content/mu-plugins/ 2>/dev/null
-            echo "=== Check for operatorprep plugin ==="
-            ls wp-content/plugins/ 2>/dev/null | grep -i "operator\|opp\|prep"
-            echo "=== Dynamic shortcode check ==="
-            grep -r "add_shortcode" wp-content/themes/operatorprep-child/ --include="*.php" 2>/dev/null
-            echo "=== Check functions.php for shortcode ==="
-            grep -n "shortcode\|flashcard" wp-content/themes/operatorprep-child/functions.php 2>/dev/null
+            echo "=== All plugins ==="
+            ls wp-content/plugins/ 2>/dev/null || echo "none"
+            echo "=== mu-plugins ==="
+            ls wp-content/mu-plugins/ 2>/dev/null || echo "none"
+            echo "=== Search for opp shortcode ==="
+            grep -r "opp_" wp-content/ --include="*.php" -l 2>/dev/null | head -10 || echo "not found in php"
+            echo "=== WP active plugins ==="
+            wp option get active_plugins --allow-root 2>/dev/null | head -30 || true
