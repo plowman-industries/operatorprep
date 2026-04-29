@@ -7,7 +7,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Find shortcode registration and dump T1+T2 output
+      - name: Find flashcard shortcode registration
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ssh.operatorprep.com
@@ -16,8 +16,13 @@ jobs:
           port: 18765
           script: |
             cd /home/${{ secrets.PROD_SSH_USER }}/www/operatorprep.com/public_html
-            echo "=== Finding shortcode registration ==="
-            grep -r "opp_t1_flashcards\|add_shortcode.*opp_" wp-content/plugins/ --include="*.php" -l 2>/dev/null | head -5
-            grep -r "opp_t1_flashcards\|add_shortcode.*opp_" wp-content/mu-plugins/ --include="*.php" -l 2>/dev/null | head -5
-            echo "=== Shortcode callback source ==="
-            grep -r "opp_t1_flashcards" wp-content/ --include="*.php" -n 2>/dev/null | head -20
+            echo "=== Searching broadly for opp_ shortcodes ==="
+            grep -r "opp_.*flashcard\|flashcard.*shortcode\|add_shortcode.*flash" wp-content/ --include="*.php" -l 2>/dev/null | head -10
+            echo "=== Check mu-plugins ==="
+            ls wp-content/mu-plugins/ 2>/dev/null
+            echo "=== Check for operatorprep plugin ==="
+            ls wp-content/plugins/ 2>/dev/null | grep -i "operator\|opp\|prep"
+            echo "=== Dynamic shortcode check ==="
+            grep -r "add_shortcode" wp-content/themes/operatorprep-child/ --include="*.php" 2>/dev/null
+            echo "=== Check functions.php for shortcode ==="
+            grep -n "shortcode\|flashcard" wp-content/themes/operatorprep-child/functions.php 2>/dev/null
