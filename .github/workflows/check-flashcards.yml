@@ -7,7 +7,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Read ugk_snippets and opp shortcodes
+      - name: Check more snippets and shortcode registration
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ssh.operatorprep.com
@@ -16,13 +16,20 @@ jobs:
           port: 18765
           script: |
             cd /home/${{ secrets.PROD_SSH_USER }}/www/operatorprep.com/public_html
-            echo "=== All snippets in ugk_snippets ==="
+            echo "=== All snippet IDs and names ==="
             wp eval "
             global \$wpdb;
-            \$rows=\$wpdb->get_results('SELECT id,name,active,LEFT(code,800) as code FROM ugk_snippets ORDER BY id');
+            \$rows=\$wpdb->get_results('SELECT id,name,active FROM ugk_snippets ORDER BY id');
             foreach(\$rows as \$r){
-              echo 'SNIPPET ID:'.\$r->id.' active:'.\$r->active.' name:'.\$r->name.PHP_EOL;
-              echo \$r->code.PHP_EOL;
-              echo '===END==='.PHP_EOL;
+              echo 'ID:'.\$r->id.' active:'.\$r->active.' '.\$r->name.PHP_EOL;
             }
+            echo 'Total: '.count(\$rows).PHP_EOL;
             " --allow-root 2>&1
+            echo "=== T1 flashcard post type check ==="
+            wp eval "
+            global \$wpdb;
+            \$p=\$wpdb->get_row('SELECT ID,post_type,post_status,post_content FROM ugk_posts WHERE post_name=\"t1-flashcards\" LIMIT 1');
+            if(\$p){ echo 'ID:'.\$p->ID.' type:'.\$p->post_type.' status:'.\$p->post_status.PHP_EOL; echo 'Content: '.\$p->post_content.PHP_EOL; }
+            " --allow-root 2>&1
+            echo "=== Registered shortcodes with opp_ ==="
+            wp eval "global \$shortcode_tags; foreach(array_keys(\$shortcode_tags) as \$k){ if(stripos(\$k,'opp')!==false || stripos(\$k,'flash')!==false) echo \$k.PHP_EOL; }" --allow-root 2>&1
