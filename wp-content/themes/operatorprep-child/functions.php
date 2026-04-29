@@ -83,6 +83,12 @@ function op_ajax_get_active_subs() {
         584 => 'ww1', 585 => 'ww2', 586 => 'ww3', 587 => 'ww4', 588 => 'ww5',
     );
 
+    // Admins see all certifications (for testing and support purposes)
+    if ( current_user_can( 'manage_options' ) ) {
+        wp_send_json_success( array_values( $cert_keys ) );
+        return;
+    }
+
     $active_keys = array();
 
     if ( function_exists( 'wcs_get_users_subscriptions' ) ) {
