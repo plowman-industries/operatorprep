@@ -7,7 +7,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Find flashcard shortcode source
+      - name: Read code snippets for flashcard shortcodes
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ssh.operatorprep.com
@@ -16,11 +16,16 @@ jobs:
           port: 18765
           script: |
             cd /home/${{ secrets.PROD_SSH_USER }}/www/operatorprep.com/public_html
-            echo "=== All plugins ==="
-            ls wp-content/plugins/ 2>/dev/null || echo "none"
-            echo "=== mu-plugins ==="
-            ls wp-content/mu-plugins/ 2>/dev/null || echo "none"
-            echo "=== Search for opp shortcode ==="
-            grep -r "opp_" wp-content/ --include="*.php" -l 2>/dev/null | head -10 || echo "not found in php"
-            echo "=== WP active plugins ==="
-            wp option get active_plugins --allow-root 2>/dev/null | head -30 || true
+            wp eval "
+            global \$wpdb;
+            \$snippets = \$wpdb->get_results('SELECT id, name, LEFT(code,500) as code_preview FROM wp_snippets WHERE name LIKE \"%flash%\" OR code LIKE \"%opp_%flashcard%\" LIMIT 20');
+            foreach(\$snippets as \$s){
+              echo 'ID:'.\$s->id.' NAME:'.\$s->name.PHP_EOL;
+              echo \$s->code_preview.PHP_EOL;
+              echo '---'.PHP_EOL;
+            }
+            if(empty(\$snippets)){ echo 'No flashcard snippets found. Listing all snippets:'.PHP_EOL;
+              \$all=\$wpdb->get_results('SELECT id,name FROM wp_snippets');
+              foreach(\$all as \$s){ echo 'ID:'.\$s->id.' '.\$s->name.PHP_EOL; }
+            }
+            " --allow-root 2>&1
