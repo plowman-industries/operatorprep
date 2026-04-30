@@ -814,3 +814,83 @@ body.home #page .site-content {
   border-top: 1px solid #e4e8ed !important;
   width: 100% !important;
 }
+
+/* ============================================================
+   CHEAT SHEET WHITE BACKGROUND
+   Overrides dark-navy inline CSS on Quick Reference &
+   Study Guide pages so everything renders on white.
+   ============================================================ */
+
+/* ── Quick Reference pages (#opp-{level}-ref) ── */
+[id$="-ref"] {
+  background: #fff !important;
+  color: #1e293b !important;
+}
+/* Nav bar */
+[id$="-ref"] [class$="-nav"] {
+  background: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+}
+[id$="-ref"] [class$="-nav"] a { color: #6d28d9 !important; }
+[id$="-ref"] [class$="-nav"] a:hover { background: #ede9fe !important; color: #4c1d95 !important; }
+/* Section accordions */
+[id$="-ref"] [class$="-section"] {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+[id$="-ref"] [class$="-section-head"] h2,
+[id$="-ref"] [class$="-section-head"] h2 * { color: #6d28d9 !important; }
+[id$="-ref"] [class$="-section-head"]:hover { background: #f1f5f9 !important; }
+[id$="-ref"] [class$="-toggle"] { color: #64748b !important; }
+/* Cards inside sections */
+[id$="-ref"] [class$="-card"] {
+  background: #fff !important;
+  border-color: #e2e8f0 !important;
+}
+[id$="-ref"] [class$="-card"] h3 { color: #b45309 !important; }
+[id$="-ref"] [class$="-card"] p,
+[id$="-ref"] [class$="-card"] li { color: #334155 !important; }
+/* Formula boxes */
+[id$="-ref"] [class$="-formula"] {
+  background: #ede9fe !important;
+  border-color: #a78bfa !important;
+  color: #4c1d95 !important;
+}
+[id$="-ref"] [class$="-formula-label"] { color: #b45309 !important; }
+/* Tip / callout boxes */
+[id$="-ref"] [class$="-tip"] {
+  background: #fefce8 !important;
+  border-left-color: #d97706 !important;
+}
+[id$="-ref"] [class$="-tip"] p { color: #334155 !important; }
+/* Tables */
+[id$="-ref"] [class$="-table"] th {
+  background: #ede9fe !important;
+  color: #4c1d95 !important;
+  border-color: #e2e8f0 !important;
+}
+[id$="-ref"] [class$="-table"] td {
+  color: #334155 !important;
+  border-color: #e2e8f0 !important;
+}
+[id$="-ref"] [class$="-table"] tr:nth-child(even) td { background: #f8fafc !important; }
+/* Key-value pairs */
+[id$="-ref"] [class$="-kv"] { border-bottom-color: #e2e8f0 !important; }
+[id$="-ref"] [class$="-kv"] [class$="-k"] { color: #64748b !important; }
+[id$="-ref"] [class$="-kv"] [class$="-v"] { color: #1e293b !important; }
+
+/* ── Study Guide hub pages (#opp-sg-hub) ── */
+#opp-sg-hub {
+  background: #fff !important;
+  color: #1e293b !important;
+}
+#opp-sg-hub .sg-header h1 { color: #1e40af !important; }
+#opp-sg-hub .sg-header p  { color: #64748b !important; }
+#opp-sg-hub .sg-card {
+  background: #fff !important;
+  border-color: #e2e8f0 !important;
+}
+#opp-sg-hub .sg-card h2   { color: #1e293b !important; }
+#opp-sg-hub .sg-card .sg-desc { color: #64748b !important; }
+#opp-sg-hub .sg-back       { color: #94a3b8 !important; }
+#opp-sg-hub .sg-back:hover { color: #64748b !important; }
