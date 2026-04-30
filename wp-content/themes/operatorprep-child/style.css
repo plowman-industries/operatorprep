@@ -817,67 +817,123 @@ body.home #page .site-content {
 
 /* ============================================================
    CHEAT SHEET WHITE BACKGROUND
-   Overrides dark-navy inline CSS on Quick Reference &
-   Study Guide pages so everything renders on white.
+   Targets each Quick Reference page's class prefix directly
+   (sections fall outside the container div due to HTML parsing,
+   so parent-based selectors don't work — use classes directly).
+   Prefixes: t4r, t3r, t12r, t5r, d12r, d34r, d5r, ww12r, ww34r, ww5r
    ============================================================ */
 
-/* ── Quick Reference pages (#opp-{level}-ref) ── */
-[id$="-ref"] {
+/* ── Outer containers ── */
+#opp-t4-ref, #opp-t3-ref, #opp-t12-ref, #opp-t5-ref,
+#opp-d12-ref, #opp-d34-ref, #opp-d5-ref,
+#opp-ww12-ref, #opp-ww34-ref, #opp-ww5-ref {
   background: #fff !important;
   color: #1e293b !important;
 }
-/* Nav bar */
-[id$="-ref"] [class$="-nav"] {
+
+/* ── Nav bars ── */
+.t4r-nav, .t3r-nav, .t12r-nav, .t5r-nav,
+.d12r-nav, .d34r-nav, .d5r-nav,
+.ww12r-nav, .ww34r-nav, .ww5r-nav {
   background: #f1f5f9 !important;
   border-color: #e2e8f0 !important;
 }
-[id$="-ref"] [class$="-nav"] a { color: #6d28d9 !important; }
-[id$="-ref"] [class$="-nav"] a:hover { background: #ede9fe !important; color: #4c1d95 !important; }
-/* Section accordions */
-[id$="-ref"] [class$="-section"] {
+.t4r-nav a, .t3r-nav a, .t12r-nav a, .t5r-nav a,
+.d12r-nav a, .d34r-nav a, .d5r-nav a,
+.ww12r-nav a, .ww34r-nav a, .ww5r-nav a { color: #1d4ed8 !important; }
+
+/* ── Section accordions ── */
+.t4r-section, .t3r-section, .t12r-section, .t5r-section,
+.d12r-section, .d34r-section, .d5r-section,
+.ww12r-section, .ww34r-section, .ww5r-section {
   background: #f8fafc !important;
   border-color: #e2e8f0 !important;
 }
-[id$="-ref"] [class$="-section-head"] h2,
-[id$="-ref"] [class$="-section-head"] h2 * { color: #6d28d9 !important; }
-[id$="-ref"] [class$="-section-head"]:hover { background: #f1f5f9 !important; }
-[id$="-ref"] [class$="-toggle"] { color: #64748b !important; }
-/* Cards inside sections */
-[id$="-ref"] [class$="-card"] {
+.t4r-section-head h2, .t3r-section-head h2, .t12r-section-head h2, .t5r-section-head h2,
+.d12r-section-head h2, .d34r-section-head h2, .d5r-section-head h2,
+.ww12r-section-head h2, .ww34r-section-head h2, .ww5r-section-head h2 {
+  color: #1e40af !important;
+}
+.t4r-section-head:hover, .t3r-section-head:hover, .t12r-section-head:hover, .t5r-section-head:hover,
+.d12r-section-head:hover, .d34r-section-head:hover, .d5r-section-head:hover,
+.ww12r-section-head:hover, .ww34r-section-head:hover, .ww5r-section-head:hover {
+  background: #e2e8f0 !important;
+}
+.t4r-toggle, .t3r-toggle, .t12r-toggle, .t5r-toggle,
+.d12r-toggle, .d34r-toggle, .d5r-toggle,
+.ww12r-toggle, .ww34r-toggle, .ww5r-toggle { color: #64748b !important; }
+
+/* ── Cards ── */
+.t4r-card, .t3r-card, .t12r-card, .t5r-card,
+.d12r-card, .d34r-card, .d5r-card,
+.ww12r-card, .ww34r-card, .ww5r-card {
   background: #fff !important;
   border-color: #e2e8f0 !important;
 }
-[id$="-ref"] [class$="-card"] h3 { color: #b45309 !important; }
-[id$="-ref"] [class$="-card"] p,
-[id$="-ref"] [class$="-card"] li { color: #334155 !important; }
-/* Formula boxes */
-[id$="-ref"] [class$="-formula"] {
-  background: #ede9fe !important;
-  border-color: #a78bfa !important;
-  color: #4c1d95 !important;
+.t4r-card h3, .t3r-card h3, .t12r-card h3, .t5r-card h3,
+.d12r-card h3, .d34r-card h3, .d5r-card h3,
+.ww12r-card h3, .ww34r-card h3, .ww5r-card h3 { color: #b45309 !important; }
+.t4r-card p, .t4r-card li, .t3r-card p, .t3r-card li,
+.t12r-card p, .t12r-card li, .t5r-card p, .t5r-card li,
+.d12r-card p, .d12r-card li, .d34r-card p, .d34r-card li,
+.d5r-card p, .d5r-card li, .ww12r-card p, .ww12r-card li,
+.ww34r-card p, .ww34r-card li, .ww5r-card p, .ww5r-card li { color: #334155 !important; }
+
+/* ── Formula boxes ── */
+.t4r-formula, .t3r-formula, .t12r-formula, .t5r-formula,
+.d12r-formula, .d34r-formula, .d5r-formula,
+.ww12r-formula, .ww34r-formula, .ww5r-formula {
+  background: #f0f9ff !important;
+  border-color: #7dd3fc !important;
+  color: #0c4a6e !important;
 }
-[id$="-ref"] [class$="-formula-label"] { color: #b45309 !important; }
-/* Tip / callout boxes */
-[id$="-ref"] [class$="-tip"] {
+.t4r-formula-label, .t3r-formula-label, .t12r-formula-label, .t5r-formula-label,
+.d12r-formula-label, .d34r-formula-label, .d5r-formula-label,
+.ww12r-formula-label, .ww34r-formula-label, .ww5r-formula-label { color: #b45309 !important; }
+
+/* ── Tip boxes ── */
+.t4r-tip, .t3r-tip, .t12r-tip, .t5r-tip,
+.d12r-tip, .d34r-tip, .d5r-tip,
+.ww12r-tip, .ww34r-tip, .ww5r-tip {
   background: #fefce8 !important;
   border-left-color: #d97706 !important;
 }
-[id$="-ref"] [class$="-tip"] p { color: #334155 !important; }
-/* Tables */
-[id$="-ref"] [class$="-table"] th {
-  background: #ede9fe !important;
-  color: #4c1d95 !important;
-  border-color: #e2e8f0 !important;
+.t4r-tip p, .t3r-tip p, .t12r-tip p, .t5r-tip p,
+.d12r-tip p, .d34r-tip p, .d5r-tip p,
+.ww12r-tip p, .ww34r-tip p, .ww5r-tip p { color: #334155 !important; }
+
+/* ── Tables ── */
+.t4r-table th, .t3r-table th, .t12r-table th, .t5r-table th,
+.d12r-table th, .d34r-table th, .d5r-table th,
+.ww12r-table th, .ww34r-table th, .ww5r-table th {
+  background: #dbeafe !important;
+  color: #1e3a8a !important;
+  border-color: #bfdbfe !important;
 }
-[id$="-ref"] [class$="-table"] td {
+.t4r-table td, .t3r-table td, .t12r-table td, .t5r-table td,
+.d12r-table td, .d34r-table td, .d5r-table td,
+.ww12r-table td, .ww34r-table td, .ww5r-table td {
   color: #334155 !important;
   border-color: #e2e8f0 !important;
 }
-[id$="-ref"] [class$="-table"] tr:nth-child(even) td { background: #f8fafc !important; }
-/* Key-value pairs */
-[id$="-ref"] [class$="-kv"] { border-bottom-color: #e2e8f0 !important; }
-[id$="-ref"] [class$="-kv"] [class$="-k"] { color: #64748b !important; }
-[id$="-ref"] [class$="-kv"] [class$="-v"] { color: #1e293b !important; }
+.t4r-table tr:nth-child(even) td, .t3r-table tr:nth-child(even) td,
+.t12r-table tr:nth-child(even) td, .t5r-table tr:nth-child(even) td,
+.d12r-table tr:nth-child(even) td, .d34r-table tr:nth-child(even) td,
+.d5r-table tr:nth-child(even) td, .ww12r-table tr:nth-child(even) td,
+.ww34r-table tr:nth-child(even) td, .ww5r-table tr:nth-child(even) td {
+  background: #f8fafc !important;
+}
+
+/* ── Key-value pairs ── */
+.t4r-kv, .t3r-kv, .t12r-kv, .t5r-kv,
+.d12r-kv, .d34r-kv, .d5r-kv,
+.ww12r-kv, .ww34r-kv, .ww5r-kv { border-bottom-color: #e2e8f0 !important; }
+.t4r-k, .t3r-k, .t12r-k, .t5r-k,
+.d12r-k, .d34r-k, .d5r-k,
+.ww12r-k, .ww34r-k, .ww5r-k { color: #64748b !important; }
+.t4r-v, .t3r-v, .t12r-v, .t5r-v,
+.d12r-v, .d34r-v, .d5r-v,
+.ww12r-v, .ww34r-v, .ww5r-v { color: #1e293b !important; }
 
 /* ── Study Guide hub pages (#opp-sg-hub) ── */
 #opp-sg-hub {
