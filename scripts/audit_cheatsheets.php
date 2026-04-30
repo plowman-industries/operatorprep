@@ -1,54 +1,37 @@
 <?php
 /**
- * Finds cheat sheet content across snippets and pages.
+ * Checks Quick Reference / Study Guide page structure for CSS targeting.
  * Run via: wp eval-file scripts/audit_cheatsheets.php --allow-root
  */
 global $wpdb;
 
-// Search snippets for cheat-related terms
-$terms = ['cheat', 'quick.ref', 'reference.card', 'study.guide', 'opp-cs-', 'opp_cs_', 'cheatsheet'];
-echo "=== Snippet search ===" . PHP_EOL;
-foreach ($terms as $t) {
-    $rows = $wpdb->get_results($wpdb->prepare(
-        "SELECT id, name, active FROM ugk_snippets WHERE name LIKE %s OR code LIKE %s",
-        "%{$t}%", "%{$t}%"
-    ));
-    if ($rows) {
-        foreach ($rows as $r) {
-            echo "  [{$t}] ID {$r->id} | active:{$r->active} | {$r->name}" . PHP_EOL;
-        }
-    }
+$page_ids = [777,778,941,1097,1098,1101,1102,1103,1104,1105,1106,1160,1209,1230,1231,1232,1243,1244,1245,1246,1247,1248,1249,1250,1251,1252,1253,1254];
+
+echo "=== Page templates & parents ===" . PHP_EOL;
+foreach ($page_ids as $id) {
+    $post = get_post($id);
+    if (!$post) continue;
+    $template = get_page_template_slug($id) ?: 'default';
+    $parent   = $post->post_parent ? $post->post_parent : 'none';
+    echo "ID {$id} | parent:{$parent} | template:{$template} | {$post->post_title}" . PHP_EOL;
 }
 
-// Search WordPress pages/posts
-echo PHP_EOL . "=== Pages/posts with 'cheat' ===" . PHP_EOL;
-$pages = $wpdb->get_results(
-    "SELECT ID, post_title, post_status, post_type FROM {$wpdb->posts}
-     WHERE (post_title LIKE '%cheat%' OR post_content LIKE '%cheat%' OR post_name LIKE '%cheat%')
-     AND post_status != 'trash'
-     ORDER BY post_type, ID LIMIT 30"
-);
-foreach ($pages as $p) {
-    echo "  {$p->post_type} ID {$p->ID} [{$p->post_status}]: {$p->post_title}" . PHP_EOL;
-    // Show shortcodes used in this page
-    preg_match_all('/\[opp_\w+\]/', get_post_field('post_content', $p->ID), $sc);
-    if ($sc[0]) echo "    Shortcodes: " . implode(', ', array_unique($sc[0])) . PHP_EOL;
-}
+// Show a sample page's raw content (first 600 chars)
+echo PHP_EOL . "=== Sample content: ID 1097 (T4 Quick Reference) ===" . PHP_EOL;
+$content = get_post_field('post_content', 1097);
+echo substr($content, 0, 600) . PHP_EOL;
 
-// List ALL opp_ shortcodes registered that contain cs/cheat/ref
-echo PHP_EOL . "=== All opp shortcodes containing cs/ref/sheet ===" . PHP_EOL;
-global $shortcode_tags;
-foreach (array_keys($shortcode_tags) as $sc) {
-    if (preg_match('/cheat|_cs_|_ref|sheet/i', $sc)) {
-        echo "  [{$sc}]" . PHP_EOL;
-    }
-}
+// Check for any custom CSS class on these pages (post meta)
+echo PHP_EOL . "=== Custom CSS classes on ID 1097 ===" . PHP_EOL;
+$css_class = get_post_meta(1097, '_elementor_css', true) ?: '(none)';
+echo "elementor_css: " . (is_array($css_class) ? 'array' : substr($css_class, 0, 100)) . PHP_EOL;
 
-// Dump ALL snippet names so we can spot cheat sheets by name
-echo PHP_EOL . "=== All active snippets ===" . PHP_EOL;
-$all = $wpdb->get_results("SELECT id, name FROM ugk_snippets WHERE active=1 ORDER BY id");
-foreach ($all as $r) {
-    echo "  ID {$r->id}: {$r->name}" . PHP_EOL;
-}
+// Check what body classes WordPress would assign
+echo PHP_EOL . "=== Body class hints ===" . PHP_EOL;
+// page-id-{id}, page-template-{template}, parent-pageid-{parent}
+$sample = get_post(1097);
+echo "Body classes would include: page-id-1097";
+if ($sample->post_parent) echo ", page-parent, parent-pageid-{$sample->post_parent}";
+echo PHP_EOL;
 
 echo PHP_EOL . "DONE" . PHP_EOL;
