@@ -1,10 +1,10 @@
-name: Check Logo
+name: Fix Logo Background
 
 on:
   workflow_dispatch:
 
 jobs:
-  check:
+  fix:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,8 +14,8 @@ jobs:
           username: ${{ secrets.PROD_SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 18765
-          source: scripts/check_logo.php
-          target: /tmp/opp-check/
+          source: scripts/fix_logo_bg.php
+          target: /tmp/opp-fix/
       - uses: appleboy/ssh-action@v1.0.3
         with:
           host: ssh.operatorprep.com
@@ -24,5 +24,5 @@ jobs:
           port: 18765
           script: |
             cd /home/${{ secrets.PROD_SSH_USER }}/www/operatorprep.com/public_html
-            wp eval-file /tmp/opp-check/scripts/check_logo.php --allow-root 2>&1
-            rm -rf /tmp/opp-check
+            wp eval-file /tmp/opp-fix/scripts/fix_logo_bg.php --allow-root 2>&1
+            rm -rf /tmp/opp-fix
