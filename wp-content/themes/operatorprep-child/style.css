@@ -119,6 +119,13 @@ header.site-header {
   background: var(--c-ink) !important;
 }
 
+/* Logo background — matches header bar so no white halo shows */
+.ast-site-identity,
+.site-branding,
+.custom-logo-link {
+  background: var(--c-ink) !important;
+}
+
 /* Logo height */
 .custom-logo,
 .site-logo img,
