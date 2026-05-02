@@ -1,52 +1,47 @@
 <?php
 /**
- * Remove Practice Tests (sim), Flashcards (flash), and Math Drills (drill)
- * cards from all study guide hub pages — they are redundant with their own sections.
- * Run via: wp eval-file scripts/fix_logo_bg.php --allow-root
+ * Restore Plant Simulation card to T1 and T2 study guide hubs.
+ * It was accidentally removed because it shared the 'sim' class with Practice Tests.
  */
-echo "Removing redundant cards from all study guide hubs..." . PHP_EOL;
+echo "Restoring Plant Simulation card to T1 and T2..." . PHP_EOL;
 
-$page_ids = array(
-    1160, 941, 1243, 1244, 1245,   // T1-T5
-    1246, 1247, 1209, 1248, 1249,  // D1-D5
-    1250, 1251, 1252, 1253, 1254,  // WW1-WW5
-);
+$plant_card  = '  <a class="sg-card sim" href="/t1-t2-plant-diagram/">' . "\n";
+$plant_card .= '    <div class="sg-icon">&#x1F3ED;</div>' . "\n";
+$plant_card .= '    <h2>Plant Simulation</h2>' . "\n";
+$plant_card .= '    <p class="sg-desc">Explore an interactive water treatment plant diagram. Click on each component to learn how it works and understand the full treatment process.</p>' . "\n";
+$plant_card .= '    <span class="sg-btn">Launch Simulation &#x2192;</span>' . "\n";
+$plant_card .= '  </a>';
 
-$updated = 0;
-$skipped = 0;
+// Insert at the start of the sg-cards grid
+$grid_open = '<div class="sg-cards">';
 
-foreach ($page_ids as $pid) {
+foreach (array(1160 => 't1-study-guide', 941 => 't2-study-guide') as $pid => $slug) {
     $post = get_post($pid);
     if (!$post) { echo "NOT FOUND: $pid" . PHP_EOL; continue; }
+    $content = $post->post_content;
 
-    $content  = $post->post_content;
-    $original = $content;
-    $slug     = $post->post_name;
-
-    // Remove each redundant card type: sim (Practice Tests), flash (Flashcards), drill (Math Drills)
-    // Pattern: optional leading whitespace + <a class="sg-card TYPE"...> ... </a> + optional trailing newline
-    foreach (array('sim', 'flash', 'drill') as $type) {
-        $content = preg_replace(
-            '/\s*<a class="sg-card ' . $type . '"[^>]*>.*?<\/a>/s',
-            '',
-            $content
-        );
-    }
-
-    if ($content === $original) {
-        echo "SKIP (no changes): $slug" . PHP_EOL;
-        $skipped++;
+    // Already restored?
+    if (strpos($content, 't1-t2-plant-diagram') !== false) {
+        echo "SKIP (already present): $slug" . PHP_EOL;
         continue;
     }
 
+    if (strpos($content, $grid_open) === false) {
+        echo "ERROR: grid open not found in $slug" . PHP_EOL;
+        continue;
+    }
+
+    $content = str_replace(
+        $grid_open . "\n",
+        $grid_open . "\n" . $plant_card . "\n",
+        $content
+    );
+
     wp_update_post(array('ID' => $pid, 'post_content' => $content));
-    echo "UPDATED: $slug" . PHP_EOL;
-    $updated++;
+    echo "RESTORED: $slug" . PHP_EOL;
 }
 
 wp_cache_flush();
 do_action('sg_cachepress_purge_cache');
 if (function_exists('sg_cachepress_purge_cache')) sg_cachepress_purge_cache();
-
-echo "Done -- updated: $updated, skipped: $skipped" . PHP_EOL;
 echo "DONE" . PHP_EOL;
