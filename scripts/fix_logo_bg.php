@@ -1,81 +1,71 @@
 <?php
 /**
- * Fix T1/T2: insert EPA card into grid (CSS already injected)
+ * Makes logo background transparent — corrected alpha formula.
+ * GD: alpha=0 = opaque, alpha=127 = transparent.
+ * Background pixels (dist=0) → alpha=127 (fully transparent)
+ * Edge pixels (dist=tolerance) → alpha=0 (fully opaque)
+ *
+ * Run via: wp eval-file scripts/fix_logo_bg.php --allow-root
  */
 global $wpdb;
-echo "Fixing T1/T2 EPA card insertion..." . PHP_EOL;
 
-$epa_url = get_permalink(1348); // EPA treatment regulations page
-echo "EPA URL: $epa_url" . PHP_EOL;
+$attachment_id = 112;
+$upload_dir    = wp_upload_dir();
+$base_dir      = $upload_dir['basedir'];
+$bak_path      = $base_dir . '/2026/03/operatorprep-logo-banner.png.bak';
+$out_rel       = '2026/03/operatorprep-logo-banner-v3.png';
+$out_path      = $base_dir . '/' . $out_rel;
 
-$new_epa_card  = '  <a class="sg-card resources" href="' . esc_url($epa_url) . '">' . "\n";
-$new_epa_card .= '    <div class="sg-icon">&#x1F4CB;</div>' . "\n";
-$new_epa_card .= '    <h2>EPA Regulations</h2>' . "\n";
-$new_epa_card .= '    <p class="sg-desc">Official EPA drinking water regulations -- surface water treatment rules, disinfection byproducts, and microbial monitoring requirements.</p>' . "\n";
-$new_epa_card .= '    <span class="sg-btn">View EPA Regulations &#x2192;</span>' . "\n";
-$new_epa_card .= '  </a>';
-
-foreach (array(1160 => 't1-study-guide', 941 => 't2-study-guide') as $pid => $slug) {
-    $post = get_post($pid);
-    $content = $post->post_content;
-
-    // Already done?
-    if (strpos($content, 'class="sg-card resources" href=') !== false) {
-        echo "SKIP (already has card): $slug" . PHP_EOL;
-        continue;
-    }
-
-    // Find the grid closing pattern -- try multiple variants
-    $patterns = array(
-        "</div>\n<a class=\"sg-back\"",
-        "</div>\r\n<a class=\"sg-back\"",
-        "</div>\n<a class='sg-back'",
-    );
-
-    $matched = false;
-    foreach ($patterns as $pattern) {
-        if (strpos($content, $pattern) !== false) {
-            $content = str_replace($pattern, $new_epa_card . "\n</div>\n<a class=\"sg-back\"", $content);
-            echo "INSERTED card using pattern variant into $slug" . PHP_EOL;
-            $matched = true;
-            break;
-        }
-    }
-
-    if (!$matched) {
-        // Fallback: find </div> immediately before <a class="sg-back" and insert before it
-        $pos = strpos($content, '<a class="sg-back"');
-        if ($pos === false) { $pos = strpos($content, "<a class='sg-back'"); }
-        if ($pos !== false) {
-            // Walk back past whitespace to find the </div>
-            $before = substr($content, 0, $pos);
-            $after  = substr($content, $pos);
-            $before = rtrim($before);
-            if (substr($before, -6) === '</div>') {
-                $before = substr($before, 0, -6); // remove trailing </div>
-                $content = $before . $new_epa_card . "\n</div>\n" . $after;
-                echo "INSERTED card via fallback position into $slug" . PHP_EOL;
-                $matched = true;
-            }
-        }
-    }
-
-    if (!$matched) {
-        echo "ERROR: could not find insertion point in $slug" . PHP_EOL;
-        // Debug: show hex of chars around sg-back
-        $pos = strpos($content, 'sg-back');
-        if ($pos !== false) {
-            $chunk = substr($content, max(0, $pos - 20), 40);
-            echo "  HEX around sg-back: " . bin2hex($chunk) . PHP_EOL;
-        }
-        continue;
-    }
-
-    wp_update_post(array('ID' => $pid, 'post_content' => $content));
-    echo "SAVED: $slug" . PHP_EOL;
+if (!file_exists($bak_path)) {
+    echo "ERROR: backup not found at $bak_path" . PHP_EOL;
+    exit(1);
 }
+
+$img = imagecreatefrompng($bak_path);
+imagealphablending($img, false);
+imagesavealpha($img, true);
+
+$w = imagesx($img);
+$h = imagesy($img);
+echo "Image: {$w}x{$h}" . PHP_EOL;
+
+$tr = 22; $tg = 31; $tb = 48;
+$tol = 20;
+
+$changed = 0;
+for ($y = 0; $y < $h; $y++) {
+    for ($x = 0; $x < $w; $x++) {
+        $c  = imagecolorat($img, $x, $y);
+        $r  = ($c >> 16) & 0xFF;
+        $g  = ($c >>  8) & 0xFF;
+        $b  = $c & 0xFF;
+        $dist = sqrt(pow($r-$tr,2) + pow($g-$tg,2) + pow($b-$tb,2));
+        if ($dist <= $tol) {
+            $alpha = (int)((1 - $dist/$tol) * 127);
+            imagesetpixel($img, $x, $y, imagecolorallocatealpha($img, $r, $g, $b, $alpha));
+            $changed++;
+        }
+    }
+}
+
+echo "Pixels processed: $changed" . PHP_EOL;
+$px = imagecolorat($img, 0, 0);
+$check_alpha = ($px >> 24) & 0x7F;
+echo "Top-left alpha after processing: $check_alpha (should be 127)" . PHP_EOL;
+
+imagepng($img, $out_path, 9);
+imagedestroy($img);
+echo "Saved: $out_path" . PHP_EOL;
+
+$new_url = $upload_dir['baseurl'] . '/' . $out_rel;
+$wpdb->update($wpdb->posts, ['guid' => $new_url], ['ID' => $attachment_id]);
+update_post_meta($attachment_id, '_wp_attached_file', $out_rel);
+$meta = wp_get_attachment_metadata($attachment_id);
+if ($meta) { $meta['file'] = $out_rel; wp_update_attachment_metadata($attachment_id, $meta); }
 
 wp_cache_flush();
 do_action('sg_cachepress_purge_cache');
 if (function_exists('sg_cachepress_purge_cache')) sg_cachepress_purge_cache();
+
+echo "WP attachment updated → $new_url" . PHP_EOL;
 echo "DONE" . PHP_EOL;
