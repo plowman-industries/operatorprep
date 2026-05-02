@@ -1010,6 +1010,15 @@ body.home #page .site-content {
   color: var(--c-ink) !important;
   box-shadow: none !important;
 }
+/* Force all child text dark */
+#opp-math-drills .md-math-quiz-btn *  {
+  color: var(--c-ink) !important;
+}
+#opp-math-drills .md-math-quiz-btn p,
+#opp-math-drills .md-math-quiz-btn .md-quiz-score,
+#opp-math-drills .md-math-quiz-btn .md-quiz-attempts {
+  color: #64748b !important;
+}
 #opp-math-drills .md-math-quiz-btn:hover {
   border-left-color: var(--c-signal) !important;
   box-shadow: 0 4px 12px rgba(15,94,168,0.08) !important;
@@ -1018,15 +1027,6 @@ body.home #page .site-content {
 #opp-math-drills .md-math-quiz-btn.status-green { border-left-color: #16a34a !important; }
 #opp-math-drills .md-math-quiz-btn.status-yellow { border-left-color: #d97706 !important; }
 #opp-math-drills .md-math-quiz-btn.status-red { border-left-color: #dc2626 !important; }
-#opp-math-drills .md-quiz-btn-content strong,
-#opp-math-drills .md-quiz-btn-content b {
-  color: var(--c-ink) !important;
-}
-#opp-math-drills .md-quiz-btn-content span,
-#opp-math-drills .md-quiz-btn-content small,
-#opp-math-drills .md-quiz-btn-content p {
-  color: #64748b !important;
-}
 
 /* ── Conversion chart link ── */
 #opp-math-drills .md-conversion-btn {
@@ -1034,6 +1034,12 @@ body.home #page .site-content {
   border: 1px solid #e2e8f0 !important;
   border-left: 4px solid #64748b !important;
   color: var(--c-ink) !important;
+}
+#opp-math-drills .md-conversion-btn * {
+  color: var(--c-ink) !important;
+}
+#opp-math-drills .md-conversion-btn .md-conversion-arrow {
+  color: var(--c-signal) !important;
 }
 #opp-math-drills .md-conversion-btn:hover {
   border-left-color: var(--c-signal) !important;
@@ -1044,6 +1050,8 @@ body.home #page .site-content {
 #opp-math-drills .md-cat-card {
   background: #ffffff !important;
   border: 1px solid #e2e8f0 !important;
+  border-left: 4px solid var(--c-signal) !important;
+  border-radius: 0 12px 12px 0 !important;
   box-shadow: none !important;
 }
 #opp-math-drills .md-cat-card::before {
@@ -1051,6 +1059,7 @@ body.home #page .site-content {
 }
 #opp-math-drills .md-cat-card:hover {
   border-color: var(--c-signal) !important;
+  border-left-color: var(--c-signal) !important;
   box-shadow: 0 4px 14px rgba(15,94,168,0.08) !important;
   transform: translateY(-1px) !important;
 }
