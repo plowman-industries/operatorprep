@@ -958,6 +958,13 @@ body.home #page .site-content {
 #opp-sg-hub .sg-back       { color: #94a3b8 !important; }
 #opp-sg-hub .sg-back:hover { color: #64748b !important; }
 
+/* ── EPA resources card — green accent (all hub pages) ── */
+#opp-sg-hub .sg-card.resources::before { background: linear-gradient(90deg, #22c55e, #16a34a) !important; }
+#opp-sg-hub .sg-card.resources { border-color: #e2e8f0 !important; }
+#opp-sg-hub .sg-card.resources:hover { border-color: #22c55e !important; }
+#opp-sg-hub .sg-card.resources .sg-icon { background: rgba(34,197,94,0.12) !important; color: #16a34a !important; }
+#opp-sg-hub .sg-card.resources .sg-btn { background: #16a34a !important; color: #fff !important; }
+
 /* ── Certifications page hero — light theme ── */
 .opp-cert-hero {
   background: var(--c-mist) !important;
