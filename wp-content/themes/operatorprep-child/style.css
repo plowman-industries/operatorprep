@@ -1153,3 +1153,31 @@ body.home #page .site-content {
   border-top-color: #e2e8f0 !important;
   color: var(--c-signal) !important;
 }
+
+/* ── Quick Reference nav tab hover — legible on light background ── */
+#opp-t4-ref  .t4r-nav  a,  #opp-t4-ref  .t4r-nav  a:hover,
+#opp-t3-ref  .t3r-nav  a,  #opp-t3-ref  .t3r-nav  a:hover,
+#opp-t12-ref .t12r-nav a,  #opp-t12-ref .t12r-nav a:hover,
+#opp-t5-ref  .t5r-nav  a,  #opp-t5-ref  .t5r-nav  a:hover,
+#opp-d12-ref .d12r-nav a,  #opp-d12-ref .d12r-nav a:hover,
+#opp-d34-ref .d34r-nav a,  #opp-d34-ref .d34r-nav a:hover,
+#opp-d5-ref  .d5r-nav  a,  #opp-d5-ref  .d5r-nav  a:hover,
+#opp-ww12-ref .ww12r-nav a, #opp-ww12-ref .ww12r-nav a:hover,
+#opp-ww34-ref .ww34r-nav a, #opp-ww34-ref .ww34r-nav a:hover,
+#opp-ww5-ref  .ww5r-nav  a, #opp-ww5-ref  .ww5r-nav  a:hover {
+  color: var(--c-signal) !important;
+  background: transparent !important;
+}
+#opp-t4-ref  .t4r-nav  a:hover,
+#opp-t3-ref  .t3r-nav  a:hover,
+#opp-t12-ref .t12r-nav a:hover,
+#opp-t5-ref  .t5r-nav  a:hover,
+#opp-d12-ref .d12r-nav a:hover,
+#opp-d34-ref .d34r-nav a:hover,
+#opp-d5-ref  .d5r-nav  a:hover,
+#opp-ww12-ref .ww12r-nav a:hover,
+#opp-ww34-ref .ww34r-nav a:hover,
+#opp-ww5-ref  .ww5r-nav  a:hover {
+  background: rgba(15, 94, 168, 0.07) !important;
+  text-decoration: underline !important;
+}
