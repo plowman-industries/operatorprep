@@ -984,3 +984,157 @@ body.home #page .site-content {
 .opp-cert-lead strong {
   color: var(--c-ink) !important;
 }
+
+/* ══════════════════════════════════════════════════════
+   Math Drills — light theme to match Practice Tests
+   ══════════════════════════════════════════════════════ */
+
+/* Base text */
+#opp-math-drills {
+  color: var(--c-ink) !important;
+}
+
+/* Page title */
+#opp-math-drills .md-page-title h1 {
+  color: var(--c-ink) !important;
+}
+#opp-math-drills .md-page-title p {
+  color: #64748b !important;
+}
+
+/* ── Featured quiz button (top wide card) ── */
+#opp-math-drills .md-math-quiz-btn {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-left: 4px solid var(--c-signal) !important;
+  color: var(--c-ink) !important;
+  box-shadow: none !important;
+}
+#opp-math-drills .md-math-quiz-btn:hover {
+  border-left-color: var(--c-signal) !important;
+  box-shadow: 0 4px 12px rgba(15,94,168,0.08) !important;
+  transform: translateY(-1px) !important;
+}
+#opp-math-drills .md-math-quiz-btn.status-green { border-left-color: #16a34a !important; }
+#opp-math-drills .md-math-quiz-btn.status-yellow { border-left-color: #d97706 !important; }
+#opp-math-drills .md-math-quiz-btn.status-red { border-left-color: #dc2626 !important; }
+#opp-math-drills .md-quiz-btn-content strong,
+#opp-math-drills .md-quiz-btn-content b {
+  color: var(--c-ink) !important;
+}
+#opp-math-drills .md-quiz-btn-content span,
+#opp-math-drills .md-quiz-btn-content small,
+#opp-math-drills .md-quiz-btn-content p {
+  color: #64748b !important;
+}
+
+/* ── Conversion chart link ── */
+#opp-math-drills .md-conversion-btn {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-left: 4px solid #64748b !important;
+  color: var(--c-ink) !important;
+}
+#opp-math-drills .md-conversion-btn:hover {
+  border-left-color: var(--c-signal) !important;
+  box-shadow: 0 4px 12px rgba(15,94,168,0.06) !important;
+}
+
+/* ── Topic cards grid ── */
+#opp-math-drills .md-cat-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: none !important;
+}
+#opp-math-drills .md-cat-card::before {
+  display: none !important;
+}
+#opp-math-drills .md-cat-card:hover {
+  border-color: var(--c-signal) !important;
+  box-shadow: 0 4px 14px rgba(15,94,168,0.08) !important;
+  transform: translateY(-1px) !important;
+}
+#opp-math-drills .md-cat-card h3 {
+  color: var(--c-ink) !important;
+}
+#opp-math-drills .md-cat-card .cat-desc {
+  color: #64748b !important;
+}
+#opp-math-drills .md-cat-card .cat-badge {
+  background: #f1f5f9 !important;
+  color: #64748b !important;
+}
+#opp-math-drills .md-cat-card .cat-badge.has-data {
+  background: #eff6ff !important;
+  color: var(--c-signal) !important;
+}
+
+/* ── Drill view (inside a topic) ── */
+#opp-math-drills .md-drill-header {
+  border-bottom-color: #e2e8f0 !important;
+}
+#opp-math-drills .md-drill-header h2 {
+  color: var(--c-ink) !important;
+}
+#opp-math-drills .md-back-btn {
+  border-color: #e2e8f0 !important;
+  color: #64748b !important;
+}
+#opp-math-drills .md-back-btn:hover {
+  background: #f1f5f9 !important;
+  color: var(--c-ink) !important;
+}
+
+/* Formula reference box */
+#opp-math-drills .md-formula-ref {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: var(--c-ink) !important;
+}
+#opp-math-drills .md-formula-ref * {
+  color: var(--c-ink) !important;
+}
+
+/* Problem card */
+#opp-math-drills .md-problem-card {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+#opp-math-drills .md-problem-text {
+  color: var(--c-ink) !important;
+}
+
+/* Answer input */
+#opp-math-drills .md-answer-row input {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: var(--c-ink) !important;
+}
+#opp-math-drills .md-answer-row input:focus {
+  border-color: var(--c-signal) !important;
+  background: #ffffff !important;
+}
+
+/* Submit button */
+#opp-math-drills .md-submit-btn {
+  background: var(--c-signal) !important;
+}
+#opp-math-drills .md-submit-btn:hover {
+  background: #0d4f8f !important;
+}
+
+/* Solution box */
+#opp-math-drills .md-solution {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+#opp-math-drills .md-solution .sol-steps {
+  color: #475569 !important;
+}
+#opp-math-drills .md-solution .sol-steps .step-num {
+  color: var(--c-signal) !important;
+}
+#opp-math-drills .md-solution .sol-answer {
+  border-top-color: #e2e8f0 !important;
+  color: var(--c-signal) !important;
+}
