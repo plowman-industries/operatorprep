@@ -95,6 +95,7 @@ $content = <<<'ENDHTML'
   <div class="dd-db-selected" id="ddDragSel"></div>
   <div class="dd-db-score">Placed: <span id="ddDP">0</span> / <span id="ddDT">0</span></div>
 </div>
+<div class="dd-drag-panel" id="ddDragPanel"></div>
 <div class="dd-svg-wrap">
 <svg viewBox="0 0 1200 520" xmlns="http://www.w3.org/2000/svg">
   <defs><marker id="ddarr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6"/></marker></defs>
@@ -149,7 +150,6 @@ $content = <<<'ENDHTML'
   <p id="ddID"></p>
   <div class="dd-tip" id="ddITip"></div>
 </div>
-<div class="dd-drag-panel" id="ddDragPanel"></div>
 
 <script>
 (function(){
@@ -185,7 +185,7 @@ function setMode(m){
   document.getElementById('ddQuizBanner').classList.toggle('visible',m==='quiz');
   document.getElementById('ddDragBanner').classList.toggle('visible',m==='drag');
   document.getElementById('ddDragPanel').classList.toggle('visible',m==='drag');
-  document.querySelectorAll('.dd-lbl,.dd-lbg,.dd-sub').forEach(function(e){e.style.display=(m==='drag')?'none':'';});
+  document.querySelectorAll('.dd-lbl,.dd-lbg,.dd-sub').forEach(function(e){e.style.display=(m==='drag'||m==='quiz')?'none':'';});
   if(m==='quiz'){qActive=false;document.getElementById('ddQBQ').textContent='Test your knowledge of distribution system components.';document.getElementById('ddQBFB').textContent='';document.getElementById('ddQBFB').className='dd-qb-feedback';document.getElementById('ddQBSc').textContent='';document.getElementById('ddStartBtn').textContent='Start Quiz';document.getElementById('ddStartBtn').style.display='';}
   if(m==='drag')setupDrag();
 }
