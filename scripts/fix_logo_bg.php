@@ -62,10 +62,12 @@ $content = <<<'ENDHTML'
 .dd-info .dd-close:hover{background:#e2e8f0;color:#1e293b}
 .dd-drag-panel{display:none;flex-wrap:wrap;gap:8px;justify-content:center;padding:16px;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;margin-top:12px}
 .dd-drag-panel.visible{display:flex}
-.dd-chip{background:#fff;color:#334155;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:.85em;font-weight:500;border:1.5px solid #e2e8f0;user-select:none;transition:all .18s;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.dd-chip{background:#fff;color:#334155;padding:7px 14px;border-radius:8px;cursor:grab;font-size:.85em;font-weight:500;border:1.5px solid #e2e8f0;user-select:none;transition:all .18s;box-shadow:0 1px 3px rgba(0,0,0,.05)}
 .dd-chip:hover{border-color:#94a3b8;background:#f1f5f9}
-.dd-chip.on{background:#1e40af;color:#fff;border-color:#1e40af;box-shadow:0 2px 8px rgba(30,64,175,.3)}
+.dd-chip.on{background:#1e40af;color:#fff;border-color:#1e40af;box-shadow:0 2px 8px rgba(30,64,175,.3);cursor:grabbing}
+.dd-chip.dragging{opacity:.4;cursor:grabbing}
 .dd-chip.done{background:#f0fdf4;color:#16a34a;border-color:#86efac;cursor:default;opacity:.75}
+.dd-comp.drag-over .dd-cb{filter:drop-shadow(0 0 8px rgba(249,115,22,.7))}
 .dd-lbl{font-family:'Segoe UI',system-ui,sans-serif;fill:#1e293b;font-size:11px;font-weight:600;pointer-events:none}
 .dd-lbg{fill:#fff;stroke:#e2e8f0;stroke-width:1}
 .dd-sub{font-family:'Segoe UI',system-ui,sans-serif;fill:#64748b;font-size:9px;pointer-events:none}
@@ -248,43 +250,52 @@ function setupDrag(){
   var ids=Object.keys(C).sort(function(){return Math.random()-0.5;});
   var panel=document.getElementById('ddDragPanel'); panel.innerHTML='';
   ids.forEach(function(id){
-    var btn=document.createElement('button');
-    btn.className='dd-chip'; btn.textContent=C[id].name; btn.setAttribute('data-id',id);
-    btn.addEventListener('click',function(e){e.stopPropagation();selectChip(id,btn);});
-    panel.appendChild(btn);
+    var chip=document.createElement('div');
+    chip.className='dd-chip'; chip.textContent=C[id].name;
+    chip.setAttribute('data-id',id); chip.setAttribute('draggable','true');
+    // HTML5 drag
+    chip.addEventListener('dragstart',function(e){
+      if(chip.classList.contains('done')){e.preventDefault();return;}
+      e.dataTransfer.setData('text/plain',id);
+      e.dataTransfer.effectAllowed='move';
+      chip.classList.add('dragging');
+      dragSel=id;
+    });
+    chip.addEventListener('dragend',function(){chip.classList.remove('dragging');});
+    // Click fallback (touch / accessibility)
+    chip.addEventListener('click',function(e){
+      e.stopPropagation();
+      if(chip.classList.contains('done'))return;
+      document.querySelectorAll('.dd-chip').forEach(function(b){b.classList.remove('on');});
+      chip.classList.add('on'); dragSel=id;
+      document.getElementById('ddDragInst').textContent='Now click a component in the diagram:';
+      document.getElementById('ddDragSel').textContent='> '+C[id].name;
+    });
+    panel.appendChild(chip);
   });
   document.getElementById('ddDP').textContent='0';
   document.getElementById('ddDT').textContent=ids.length;
-  document.getElementById('ddDragInst').textContent='Select a component name below, then click it in the diagram.';
+  document.getElementById('ddDragInst').textContent='Drag a label onto its component in the diagram — or tap a label then tap the component.';
   document.getElementById('ddDragSel').textContent='';
 }
 
-function selectChip(id,btn){
-  if(btn.classList.contains('done'))return;
-  document.querySelectorAll('.dd-chip').forEach(function(b){b.classList.remove('on');});
-  btn.classList.add('on'); dragSel=id;
-  document.getElementById('ddDragInst').textContent='Now click in the diagram:';
-  document.getElementById('ddDragSel').textContent='> '+C[id].name;
-}
-
-function handleDrop(targetId,el){
-  if(!dragSel){showInfo(targetId);return;}
-  if(dragSel===targetId){
+function placeDrop(dragId,targetId,targetEl){
+  if(dragId===targetId){
     dragPlaced++;
     document.getElementById('ddDP').textContent=dragPlaced;
-    var chip=document.querySelector('.dd-chip[data-id="'+dragSel+'"]');
-    if(chip){chip.classList.remove('on');chip.classList.add('done');}
+    var chip=document.querySelector('.dd-chip[data-id="'+dragId+'"]');
+    if(chip){chip.classList.remove('on','dragging');chip.classList.add('done');}
     var dz=document.querySelector('.dd-dz[data-id="'+targetId+'"]');
     if(dz)dz.classList.add('filled');
     var cg=document.querySelector('.dd-comp[data-id="'+targetId+'"]');
     if(cg)cg.querySelectorAll('.dd-lbl,.dd-lbg').forEach(function(e){e.style.display='';});
-    el.classList.add('correct-flash');setTimeout(function(){el.classList.remove('correct-flash');},900);
+    targetEl.classList.add('correct-flash');setTimeout(function(){targetEl.classList.remove('correct-flash');},900);
     var tot=parseInt(document.getElementById('ddDT').textContent,10);
     if(dragPlaced>=tot){document.getElementById('ddDragInst').textContent='All components placed!';document.getElementById('ddDragSel').textContent='';}
-    else{document.getElementById('ddDragInst').textContent='Select a component name below, then click it in the diagram.';document.getElementById('ddDragSel').textContent='';}
+    else{document.getElementById('ddDragInst').textContent='Drag a label onto its component — or tap a label then tap the component.';document.getElementById('ddDragSel').textContent='';}
     dragSel=null;
   } else {
-    el.classList.add('wrong-flash');setTimeout(function(){el.classList.remove('wrong-flash');},700);
+    targetEl.classList.add('wrong-flash');setTimeout(function(){targetEl.classList.remove('wrong-flash');},700);
   }
 }
 
@@ -299,24 +310,54 @@ document.getElementById('ddCloseBtn').addEventListener('click',function(){
 });
 
 // Wire up SVG components via event delegation
-document.querySelector('.dd-svg-wrap').addEventListener('click',function(e){
-  var el=e.target;
-  while(el && el!==this){
-    if(el.classList && el.classList.contains('dd-comp')){
-      var id=el.getAttribute('data-id');
-      if(mode==='explore'){
-        showInfo(id);
-        document.querySelectorAll('.dd-comp').forEach(function(c){c.classList.remove('selected');});
-        el.classList.add('selected');
-      } else if(mode==='quiz' && qActive){
-        checkAnswer(id,el);
-      } else if(mode==='drag'){
-        handleDrop(id,el);
-      }
-      return;
-    }
+var svgWrap=document.querySelector('.dd-svg-wrap');
+
+function findComp(target,root){
+  var el=target;
+  while(el && el!==root){
+    if(el.classList && el.classList.contains('dd-comp'))return el;
     el=el.parentElement;
   }
+  return null;
+}
+
+// Click (explore, quiz, drag fallback)
+svgWrap.addEventListener('click',function(e){
+  var comp=findComp(e.target,this); if(!comp)return;
+  var id=comp.getAttribute('data-id');
+  if(mode==='explore'){
+    showInfo(id);
+    document.querySelectorAll('.dd-comp').forEach(function(c){c.classList.remove('selected');});
+    comp.classList.add('selected');
+  } else if(mode==='quiz' && qActive){
+    checkAnswer(id,comp);
+  } else if(mode==='drag' && dragSel){
+    placeDrop(dragSel,id,comp);
+  }
+});
+
+// Drag over — highlight target component
+svgWrap.addEventListener('dragover',function(e){
+  var comp=findComp(e.target,this);
+  if(comp && !comp.querySelector('.dd-dz.filled')){
+    e.preventDefault();
+    e.dataTransfer.dropEffect='move';
+    document.querySelectorAll('.dd-comp.drag-over').forEach(function(c){c.classList.remove('drag-over');});
+    comp.classList.add('drag-over');
+  }
+});
+svgWrap.addEventListener('dragleave',function(e){
+  if(!svgWrap.contains(e.relatedTarget)){
+    document.querySelectorAll('.dd-comp.drag-over').forEach(function(c){c.classList.remove('drag-over');});
+  }
+});
+// Drop
+svgWrap.addEventListener('drop',function(e){
+  e.preventDefault();
+  document.querySelectorAll('.dd-comp.drag-over').forEach(function(c){c.classList.remove('drag-over');});
+  var comp=findComp(e.target,this); if(!comp)return;
+  var dragId=e.dataTransfer.getData('text/plain');
+  if(dragId) placeDrop(dragId,comp.getAttribute('data-id'),comp);
 });
 })();
 </script>
