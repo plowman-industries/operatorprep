@@ -957,3 +957,30 @@ body.home #page .site-content {
 #opp-sg-hub .sg-card .sg-desc { color: #64748b !important; }
 #opp-sg-hub .sg-back       { color: #94a3b8 !important; }
 #opp-sg-hub .sg-back:hover { color: #64748b !important; }
+
+/* ── Certifications page hero — light theme ── */
+.opp-cert-hero {
+  background: var(--c-mist) !important;
+  color: var(--c-ink) !important;
+  border-left: 4px solid var(--c-signal) !important;
+  border-radius: 0 8px 8px 0 !important;
+  padding: 32px 40px !important;
+  margin-bottom: 40px !important;
+}
+/* Remove the ::before "// " — the text already contains the slashes */
+.opp-cert-eyebrow::before {
+  content: "" !important;
+  display: none !important;
+}
+.opp-cert-eyebrow {
+  color: var(--c-signal) !important;
+}
+.opp-cert-h1 {
+  color: var(--c-ink) !important;
+}
+.opp-cert-lead {
+  color: #475569 !important;
+}
+.opp-cert-lead strong {
+  color: var(--c-ink) !important;
+}
