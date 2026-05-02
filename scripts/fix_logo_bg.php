@@ -1,47 +1,43 @@
 <?php
 /**
- * Restore Plant Simulation card to T1 and T2 study guide hubs.
- * It was accidentally removed because it shared the 'sim' class with Practice Tests.
+ * Find T1-T2 plant simulator page and search for D1/D2/WW1/WW2 equivalents
  */
-echo "Restoring Plant Simulation card to T1 and T2..." . PHP_EOL;
-
-$plant_card  = '  <a class="sg-card sim" href="/t1-t2-plant-diagram/">' . "\n";
-$plant_card .= '    <div class="sg-icon">&#x1F3ED;</div>' . "\n";
-$plant_card .= '    <h2>Plant Simulation</h2>' . "\n";
-$plant_card .= '    <p class="sg-desc">Explore an interactive water treatment plant diagram. Click on each component to learn how it works and understand the full treatment process.</p>' . "\n";
-$plant_card .= '    <span class="sg-btn">Launch Simulation &#x2192;</span>' . "\n";
-$plant_card .= '  </a>';
-
-// Insert at the start of the sg-cards grid
-$grid_open = '<div class="sg-cards">';
-
-foreach (array(1160 => 't1-study-guide', 941 => 't2-study-guide') as $pid => $slug) {
-    $post = get_post($pid);
-    if (!$post) { echo "NOT FOUND: $pid" . PHP_EOL; continue; }
-    $content = $post->post_content;
-
-    // Already restored?
-    if (strpos($content, 't1-t2-plant-diagram') !== false) {
-        echo "SKIP (already present): $slug" . PHP_EOL;
-        continue;
-    }
-
-    if (strpos($content, $grid_open) === false) {
-        echo "ERROR: grid open not found in $slug" . PHP_EOL;
-        continue;
-    }
-
-    $content = str_replace(
-        $grid_open . "\n",
-        $grid_open . "\n" . $plant_card . "\n",
-        $content
-    );
-
-    wp_update_post(array('ID' => $pid, 'post_content' => $content));
-    echo "RESTORED: $slug" . PHP_EOL;
+echo "=== T1-T2 Plant Simulator ===" . PHP_EOL;
+$t12 = get_page_by_path('t1-t2-plant-diagram');
+if ($t12) {
+    echo "FOUND: ID={$t12->ID} slug={$t12->post_name} title={$t12->post_title} status={$t12->post_status}" . PHP_EOL;
+} else {
+    echo "NOT FOUND by slug t1-t2-plant-diagram" . PHP_EOL;
 }
 
-wp_cache_flush();
-do_action('sg_cachepress_purge_cache');
-if (function_exists('sg_cachepress_purge_cache')) sg_cachepress_purge_cache();
+echo PHP_EOL . "=== Searching all pages for plant/simulator/diagram ===" . PHP_EOL;
+$query = new WP_Query(array(
+    'post_type'      => array('page', 'post'),
+    'post_status'    => array('publish', 'draft', 'private'),
+    'posts_per_page' => 50,
+    's'              => 'plant',
+));
+foreach ($query->posts as $p) {
+    echo "  ID={$p->ID} slug={$p->post_name} title={$p->post_title} status={$p->post_status}" . PHP_EOL;
+}
+
+echo PHP_EOL . "=== Searching for diagram/simulator ===" . PHP_EOL;
+$q2 = new WP_Query(array(
+    'post_type'      => array('page', 'post'),
+    'post_status'    => array('publish', 'draft', 'private'),
+    'posts_per_page' => 50,
+    's'              => 'diagram',
+));
+foreach ($q2->posts as $p) {
+    echo "  ID={$p->ID} slug={$p->post_name} title={$p->post_title} status={$p->post_status}" . PHP_EOL;
+}
+
+echo PHP_EOL . "=== Searching by slug patterns ===" . PHP_EOL;
+$slugs = array('d1-plant-diagram','d2-plant-diagram','d1-d2-plant-diagram','ww1-plant-diagram','ww2-plant-diagram','ww1-ww2-plant-diagram','plant-simulator','distribution-plant-diagram','wastewater-plant-diagram');
+foreach ($slugs as $slug) {
+    $p = get_page_by_path($slug);
+    if ($p) echo "  FOUND: $slug => ID={$p->ID} title={$p->post_title} status={$p->post_status}" . PHP_EOL;
+    else echo "  NOT FOUND: $slug" . PHP_EOL;
+}
+
 echo "DONE" . PHP_EOL;
