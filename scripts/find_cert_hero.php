@@ -10,16 +10,17 @@ $pages = $wpdb->get_results("SELECT ID, post_title, post_name, post_content FROM
 echo "=== Pages ===" . PHP_EOL;
 foreach ($pages as $p) {
     echo "ID={$p->ID} title='{$p->post_title}' slug='{$p->post_name}'" . PHP_EOL;
-    echo "Content snippet: " . substr($p->post_content, 0, 500) . PHP_EOL;
+    echo "Content: " . substr($p->post_content, 0, 300) . PHP_EOL;
     echo "---" . PHP_EOL;
 }
 
 // Check snippets for certifications content
-$snippets = $wpdb->get_results("SELECT id, title, code FROM ugk_snippets WHERE code LIKE '%CERTIFICATION%' OR code LIKE '%3 TRACKS%' OR title LIKE '%certif%' LIMIT 10");
+$snippets = $wpdb->get_results("SELECT id, title, code FROM ugk_snippets WHERE code LIKE '%opp-cert-hero%' OR code LIKE '%opp_certifications%' OR title LIKE '%certif%' LIMIT 10");
 echo PHP_EOL . "=== Snippets ===" . PHP_EOL;
 foreach ($snippets as $s) {
     echo "ID={$s->id} title='{$s->title}'" . PHP_EOL;
-    echo "Code snippet: " . substr($s->code, 0, 500) . PHP_EOL;
+    echo "Full code:" . PHP_EOL;
+    echo $s->code . PHP_EOL;
     echo "---" . PHP_EOL;
 }
 echo "DONE" . PHP_EOL;
