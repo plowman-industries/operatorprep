@@ -1,49 +1,47 @@
 <?php
 /**
- * EPA Resources v2:
- * 1. Create shared EPA resources page (write-up + PDF links)
- * 2. Move EPA card into sg-cards grid on D1-D5 hub pages
- * 3. Remove old full-width EPA block and stale pdf-link CSS
+ * EPA Resources page: restyle to light theme (match site design review)
  * Run via: wp eval-file scripts/fix_logo_bg.php --allow-root
  */
-echo "Script starting..." . PHP_EOL;
-global $wpdb;
+echo "Updating EPA resources page to light theme..." . PHP_EOL;
 
-// ======================================================
-// STEP 1 -- Create / update dedicated EPA resources page
-// ======================================================
-$epa_slug  = 'epa-distribution-resources';
-$epa_title = 'EPA Distribution Resources';
+$epa_page_id = 1341;
 
 $epa_page_content = <<<'HTML'
 <!-- wp:html -->
 <style>.entry-header.ast-no-thumbnail { display: none !important; }</style>
 <div id="opp-epa-resources">
 <style>
-#opp-epa-resources { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #0f172a; color: #e2e8f0; max-width: 900px; margin: 0 auto; padding: 40px 24px; box-sizing: border-box; }
+#opp-epa-resources { font-family: var(--f-body, 'Segoe UI', system-ui, sans-serif); background: transparent; color: var(--c-ink, #0b1220); max-width: 860px; margin: 0 auto; padding: 40px 24px; box-sizing: border-box; }
 #opp-epa-resources *, #opp-epa-resources *::before, #opp-epa-resources *::after { box-sizing: border-box; }
-.epa-header { text-align: center; margin-bottom: 40px; }
-.epa-header h1 { font-size: 2.1em; color: #22c55e; margin: 0 0 12px; }
-.epa-header p { color: #94a3b8; font-size: 1.02em; line-height: 1.65; max-width: 620px; margin: 0 auto; }
-.epa-intro { background: #1e293b; border: 1px solid #334155; border-left: 4px solid #22c55e; border-radius: 0 12px 12px 0; padding: 22px 26px; margin-bottom: 32px; color: #94a3b8; font-size: 0.95em; line-height: 1.7; }
-.epa-intro strong { color: #e2e8f0; }
-.epa-cards { display: grid; gap: 20px; }
-.epa-doc { background: #1e293b; border: 1px solid #334155; border-left: 4px solid #22c55e; border-radius: 0 12px 12px 0; padding: 26px 28px 22px; }
-.epa-doc h2 { font-size: 1.1em; color: #e2e8f0; margin: 0 0 10px; }
-.epa-doc p { color: #94a3b8; font-size: 0.93em; line-height: 1.65; margin: 0 0 16px; }
-.epa-dl-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; background: #16a34a; color: #fff !important; font-weight: 600; font-size: 0.88em; border-radius: 8px; text-decoration: none; transition: background 0.2s; }
-.epa-dl-btn:hover { background: #15803d; color: #fff !important; }
-.epa-back { display: block; text-align: center; margin-top: 36px; color: #64748b; font-size: 0.9em; text-decoration: none; }
-.epa-back:hover { color: #94a3b8; }
-@media (max-width: 640px) { #opp-epa-resources { padding: 24px 16px; } .epa-header h1 { font-size: 1.6em; } }
+.epa-header { text-align: center; margin-bottom: 36px; }
+.epa-header h1 { font-family: var(--f-display, Georgia, serif); font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; letter-spacing: -0.02em; color: var(--c-ink, #0b1220); margin: 0 0 12px; }
+.epa-header h1 span { color: var(--c-signal, #0f5ea8); }
+.epa-header p { color: var(--c-steel, #475569); font-size: 1.02em; line-height: 1.65; max-width: 580px; margin: 0 auto; }
+.epa-intro { background: var(--c-mist, #f4f6f8); border: 1px solid var(--c-fog, #e2e8f0); border-left: 4px solid var(--c-signal, #0f5ea8); border-radius: 0 8px 8px 0; padding: 20px 24px; margin-bottom: 28px; color: var(--c-steel, #475569); font-size: 0.95em; line-height: 1.7; }
+.epa-intro strong { color: var(--c-ink, #0b1220); }
+.epa-cards { display: grid; gap: 16px; }
+.epa-doc { background: #ffffff; border: 1px solid var(--c-fog, #e2e8f0); border-left: 4px solid var(--c-signal, #0f5ea8); border-radius: 0 12px 12px 0; padding: 24px 28px 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+.epa-doc h2 { font-size: 1.05em; font-weight: 700; color: var(--c-ink, #0b1220); margin: 0 0 10px; display: flex; align-items: center; gap: 8px; }
+.epa-doc p { color: var(--c-steel, #475569); font-size: 0.93em; line-height: 1.65; margin: 0 0 16px; }
+.epa-dl-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: var(--c-signal, #0f5ea8); color: #fff !important; font-weight: 600; font-size: 0.875em; border-radius: 6px; text-decoration: none; transition: background 0.2s; }
+.epa-dl-btn:hover { background: #0a4a88; color: #fff !important; }
+.epa-eyebrow { font-family: var(--f-mono, monospace); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-signal, #0f5ea8); display: block; margin-bottom: 10px; }
+.epa-back { display: inline-flex; align-items: center; gap: 6px; margin-top: 32px; color: var(--c-signal, #0f5ea8); font-size: 0.9em; text-decoration: none; font-weight: 500; }
+.epa-back:hover { text-decoration: underline; }
+@media (max-width: 640px) { #opp-epa-resources { padding: 24px 16px; } .epa-header h1 { font-size: 1.6rem; } .epa-doc { padding: 20px 20px 16px; } }
 </style>
+
 <div class="epa-header">
-  <h1>EPA Distribution Resources</h1>
+  <span class="epa-eyebrow">Distribution Study Resources</span>
+  <h1>EPA <span>Distribution</span> Resources</h1>
   <p>Official guidance documents from the U.S. Environmental Protection Agency for water distribution system operators</p>
 </div>
+
 <div class="epa-intro">
-  The EPA's <strong>Drinking Water Capacity Development</strong> program provides these technical assistance documents for small drinking water system operators. They cover day-to-day operational best practices, regulatory compliance, and protecting water quality throughout the distribution system -- topics covered directly on D1-D5 certification exams.
+  The EPA's <strong>Drinking Water Capacity Development</strong> program provides these technical assistance documents for small system operators. They cover operational best practices, regulatory compliance, and protecting water quality throughout the distribution system -- topics tested directly on D1-D5 certification exams.
 </div>
+
 <div class="epa-cards">
   <div class="epa-doc">
     <h2>&#x1F4C4; Distribution Systems: A Best Practices Guide</h2>
@@ -61,106 +59,22 @@ $epa_page_content = <<<'HTML'
     <a href="https://www.epa.gov/sites/default/files/2015-09/documents/epa816r03002_0.pdf" target="_blank" rel="noopener" class="epa-dl-btn">&#x2B07; Download PDF</a>
   </div>
 </div>
+
 <a class="epa-back" href="javascript:history.back()">&#x2190; Back to Study Guide</a>
 </div>
 <!-- /wp:html -->
 HTML;
 
-echo "String OK, finding EPA page..." . PHP_EOL;
+$result = wp_update_post( array(
+    'ID'           => $epa_page_id,
+    'post_content' => $epa_page_content,
+    'post_status'  => 'publish',
+) );
 
-$existing_page = get_page_by_path( $epa_slug );
-if ( $existing_page ) {
-    $epa_page_id = $existing_page->ID;
-    wp_update_post( array( 'ID' => $epa_page_id, 'post_content' => $epa_page_content, 'post_status' => 'publish' ) );
-    echo "Updated EPA page: ID $epa_page_id" . PHP_EOL;
+if ( is_wp_error( $result ) ) {
+    echo "ERROR: " . $result->get_error_message() . PHP_EOL;
 } else {
-    $epa_page_id = wp_insert_post( array(
-        'post_title'   => $epa_title,
-        'post_name'    => $epa_slug,
-        'post_content' => $epa_page_content,
-        'post_status'  => 'publish',
-        'post_type'    => 'page',
-    ) );
-    echo "Created EPA page: ID $epa_page_id" . PHP_EOL;
-}
-$epa_url = get_permalink( $epa_page_id );
-echo "EPA URL: $epa_url" . PHP_EOL;
-
-// ======================================================
-// STEP 2 -- Build the new EPA grid card HTML
-// ======================================================
-$new_epa_card  = '  <a class="sg-card resources" href="' . esc_url( $epa_url ) . '">' . "\n";
-$new_epa_card .= '    <div class="sg-icon">&#x1F4CB;</div>' . "\n";
-$new_epa_card .= '    <h2>EPA Resources</h2>' . "\n";
-$new_epa_card .= '    <p class="sg-desc">Official EPA guides for distribution operators -- best practices, cross-connection control, and system management.</p>' . "\n";
-$new_epa_card .= '    <span class="sg-btn">View EPA Resources &#x2192;</span>' . "\n";
-$new_epa_card .= '  </a>';
-
-$resources_css  = "\n" . '.sg-card.resources::before { background: linear-gradient(90deg, #22c55e, #16a34a); }' . "\n";
-$resources_css .= '.sg-card.resources:hover { border-color: #22c55e; }' . "\n";
-$resources_css .= '.sg-card.resources .sg-icon { background: rgba(34,197,94,0.12); color: #22c55e; }' . "\n";
-$resources_css .= '.sg-card.resources .sg-btn { background: #16a34a; color: #fff; }';
-
-// ======================================================
-// STEP 3 -- Update D1-D5 hub pages
-// ======================================================
-$page_ids = array( 1246, 1247, 1209, 1248, 1249 );
-$updated = 0;
-$skipped = 0;
-
-foreach ( $page_ids as $pid ) {
-    $post = get_post( $pid );
-    if ( ! $post ) {
-        echo "NOT FOUND: $pid" . PHP_EOL;
-        continue;
-    }
-    $content = $post->post_content;
-    $slug    = $post->post_name;
-
-    if ( strpos( $content, 'class="sg-card resources" href=' ) !== false ) {
-        echo "SKIP (already done): post $pid ($slug)" . PHP_EOL;
-        $skipped++;
-        continue;
-    }
-
-    // 3a. Replace outer style block: strip pdf-link CSS, keep entry-header rule only
-    $content = preg_replace(
-        '/<style>\.entry-header\.ast-no-thumbnail \{ display: none !important; \}.*?<\/style>/s',
-        '<style>.entry-header.ast-no-thumbnail { display: none !important; }</style>',
-        $content,
-        1
-    );
-
-    // 3b. Inject resources card CSS into inner style block (before inner </style>)
-    if ( strpos( $content, 'sg-card.resources::before' ) === false ) {
-        $inner_close = "</style>\n<div class=\"sg-header\">";
-        $content = str_replace(
-            $inner_close,
-            $resources_css . "\n</style>\n<div class=\"sg-header\">",
-            $content
-        );
-    }
-
-    // 3c. Insert EPA grid card into .sg-cards grid (before its closing </div>)
-    $grid_close = "</div>\n<a class=\"sg-back\"";
-    if ( strpos( $content, $grid_close ) !== false ) {
-        $content = str_replace(
-            $grid_close,
-            $new_epa_card . "\n</div>\n<a class=\"sg-back\"",
-            $content
-        );
-    }
-
-    // 3d. Remove old standalone EPA card (everything from its opening div to end)
-    $epa_block_start = "\n<div class=\"sg-card resources\">";
-    $epa_pos = strpos( $content, $epa_block_start );
-    if ( $epa_pos !== false ) {
-        $content = substr( $content, 0, $epa_pos ) . "\n</div>\n<!-- /wp:html -->";
-    }
-
-    wp_update_post( array( 'ID' => $pid, 'post_content' => $content ) );
-    echo "UPDATED: post $pid ($slug)" . PHP_EOL;
-    $updated++;
+    echo "Updated EPA page ID $result" . PHP_EOL;
 }
 
 // Purge caches
@@ -170,5 +84,4 @@ if ( function_exists( 'sg_cachepress_purge_cache' ) ) {
     sg_cachepress_purge_cache();
 }
 
-echo "Done -- updated: $updated, skipped: $skipped" . PHP_EOL;
 echo "DONE" . PHP_EOL;
