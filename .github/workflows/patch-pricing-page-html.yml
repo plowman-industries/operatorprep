@@ -1,0 +1,40 @@
+name: Patch Pricing Page Split-HTML Price
+
+on:
+  workflow_dispatch:
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: SCP patch script to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ssh.operatorprep.com
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 18765
+          source: "scripts/patch_pricing_page_html.php"
+          target: /tmp/opp-pricing-html/
+
+      - name: Run patch script
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ssh.operatorprep.com
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 18765
+          script: |
+            cd /home/${{ secrets.PROD_SSH_USER }}/www/operatorprep.com/public_html
+            wp eval-file /tmp/opp-pricing-html/scripts/patch_pricing_page_html.php --allow-root 2>&1
+
+      - name: Cleanup
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ssh.operatorprep.com
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 18765
+          script: rm -rf /tmp/opp-pricing-html
