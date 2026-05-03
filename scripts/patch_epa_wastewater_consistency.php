@@ -6,7 +6,8 @@
  *   1. Remove "// " prefix from eyebrow text (existing pages don't use it)
  *   2. Remove "// " prefix from section title labels (existing pages don't use it)
  *   3. Fix back link href from /wastewater-study-guides/ → javascript:history.back()
- *      (both existing pages use history.back())
+ *   4. Add emoji icons to all card h2s — 📄 for docs/PDFs, ▶ for webinars/videos,
+ *      📊 for the Excel tool (existing pages use 📄 on every h2)
  */
 echo "Patching EPA wastewater page for consistency...\n";
 
@@ -37,6 +38,38 @@ $patches = [
     // 3. Back link href
     'href="/wastewater-study-guides/"'
         => 'href="javascript:history.back()"',
+
+    // 4. Card h2 emoji icons — 📄 for documents/PDFs, ▶ for webinars/videos, 📊 for Excel
+    '<h2>Compliance Tips for Small, Mechanical Wastewater'
+        => '<h2>📄 Compliance Tips for Small, Mechanical Wastewater',
+    '<h2>Discharge Monitoring Reports'
+        => '<h2>▶ Discharge Monitoring Reports',
+    '<h2>Technical Assistance Webinars: Improving'
+        => '<h2>▶ Technical Assistance Webinars: Improving',
+    '<h2>Small Mechanical Plants — Wastewater Tip Sheet'
+        => '<h2>📄 Small Mechanical Plants — Wastewater Tip Sheet',
+    '<h2>Treatment Lagoons — Wastewater Tip Sheet'
+        => '<h2>📄 Treatment Lagoons — Wastewater Tip Sheet',
+    '<h2>Troubleshooting Manual for Small Wastewater Lagoons'
+        => '<h2>📄 Troubleshooting Manual for Small Wastewater Lagoons',
+    '<h2>Principles of Design and Operations'
+        => '<h2>📄 Principles of Design and Operations',
+    '<h2>Algae\'s Influence on the BOD'
+        => '<h2>📄 Algae\'s Influence on the BOD',
+    '<h2>The Microbiology of Wastewater Treatment'
+        => '<h2>▶ The Microbiology of Wastewater Treatment',
+    '<h2>Ammonia Removal Best Practices Tool'
+        => '<h2>📊 Ammonia Removal Best Practices Tool',
+    '<h2>ABC Formula Table for Wastewater Treatment'
+        => '<h2>📄 ABC Formula Table for Wastewater Treatment',
+    '<h2>Process Control Technical Assistance Video Series — Part 1:'
+        => '<h2>▶ Process Control Technical Assistance Video Series — Part 1:',
+    '<h2>Process Control Technical Assistance Video Series — Part 2:'
+        => '<h2>▶ Process Control Technical Assistance Video Series — Part 2:',
+    '<h2>Process Control Technical Assistance Video Series — Part 3:'
+        => '<h2>▶ Process Control Technical Assistance Video Series — Part 3:',
+    '<h2>Process Control Technical Assistance Video Series — Part 4:'
+        => '<h2>▶ Process Control Technical Assistance Video Series — Part 4:',
 ];
 
 foreach ( $patches as $old => $new ) {
