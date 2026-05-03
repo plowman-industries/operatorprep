@@ -732,6 +732,9 @@ body.home #page .site-content {
   .op-btn-primary, .op-btn-ghost { width: 100%; justify-content: center; }
 }
 
+/* Pricing page — tighten prop-bullet gap so all 4 fit on one row */
+.opp-props { gap: 18px !important; }
+
 /* Simulator cards section (homepage) */
 .op-sims { background: var(--c-mist); padding: var(--sp-6) 0; border-top: 1px solid var(--c-fog); border-bottom: 1px solid var(--c-fog); }
 .op-sims__inner { max-width: 1100px; margin: 0 auto; padding: 0 var(--sp-6); }
