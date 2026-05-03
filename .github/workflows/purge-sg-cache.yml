@@ -1,0 +1,27 @@
+name: Purge SiteGround Full Page Cache
+
+on:
+  workflow_dispatch:
+
+jobs:
+  purge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Purge all caches via WP-CLI
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ssh.operatorprep.com
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 18765
+          script: |
+            cd /home/${{ secrets.PROD_SSH_USER }}/www/operatorprep.com/public_html
+            echo "--- WP cache flush ---"
+            wp cache flush --allow-root 2>&1
+            echo "--- SG Optimizer purge (if available) ---"
+            wp sg-optimizer purge --allow-root 2>&1 || echo "sg-optimizer not available as CLI command"
+            echo "--- Deleting SG static cache files ---"
+            find /home/${{ secrets.PROD_SSH_USER }}/www/operatorprep.com/public_html -name "*.html" -path "*/cache/*" -delete 2>&1 | head -20 || true
+            echo "--- WP transient purge ---"
+            wp transient delete --all --allow-root 2>&1
+            echo "--- DONE ---"
