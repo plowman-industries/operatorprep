@@ -11,8 +11,10 @@ echo "Patching WooCommerce product prices: 29.99 -> 19.99...\n";
 
 global $wpdb;
 
-// Find all post IDs that have _price or _regular_price = 29.99
-$meta_keys = [ '_price', '_regular_price', '_sale_price' ];
+// Find all post IDs that have a price of 29.99 in any price-related meta key.
+// _subscription_price is used by WooCommerce Subscriptions plugin for the
+// displayed billing amount — must be updated alongside _price/_regular_price.
+$meta_keys = [ '_price', '_regular_price', '_sale_price', '_subscription_price' ];
 $updated_ids = [];
 
 foreach ( $meta_keys as $key ) {
@@ -44,8 +46,9 @@ if ( empty( $updated_ids ) ) {
     foreach ( array_unique( $updated_ids ) as $pid ) {
         $price = get_post_meta( $pid, '_price', true );
         $reg   = get_post_meta( $pid, '_regular_price', true );
+        $sub   = get_post_meta( $pid, '_subscription_price', true );
         $title = get_the_title( $pid );
-        echo "  [{$pid}] \"{$title}\" — _price={$price}, _regular_price={$reg}\n";
+        echo "  [{$pid}] \"{$title}\" — _price={$price}, _regular_price={$reg}, _subscription_price={$sub}\n";
     }
 }
 
