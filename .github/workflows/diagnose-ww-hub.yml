@@ -1,0 +1,40 @@
+name: Diagnose WW Study Guide Hub Pages
+
+on:
+  workflow_dispatch:
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: SCP script to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ssh.operatorprep.com
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 18765
+          source: "scripts/diagnose_ww_hub.php"
+          target: /tmp/opp-ww-diag/
+
+      - name: Run diagnostic
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ssh.operatorprep.com
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 18765
+          script: |
+            cd /home/${{ secrets.PROD_SSH_USER }}/www/operatorprep.com/public_html
+            wp eval-file /tmp/opp-ww-diag/scripts/diagnose_ww_hub.php --allow-root 2>&1
+
+      - name: Cleanup
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ssh.operatorprep.com
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 18765
+          script: rm -rf /tmp/opp-ww-diag
