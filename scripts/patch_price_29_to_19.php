@@ -27,10 +27,10 @@ foreach ( $pages as $page ) {
     $new = str_replace( '$29.99', '$19.99', $c );
     $result = wp_update_post( [ 'ID' => $page->ID, 'post_content' => $new ] );
     if ( is_wp_error( $result ) ) {
-        echo "  ERROR (ID {$page->ID} "{$page->post_title}"): " . $result->get_error_message() . "\n";
+        echo "  ERROR (ID {$page->ID} [{$page->post_title}]): " . $result->get_error_message() . "\n";
     } else {
         $count = substr_count( $c, '$29.99' );
-        echo "  OK (ID {$page->ID}): "{$page->post_title}" — {$count} replacement(s)\n";
+        echo "  OK (ID {$page->ID}): [{$page->post_title}] - {$count} replacement(s)\n";
         $updated++;
     }
 }
