@@ -749,6 +749,48 @@ body.home #page .site-content {
 .op-sim-card__link:hover { color: var(--c-signal-dark); }
 @media (max-width: 960px) { .op-sims__grid { grid-template-columns: 1fr; } }
 
+/* ── Simulator consistency: font + active-button brand colour ───────────────
+   Inline <style> blocks in the simulator pages use "Segoe UI" and off-brand
+   active button colours. These overrides enforce site tokens site-wide.       */
+
+/* 1. Force site body font on all three simulator containers */
+#opp-ww-diagram,
+#opp-tp-diagram,
+#opp-dist-diagram { font-family: var(--f-body) !important; }
+
+/* 2. Active mode button → brand blue on all three */
+#opp-ww-diagram .ww-mode-btn.active,
+#opp-tp-diagram .tp-mode-btn.active,
+#opp-dist-diagram .dd-mode-btn.active {
+  background: var(--c-signal) !important;
+  border-color: var(--c-signal) !important;
+  box-shadow: 0 2px 8px rgba(15,94,168,0.35) !important;
+}
+#opp-ww-diagram .ww-mode-btn.active:hover,
+#opp-tp-diagram .tp-mode-btn.active:hover,
+#opp-dist-diagram .dd-mode-btn.active:hover {
+  background: var(--c-signal-dark) !important;
+  border-color: var(--c-signal-dark) !important;
+}
+
+/* 3. T1/T2 inactive mode buttons — match WW/D1 (white, not sky-tinted) */
+#opp-tp-diagram .tp-mode-btn:not(.active) {
+  background: #fff !important;
+  color: #334155 !important;
+  border: 2px solid #64748b !important;
+}
+#opp-tp-diagram .tp-mode-btn:not(.active):hover {
+  background: #eff6ff !important;
+  color: #1d4ed8 !important;
+  border-color: #3b82f6 !important;
+}
+
+/* 4. Certifications page — wastewater track header: green → brand blue wash */
+.opp-track-wastewater {
+  background: var(--c-signal-wash) !important;
+  color: var(--c-signal) !important;
+}
+
 /* ── Flashcard category cards → light design matching Practice Tests ───────
    Applies to all four flashcard series:
    T2           .opp-fc-cat-card
