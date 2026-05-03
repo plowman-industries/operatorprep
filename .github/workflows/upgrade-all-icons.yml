@@ -1,0 +1,40 @@
+name: Upgrade All Simulator Icons
+
+on:
+  workflow_dispatch:
+
+jobs:
+  upgrade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: SCP upgrade script to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ssh.operatorprep.com
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 18765
+          source: "scripts/upgrade_all_icons.php"
+          target: /tmp/opp-icons/
+
+      - name: Run icon upgrade script
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ssh.operatorprep.com
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 18765
+          script: |
+            cd /home/${{ secrets.PROD_SSH_USER }}/www/operatorprep.com/public_html
+            wp eval-file /tmp/opp-icons/scripts/upgrade_all_icons.php --allow-root 2>&1
+
+      - name: Cleanup
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ssh.operatorprep.com
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 18765
+          script: rm -rf /tmp/opp-icons
