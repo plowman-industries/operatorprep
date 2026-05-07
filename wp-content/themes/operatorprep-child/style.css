@@ -5,7 +5,7 @@
  Author:       Plowman Industries LLC
  Author URI:   https://operatorprep.com
  Template:     astra
- Version:      2.1.4
+ Version:      2.1.5
  License:      GNU General Public License v2 or later
  License URI:  http://www.gnu.org/licenses/gpl-2.0.html
  Text Domain:  operatorprep-child
@@ -601,6 +601,13 @@ body.home .post-0,
 
 body.home {
   background-color: var(--c-paper) !important;
+}
+
+/* Astra injects a 26px internal offset inside #primary that no CSS rule
+   or inline style accounts for (likely a JS layout pass). This pulls
+   #main back up so the hero section sits flush against the sticky header. */
+body.home #main.site-main {
+  margin-top: -26px !important;
 }
 
 /* Suppress phantom WordPress <p> wrappers at top of homepage content */
