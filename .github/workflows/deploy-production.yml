@@ -44,6 +44,7 @@ jobs:
           script: |
             cd /home/${{ secrets.PROD_SSH_USER }}/www/operatorprep.com/public_html
             wp eval-file wp-content/themes/operatorprep-child/install.php --allow-root 2>&1 || true
+            wp eval-file wp-content/themes/operatorprep-child/fix-contact.php --allow-root 2>&1 || true
             wp cache flush --allow-root 2>/dev/null || true
             wp sg purge --allow-root 2>/dev/null || true
             wp transient delete --all --allow-root 2>/dev/null || true
