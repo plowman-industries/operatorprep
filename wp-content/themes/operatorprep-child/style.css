@@ -601,6 +601,15 @@ body.home {
   background-color: var(--c-paper) !important;
 }
 
+/* Suppress phantom WordPress <p> wrappers at top of homepage content */
+body.home .entry-content > p:empty,
+body.home .entry-content > p:first-child:has(svg) {
+  display: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 0 !important;
+}
+
 /* ============================================================
    STICKY HEADER
    ============================================================ */
@@ -1119,7 +1128,7 @@ body.home #page .site-content {
   background: #ffffff !important;
   border: 1px solid #e2e8f0 !important;
   border-left: 4px solid var(--c-signal) !important;
-  border-radius: 0 12px 12px 0 !important;
+  border-radius: 12px !important;
   box-shadow: none !important;
 }
 #opp-math-drills#opp-math-drills .md-cat-card::before {
