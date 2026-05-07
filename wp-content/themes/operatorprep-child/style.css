@@ -40,6 +40,8 @@
   --sp-9: 64px;  --sp-10: 96px;
   /* Border radius */
   --r-sm: 4px;   --r-md: 8px;   --r-lg: 12px;  --r-xl: 20px;
+  /* Layout */
+  --header-height: 93px;
 }
 
 /* ============================================================
