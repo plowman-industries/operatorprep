@@ -1,0 +1,49 @@
+name: Diagnose Contact Page
+
+on:
+  workflow_dispatch:
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run WP-CLI diagnostics via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ssh.operatorprep.com
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 18765
+          script: |
+            cd /home/${{ secrets.PROD_SSH_USER }}/www/operatorprep.com/public_html
+            
+            # Get contact page info
+            echo "=== CONTACT PAGE ==="
+            wp post list --post_type=page --name=contact-us --fields=ID,post_title,post_status --allow-root
+            
+            PAGE_ID=$(wp post list --post_type=page --name=contact-us --fields=ID --format=csv --allow-root | tail -1)
+            echo "Page ID: $PAGE_ID"
+            
+            # Check all meta
+            echo "=== PAGE META (restriction-related) ==="
+            wp post meta list $PAGE_ID --allow-root | grep -i -E "tutor|member|restrict|access|login|private|protected" || echo "No restriction meta found"
+            
+            # Check what plugin redirects to my-account
+            echo "=== ACTIVE PLUGINS ==="
+            wp plugin list --status=active --fields=name --allow-root | grep -i -E "tutor|member|restrict|access|login|protect" || echo "No relevant plugins"
+            
+            # Check CF7 forms
+            echo "=== CF7 FORMS ==="
+            wp post list --post_type=wpcf7_contact_form --fields=ID,post_title --allow-root
+            
+            # Check TutorLMS options that restrict pages
+            echo "=== TUTOR SETTINGS ==="
+            wp option get tutor_option --allow-root 2>/dev/null | python3 -c "
+import sys, json
+try:
+    data = json.loads(sys.stdin.read())
+    for k,v in data.items():
+        if any(x in k.lower() for x in ['login','redirect','restrict','access','member']):
+            print(f'{k}: {v}')
+except: pass
+" || echo "Could not parse tutor options"
