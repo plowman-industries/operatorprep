@@ -5,7 +5,7 @@
  Author:       Plowman Industries LLC
  Author URI:   https://operatorprep.com
  Template:     astra
- Version:      2.1.5
+ Version:      2.1.6
  License:      GNU General Public License v2 or later
  License URI:  http://www.gnu.org/licenses/gpl-2.0.html
  Text Domain:  operatorprep-child
@@ -1265,4 +1265,62 @@ body.home #page .site-content {
 #opp-ww5-ref  .ww5r-nav  a:hover {
   background: rgba(15, 94, 168, 0.07) !important;
   text-decoration: underline !important;
+}
+
+/* ============================================================
+   SITE-WIDE FOOTER
+   ============================================================ */
+.op-site-footer {
+  background: var(--c-ink);
+  color: rgba(255,255,255,0.55);
+  padding: var(--sp-8) 0 var(--sp-7);
+  margin-top: var(--sp-9);
+  font-family: var(--f-body);
+  font-size: 14px;
+}
+.op-site-footer__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--sp-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-6);
+  text-align: center;
+}
+.op-site-footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.op-site-footer__logo {
+  font-family: var(--f-display);
+  font-size: 20px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+.op-site-footer__tagline {
+  font-size: 13px;
+  color: rgba(255,255,255,0.45);
+}
+.op-site-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--sp-2) var(--sp-6);
+}
+.op-site-footer__links a {
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.15s;
+}
+.op-site-footer__links a:hover {
+  color: #ffffff;
+}
+.op-site-footer__copy {
+  font-size: 12px;
+  color: rgba(255,255,255,0.3);
+  margin: 0;
 }

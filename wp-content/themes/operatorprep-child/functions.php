@@ -133,3 +133,31 @@ add_action( 'wp', function() {
         remove_filter( 'the_content', 'wpautop_fix' );
     }
 } );
+
+/**
+ * Inject a site-wide footer before </body>.
+ * The Astra footer template was removed; this replaces it with a minimal
+ * branded footer that satisfies ad platform policy link requirements.
+ */
+add_action( 'wp_footer', 'op_render_site_footer', 5 );
+function op_render_site_footer() {
+    $year = date( 'Y' );
+    ?>
+    <footer class="op-site-footer" aria-label="Site footer">
+        <div class="op-site-footer__inner">
+            <div class="op-site-footer__brand">
+                <span class="op-site-footer__logo">OperatorPrep</span>
+                <span class="op-site-footer__tagline">Water &amp; Wastewater Operator Exam Prep</span>
+            </div>
+            <nav class="op-site-footer__links" aria-label="Footer navigation">
+                <a href="<?php echo esc_url( home_url( '/privacy-policy/' ) ); ?>">Privacy Policy</a>
+                <a href="<?php echo esc_url( home_url( '/terms-of-service/' ) ); ?>">Terms of Service</a>
+                <a href="<?php echo esc_url( home_url( '/refund-policy/' ) ); ?>">Refund Policy</a>
+                <a href="<?php echo esc_url( home_url( '/contact-us/' ) ); ?>">Contact Us</a>
+                <a href="<?php echo esc_url( home_url( '/faq/' ) ); ?>">FAQ</a>
+            </nav>
+            <p class="op-site-footer__copy">&copy; <?php echo esc_html( $year ); ?> Plowman Industries LLC. All rights reserved.</p>
+        </div>
+    </footer>
+    <?php
+}
