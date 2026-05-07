@@ -134,6 +134,59 @@ add_action( 'wp', function() {
     }
 } );
 
+// ── SEO Meta Descriptions ─────────────────────────────────────────────────
+/**
+ * Inject <meta name="description"> for key pages.
+ * Fires at priority 1 (before any SEO plugin) so pages without a plugin-set
+ * description still get a meaningful tag. If an SEO plugin later outputs its
+ * own tag, search engines use the first one — which will be ours.
+ */
+add_action( 'wp_head', 'op_inject_meta_description', 1 );
+function op_inject_meta_description() {
+    $desc = '';
+
+    // ── Static page descriptions ──────────────────────────────────────────
+    $page_descs = array(
+        // Core pages
+        'pricing'        => 'Get unlimited access to all 15 water and wastewater operator certification prep courses for $19.99/month. Practice tests, study guides, flashcards, and math drills. Cancel anytime.',
+        'certifications' => 'Browse all 15 water and wastewater operator certification prep courses. Treatment grades T1-T5, Distribution D1-D5, and Wastewater WW1-WW5. Start studying today.',
+        'about'          => 'OperatorPrep is designed by water and wastewater professionals to help operators pass their state certification exams. Prep materials for all 15 certification levels.',
+        'faq'            => 'Common questions about OperatorPrep exam prep -- what is included in each course, how the practice tests work, and how to prepare for your water operator certification.',
+        'contact-us'     => 'Contact the OperatorPrep support team. We respond to all questions about certification exam prep within 24 hours.',
+        // Treatment cert hubs
+        't1'  => 'Grade 1 Water Treatment Operator exam prep. Practice tests, study guides, flashcards, and math drills for the T1 certification. Start your free trial today.',
+        't2'  => 'Grade 2 Water Treatment Operator exam prep. In-depth practice tests, study guides, and flashcards aligned to the T2 certification exam.',
+        't3'  => 'Grade 3 Water Treatment Operator exam prep. Comprehensive practice exams, process simulations, and study materials for the T3 certification.',
+        't4'  => 'Grade 4 Water Treatment Operator exam prep. Advanced practice tests and study guides for the T4 water treatment certification.',
+        't5'  => 'Grade 5 Water Treatment Operator exam prep. Expert-level practice tests and study materials for the highest-grade treatment certification.',
+        // Distribution cert hubs
+        'd1'  => 'Grade 1 Water Distribution Operator exam prep. Practice tests, study guides, and flashcards for the D1 distribution certification.',
+        'd2'  => 'Grade 2 Water Distribution Operator exam prep. Targeted practice exams and study guides for the D2 distribution certification.',
+        'd3'  => 'Grade 3 Water Distribution Operator exam prep. Comprehensive practice tests and study materials for the D3 certification.',
+        'd4'  => 'Grade 4 Water Distribution Operator exam prep. Advanced practice exams for the D4 water distribution certification.',
+        'd5'  => 'Grade 5 Water Distribution Operator exam prep. Expert practice tests and study guides for the highest-grade distribution certification.',
+        // Wastewater cert hubs
+        'ww1' => 'Grade 1 Wastewater Treatment Operator exam prep. Practice tests, study guides, and flashcards for the WW1 certification exam.',
+        'ww2' => 'Grade 2 Wastewater Treatment Operator exam prep. Targeted practice exams and study materials for the WW2 certification.',
+        'ww3' => 'Grade 3 Wastewater Treatment Operator exam prep. Comprehensive practice tests and study guides for the WW3 wastewater certification.',
+        'ww4' => 'Grade 4 Wastewater Treatment Operator exam prep. Advanced practice exams for the WW4 wastewater treatment certification.',
+        'ww5' => 'Grade 5 Wastewater Treatment Operator exam prep. Expert practice tests and study materials for the highest-grade wastewater certification.',
+    );
+
+    if ( is_front_page() ) {
+        $desc = 'Pass your water or wastewater operator certification exam with OperatorPrep. Practice tests, study guides, flashcards, and math drills for T1-T5, D1-D5, and WW1-WW5 certifications.';
+    } elseif ( is_page() ) {
+        $slug = get_post_field( 'post_name', get_queried_object_id() );
+        if ( isset( $page_descs[ $slug ] ) ) {
+            $desc = $page_descs[ $slug ];
+        }
+    }
+
+    if ( $desc ) {
+        echo '<meta name="description" content="' . esc_attr( $desc ) . '">' . "\n";
+    }
+}
+
 /**
  * Inject a site-wide footer before </body>.
  * The Astra footer template was removed; this replaces it with a minimal
