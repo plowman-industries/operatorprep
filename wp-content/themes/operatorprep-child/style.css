@@ -603,7 +603,8 @@ body.home {
 
 /* Suppress phantom WordPress <p> wrappers at top of homepage content */
 body.home .entry-content > p:empty,
-body.home .entry-content > p:first-child:has(svg) {
+body.home .entry-content > p:first-child:has(svg),
+body.home .entry-content > p:first-child {
   display: none !important;
   margin: 0 !important;
   padding: 0 !important;
