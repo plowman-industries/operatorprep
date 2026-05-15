@@ -56,7 +56,7 @@ function opp_ajax_start_trial() {
     $product_id = (int) ( $_POST['product_id'] ?? 0 );
 
     if ( ! $username || ! is_email( $email ) || ! $password || ! $product_id ) {
-        wp_send_json_error( [ 'message' => 'All fields are required.' ] );
+        wp_send_json_error( [ 'message' => 'All fields are required, including a certification selection.' ] );
     }
 
     $valid_ids = array_keys( opp_trial_cert_map() );
@@ -94,6 +94,15 @@ function opp_ajax_start_trial() {
     wp_send_json_success( [ 'redirect' => $redirect ] );
 }
 
+// SEO: inject a descriptive title tag on the /free-trial/ page.
+add_filter( 'document_title_parts', function( $title ) {
+    if ( is_page( 'free-trial' ) ) {
+        $title['title'] = 'Free 3-Day Trial &mdash; Water &amp; Wastewater Operator Exam Prep';
+        $title['site']  = 'OperatorPrep';
+    }
+    return $title;
+} );
+
 // Shortcode: [opp_free_trial_form]
 add_shortcode( 'opp_free_trial_form', 'opp_render_trial_form' );
 function opp_render_trial_form() {
@@ -124,16 +133,31 @@ function opp_render_trial_form() {
     ob_start();
     ?>
     <div class="opp-trial-wrap">
+
+      <!-- Header -->
       <div class="opp-trial-header">
-        <h1 class="opp-trial-title">Try OperatorPrep Free &#x2014; 3 Days</h1>
-        <p class="opp-trial-sub">Pick one certification. Create an account. Start studying immediately.<br>No credit card required.</p>
+        <h1 class="opp-trial-title">Try OperatorPrep Free &#x2014; 3 Days, No Card</h1>
+        <p class="opp-trial-sub">Pick one certification. Create an account. Start studying immediately.</p>
+        <p class="opp-trial-cred">Built by an active CA Grade 5 operator. Not a test-prep company.</p>
+      </div>
+
+      <!-- What's included -->
+      <div class="opp-trial-included">
+        <p class="opp-trial-included__heading">What you get during your trial</p>
+        <ul class="opp-trial-included__list">
+          <li>&#x2713;&ensp;Full practice test bank for your chosen certification</li>
+          <li>&#x2713;&ensp;Flashcards covering key concepts and definitions</li>
+          <li>&#x2713;&ensp;Math drills with step-by-step operator solutions</li>
+        </ul>
+        <p class="opp-trial-included__sub">All content for one cert, for 3 days. After your trial, nothing auto-charges &#x2014; subscribe for $19.99/mo only if you want to continue.</p>
       </div>
 
       <form id="opp-trial-form" class="opp-trial-form" novalidate>
         <?php wp_nonce_field( 'opp_trial_nonce', 'nonce' ); ?>
 
+        <!-- Cert picker -->
         <div class="opp-trial-section">
-          <p class="opp-trial-label">Choose Your Certification</p>
+          <p class="opp-trial-label">Choose Your Certification <span class="opp-trial-label__hint">(select one to continue)</span></p>
           <?php foreach ( $certs as $track => $items ) : ?>
           <div class="opp-trial-track">
             <div class="opp-trial-track-name"><?php echo esc_html( $track ); ?></div>
@@ -149,6 +173,7 @@ function opp_render_trial_form() {
           <?php endforeach; ?>
         </div>
 
+        <!-- Account fields -->
         <div class="opp-trial-section opp-trial-fields">
           <label class="opp-trial-field-label" for="trial-username">Username</label>
           <input class="opp-trial-input" type="text" id="trial-username" name="username" required autocomplete="username" placeholder="yourhandle">
@@ -160,22 +185,38 @@ function opp_render_trial_form() {
           <input class="opp-trial-input" type="password" id="trial-password" name="password" required autocomplete="new-password" placeholder="min 8 characters">
         </div>
 
+        <!-- Error message -->
         <div id="opp-trial-msg" class="opp-trial-msg" style="display:none;" role="alert"></div>
+
+        <!-- Fine print ABOVE submit — reassurance, not legal disclosure -->
+        <p class="opp-trial-fine">3 days &middot; one cert &middot; no card required &middot; one trial per email &middot; nothing auto-charges</p>
 
         <button type="submit" class="opp-gate-btn opp-gate-btn--primary opp-trial-submit">
           Start Free Trial &#x2192;
         </button>
-        <p class="opp-trial-fine">3 days &middot; one cert &middot; no card &middot; one trial per email address</p>
+
+        <!-- Post-submit expectation -->
+        <p class="opp-trial-expect">After signup you'll be taken directly to your study content. Check your spam folder for the confirmation email if it doesn't arrive within a few minutes.</p>
+
       </form>
     </div>
 
     <style>
     .opp-trial-wrap{max-width:680px;margin:0 auto;padding:40px 24px;}
-    .opp-trial-header{text-align:center;margin-bottom:40px;}
-    .opp-trial-title{font-size:clamp(24px,4vw,36px);font-weight:700;margin:0 0 12px;}
-    .opp-trial-sub{color:#64748b;line-height:1.6;margin:0;}
+    .opp-trial-header{text-align:center;margin-bottom:32px;}
+    .opp-trial-title{font-size:clamp(22px,4vw,34px);font-weight:700;margin:0 0 10px;}
+    .opp-trial-sub{color:#64748b;line-height:1.6;margin:0 0 6px;}
+    .opp-trial-cred{font-size:13px;color:#94a3b8;margin:0;font-style:italic;}
+
+    /* What's included box */
+    .opp-trial-included{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:20px 24px;margin-bottom:32px;}
+    .opp-trial-included__heading{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin:0 0 12px;}
+    .opp-trial-included__list{list-style:none;padding:0;margin:0 0 12px;display:flex;flex-direction:column;gap:8px;font-size:15px;font-weight:500;}
+    .opp-trial-included__sub{font-size:13px;color:#64748b;margin:0;line-height:1.5;}
+
     .opp-trial-section{margin-bottom:32px;}
     .opp-trial-label{font-weight:600;margin:0 0 16px;font-size:15px;}
+    .opp-trial-label__hint{font-weight:400;color:#94a3b8;font-size:13px;}
     .opp-trial-track{margin-bottom:16px;}
     .opp-trial-track-name{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin-bottom:8px;}
     .opp-trial-certs{display:flex;flex-wrap:wrap;gap:8px;}
@@ -186,11 +227,12 @@ function opp_render_trial_form() {
     .opp-cert-radio__label:hover{border-color:#93c5fd;}
     .opp-trial-fields{display:flex;flex-direction:column;gap:12px;}
     .opp-trial-field-label{font-size:14px;font-weight:600;margin-bottom:4px;}
-    .opp-trial-input{width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:6px;font-size:15px;transition:border-color .15s;}
+    .opp-trial-input{width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:6px;font-size:15px;transition:border-color .15s;box-sizing:border-box;}
     .opp-trial-input:focus{outline:none;border-color:#1d4ed8;}
     .opp-trial-msg{padding:12px 16px;background:#fef2f2;border:1px solid #fca5a5;border-radius:6px;color:#dc2626;font-size:14px;margin-bottom:16px;}
-    .opp-trial-submit{width:100%;font-size:17px;padding:14px 24px;margin-bottom:12px;}
-    .opp-trial-fine{text-align:center;font-size:13px;color:#94a3b8;margin:0;}
+    .opp-trial-fine{text-align:center;font-size:13px;color:#64748b;margin:0 0 14px;font-weight:500;}
+    .opp-trial-submit{width:100%;font-size:17px;padding:14px 24px;margin-bottom:10px;}
+    .opp-trial-expect{text-align:center;font-size:13px;color:#94a3b8;margin:0;line-height:1.5;}
     .opp-trial-notice{padding:16px 20px;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;font-size:15px;}
     </style>
 
@@ -202,9 +244,19 @@ function opp_render_trial_form() {
         e.preventDefault();
         var btn = form.querySelector('.opp-trial-submit');
         var msg = document.getElementById('opp-trial-msg');
+
+        // Validate cert selection explicitly with a friendly error.
+        if (!form.querySelector('input[name="product_id"]:checked')) {
+          msg.textContent = 'Please select a certification before continuing.';
+          msg.style.display = 'block';
+          form.querySelector('.opp-trial-section').scrollIntoView({behavior:'smooth',block:'start'});
+          return;
+        }
+
         msg.style.display = 'none';
         btn.disabled = true;
-        btn.textContent = 'Starting…';
+        btn.textContent = 'Setting up your trial…';
+
         var data = new FormData(form);
         data.append('action', 'opp_start_trial');
         fetch('<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>', {
@@ -215,6 +267,7 @@ function opp_render_trial_form() {
         .then(function(r) { return r.json(); })
         .then(function(res) {
           if (res.success) {
+            btn.textContent = 'You’re in — taking you to your content…';
             window.location.href = res.data.redirect;
           } else {
             msg.textContent = res.data.message;
