@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ssh -i ~/.openclaw/workspace/operatorprep/deploy_key -p 18765 u2283-kdljzuwnwnbp@gcam1130.siteground.biz *)"
+    ]
+  }
+}
