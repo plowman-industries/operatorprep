@@ -88,10 +88,7 @@ function opp_ajax_start_trial() {
     wp_set_auth_cookie( $user_id );
     do_action( 'wp_login', $user->user_login, $user );
 
-    $map      = opp_trial_cert_map();
-    $slug     = $map[ $product_id ] ?? '';
-    $redirect = $slug ? home_url( '/' . $slug . '/' ) : home_url( '/my-account/' );
-    wp_send_json_success( [ 'redirect' => $redirect ] );
+    wp_send_json_success( [ 'redirect' => home_url( '/my-account/' ) ] );
 }
 
 // SEO: inject a descriptive title tag on the /free-trial/ page.
@@ -116,7 +113,7 @@ function opp_render_trial_form() {
             $slug = $map[ $trial_cert ] ?? '';
             $link = $slug ? home_url( '/' . $slug . '/' ) : home_url( '/my-account/' );
             if ( opp_has_trial_access( $trial_cert ) ) {
-                return '<div class="opp-trial-notice">You have an active trial. <a href="' . esc_url( $link ) . '">Continue studying &rarr;</a></div>';
+                return '<div class="opp-trial-notice">You have an active trial. <a href="' . esc_url( home_url( '/my-account/' ) ) . '">Go to My Account &rarr;</a></div>';
             } else {
                 $checkout = esc_url( add_query_arg( 'add-to-cart', $trial_cert, wc_get_checkout_url() ) );
                 return '<div class="opp-trial-notice">Your free trial has ended. <a href="' . $checkout . '">Subscribe to keep studying &rarr;</a></div>';

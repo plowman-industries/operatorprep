@@ -108,6 +108,16 @@ function op_ajax_get_active_subs() {
         }
     }
 
+    // Include active free trial cert so it shows on the dashboard.
+    if ( function_exists( 'opp_has_trial_access' ) ) {
+        $trial_cert = (int) get_user_meta( $user_id, 'opp_trial_cert', true );
+        if ( $trial_cert && opp_has_trial_access( $trial_cert ) && isset( $cert_keys[ $trial_cert ] ) ) {
+            if ( ! in_array( $cert_keys[ $trial_cert ], $active_keys, true ) ) {
+                $active_keys[] = $cert_keys[ $trial_cert ];
+            }
+        }
+    }
+
     wp_send_json_success( $active_keys );
 }
 
